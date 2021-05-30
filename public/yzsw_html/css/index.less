@@ -1,0 +1,113 @@
+#left {
+  .top {
+    width: 96%;
+    height: 32%;
+    margin: .1rem .1rem .05rem .1rem;
+    overflow: auto;
+    display: inline;
+    background-color: #090D26;
+
+    .before {
+      width: 100%;
+      height: 100%;
+      color: #7F86BB;
+      font-size: .225rem;
+      background-color: #090D26;
+      padding: .25rem;
+
+      p {
+        text-indent: .45rem;
+      }
+    }
+
+    .after {
+      width: 100%;
+      height: 100%;
+      color: #7F86BB;
+      background-color: #090D26;
+
+      .title {
+        position: fixed;
+        padding-top: .125rem;
+        padding-bottom: .25rem;
+        height: .125rem;
+        padding-left: .25rem;
+        font-size: .2rem;
+        overflow: hidden;
+
+        span {
+          color: #fff;
+          text-decoration: underline;
+        }
+      }
+
+      .show {
+        padding-left: .25rem;
+        padding-top: .5rem;
+        font-size: .25rem;
+        height: 1.75rem;
+
+        ul {
+          &:nth-child(1) {
+            margin-right: .45rem;
+            width: 35%;
+          }
+          &:nth-child(2) {
+            width: 2.625rem;
+          }
+
+          p {
+            height: .35rem;
+            font-size: .15rem;
+            line-height: .25rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            &:hover{
+              width: auto;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .center {
+    width: 96%;
+    height: 32%;
+    margin: .1rem .1rem .05rem .1rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: .0625rem;
+    }
+  }
+
+  .bottom {
+    width: 96%;
+    height: 32%;
+    margin: .1rem .1rem .05rem .1rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: .0625rem;
+    }
+  }
+}
+
+.right {
+  div {
+    flex-wrap: wrap;
+    width: 96%;
+    height: 32%;
+    margin: .1rem .1rem .05rem .1rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: .0625rem;
+    }
+  }
+}

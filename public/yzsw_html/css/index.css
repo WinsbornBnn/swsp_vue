@@ -1,0 +1,93 @@
+#left .top {
+  width: 96%;
+  height: 32%;
+  margin: 0.1rem 0.1rem 0.05rem 0.1rem;
+  overflow: auto;
+  display: inline;
+  background-color: #090D26;
+}
+#left .top .before {
+  width: 100%;
+  height: 100%;
+  color: #7F86BB;
+  font-size: 0.225rem;
+  background-color: #090D26;
+  padding: 0.25rem;
+}
+#left .top .before p {
+  text-indent: 0.45rem;
+}
+#left .top .after {
+  width: 100%;
+  height: 100%;
+  color: #7F86BB;
+  background-color: #090D26;
+}
+#left .top .after .title {
+  position: fixed;
+  padding-top: 0.125rem;
+  padding-bottom: 0.25rem;
+  height: 0.125rem;
+  padding-left: 0.25rem;
+  font-size: 0.2rem;
+  overflow: hidden;
+}
+#left .top .after .title span {
+  color: #fff;
+  text-decoration: underline;
+}
+#left .top .after .show {
+  padding-left: 0.25rem;
+  padding-top: 0.5rem;
+  font-size: 0.25rem;
+  height: 1.75rem;
+}
+#left .top .after .show ul:nth-child(1) {
+  margin-right: 0.45rem;
+  width: 35%;
+}
+#left .top .after .show ul:nth-child(2) {
+  width: 2.625rem;
+}
+#left .top .after .show ul p {
+  height: 0.35rem;
+  font-size: 0.15rem;
+  line-height: 0.25rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+#left .top .after .show ul p:hover {
+  width: auto;
+}
+#left .center {
+  width: 96%;
+  height: 32%;
+  margin: 0.1rem 0.1rem 0.05rem 0.1rem;
+}
+#left .center img {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.0625rem;
+}
+#left .bottom {
+  width: 96%;
+  height: 32%;
+  margin: 0.1rem 0.1rem 0.05rem 0.1rem;
+}
+#left .bottom img {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.0625rem;
+}
+.right div {
+  flex-wrap: wrap;
+  width: 96%;
+  height: 32%;
+  margin: 0.1rem 0.1rem 0.05rem 0.1rem;
+}
+.right div img {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.0625rem;
+}

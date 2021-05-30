@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>可视化智能面板</title>
+  <link rel="stylesheet" href="css/flex.css">
+  <link rel="stylesheet" href="css/second.css">
+  <link rel="stylesheet" href="css/public.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css"
+    type="text/css">
+  <link rel="stylesheet" href="//unpkg.com/layui@2.6.5/dist/css/layui.css">
+  <!-- 引入layui -->
+  <script src="//unpkg.com/layui@2.6.5/dist/layui.js"></script>
+  <!-- 引入openlayers -->
+  <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
+  <!-- 引入JQuery -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <!-- 引入Echarts -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.1.0/echarts.min.js"></script>
+</head>
+
+<body>
+  <!-- 头部区域 -->
+  <header class="header u-f">
+    <div class="column">
+      <div class="time">
+      </div>
+    </div>
+    <div class="column">
+      <img src="icons/title.png" alt class="title">
+      <div class="name">
+        扬 州 市 节 水 型 载 体 可 视 化 平 台
+      </div>
+    </div>
+    <div class="column">
+      <div class="data u-f">
+        <button id="back" style="width: .75rem;">首页</button>
+        <button id="exitAll" style="display: none;width: 1rem;">数据管理</button>
+        <button id="goAll" style="width: .75rem;">全屏</button>
+      </div>
+    </div>
+  </header>
+  <div class="container u-f">
+    <!-- 左边区域 -->
+    <div class="column u-f-fdc">
+      <!-- 载体模块 -->
+      <div class="supporter pannel u-f-fdc">
+        <!-- 上边部分 -->
+        <div class="top u-f">
+          <div class="water"><span>节水型载体建成率</span></div>
+          <form class="layui-form u-f" action="">
+            <div class="layui-form-item">
+              <select name="city" lay-filter="city">
+                <option value="0">扬州市</option>
+                <option value="1">高邮市</option>
+                <option value="2">仪征市</option>
+                <option value="3">邢江区</option>
+                <option value="4">广陵区</option>
+              </select>
+            </div>
+            <div class="layui-form-item">
+              <select name="city" lay-filter="allprovince">
+                <option value="1">省级</option>
+                <option value="2">市级</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <!-- 下边部分 -->
+        <div class="bottom u-f">
+          <div class="plot">
+
+          </div>
+          <div class="units">
+
+          </div>
+          <div class="company">
+
+          </div>
+          <div class="tanks">
+
+          </div>
+        </div>
+      </div>
+      <!-- 单位模块 -->
+      <div class="unit inner">
+        <!-- 上边部分 -->
+        <div class="top u-f">
+          <div class="water"><span>节水型单位分类</span></div>
+          <form class="layui-form u-f" action="">
+            <div class="layui-form-item">
+              <select name="city" lay-filter="city">
+                <option value="0">扬州市</option>
+                <option value="1">高邮市</option>
+                <option value="2">仪征市</option>
+                <option value="3">邢江区</option>
+                <option value="4">广陵区</option>
+              </select>
+            </div>
+            <div class="layui-form-item">
+              <select name="city" lay-filter="allunits">
+                <option value="1">省级</option>
+                <option value="2">市级</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <!-- 下边部分 -->
+        <div class="bottom">
+          <div class="box">
+            <div id="unit"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 中间地图区域 -->
+    <div class="column u-f-fdc">
+      <!-- 地图模块 -->
+      <div class="map u-f-fdc">
+        <div class="chart">
+          <div class="geo" id="geo"></div>
+          <div id="popup" class="ol-popup">
+            <div id="popup-content">
+            </div>
+          </div>
+        </div>
+        <!-- 下拉菜单 -->
+        <div class="select">
+          <button class="layui-btn" id="select">
+            类别搜索
+            <i class="layui-icon layui-icon-down layui-font-12"></i>
+          </button>
+        </div>
+        <div class="hint">
+          <ul>
+            <li><span>工业企业</span></li>
+            <li><span>小区（社区）</span></li>
+            <li><span>学校</span></li>
+            <li><span>机关（单位）</span></li>
+            <li><span>宾馆</span></li>
+            <li><span>灌区</span></li>
+            <li><span>医院</span></li>
+            <li><span>其他</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- 右边区域-->
+    <div class="column u-f-fdc">
+      <!-- 企业模块 -->
+      <div class="company pannel">
+        <!-- 上边部分 -->
+        <div class="top u-f">
+          <div class="water"><span>节水型企业分类</span></div>
+          <form class="layui-form u-f" action="">
+            <div class="layui-form-item">
+              <select class="select" name="city" lay-verify="required">
+                <option value="0">扬州市</option>
+                <option value="1">高邮市</option>
+                <option value="2">仪征市</option>
+                <option value="3">邢江区</option>
+                <option value="4">广陵区</option>
+                <option value="5">江都区</option>
+                <option value="6">宝应县</option>
+              </select>
+            </div>
+            <div class="layui-form-item">
+              <select name="city" lay-filter="allcompany">
+                <option value="1">省级</option>
+                <option value="2">市级</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <!-- 下边部分 -->
+        <div class="bottom">
+          <div class="box">
+            <div id="companylist"></div>
+          </div>
+        </div>
+      </div>
+      <!-- 灌区模块 -->
+      <div class="tank inner">
+        <!-- 上边部分 -->
+        <div class="top u-f">
+          <div class="water"><span>节水型灌区分类</span></div>
+          <form class="layui-form u-f" action="">
+            <div class="layui-form-item">
+              <select name="city" lay-verify="required">
+                <option value="0">扬州市</option>
+                <option value="1">高邮市</option>
+                <option value="2">仪征市</option>
+                <option value="3">邢江区</option>
+                <option value="4">广陵区</option>
+              </select>
+            </div>
+            <div class="layui-form-item">
+              <select name="city" lay-filter="alltanks">
+                <option value="1">省级</option>
+                <option value="2">市级</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <!-- 下边部分 -->
+        <div class="bottom">
+          <div class="box">
+            <div id="tank"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="js/flexible.js"></script>
+  <script src="js/second.js"></script>
+  <script src="js/Ajax.js"></script>
+  <script src="js/MyTime.js"></script>
+  <script src="js/MyEacharts.js"></script>
+  <script src="js/MyMap.js"></script>
+</body>
+
+</html>

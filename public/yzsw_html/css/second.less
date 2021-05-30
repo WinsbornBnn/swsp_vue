@@ -1,0 +1,94 @@
+/* 载体模块 */
+.supporter {
+  .bottom {
+    flex-wrap: wrap;
+
+    .plot,
+    .units,
+    .company,
+    .tanks {
+      position: relative;
+      width: 48%;
+      height: 48%;
+      color: #fff;
+      border-radius: .0625rem;
+      background: rgb(12 17 49 / 82%);
+      margin: .0625rem 0 0 .0625rem;
+
+      .box {
+        margin: 0 auto;
+        height: 80%;
+      }
+
+      .label {
+        font-size: 50%;
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -40%);
+      }
+
+      .item {
+        height: 20%;
+        font-size: .15rem;
+        text-align: center;
+      }
+
+      .publicheight {
+        height: 100%;
+      }
+    }
+  }
+}
+
+/* 单位模块 */
+.unit {
+  .bottom {
+    .box {
+      margin: 0 auto;
+      height: 90%;
+    }
+
+    #unit {
+      padding: .125rem;
+      height: 100%;
+    }
+  }
+}
+
+/* 企业模块 */
+.company {
+  .bottom {
+    .box {
+      margin: 0 auto;
+      height: 90%;
+    }
+
+    #companylist {
+      padding: .0625rem;
+      height: 100%;
+    }
+  }
+}
+
+/* 灌区模块 */
+.tank {
+  .bottom {
+    .box {
+      margin: 0 auto;
+      height: 90%;
+    }
+
+    #tank {
+      padding: .125rem;
+      height: 100%;
+    }
+  }
+}
+.column {
+  width: 26%;
+
+  &:nth-child(2) {
+    width: 48%;
+  }
+}

@@ -1,0 +1,80 @@
+/* 载体模块 */
+.supporter .bottom {
+  flex-wrap: wrap;
+}
+.supporter .bottom .plot,
+.supporter .bottom .units,
+.supporter .bottom .company,
+.supporter .bottom .tanks {
+  position: relative;
+  width: 48%;
+  height: 48%;
+  color: #fff;
+  border-radius: 0.0625rem;
+  background: rgba(12, 17, 49, 0.82);
+  margin: 0.0625rem 0 0 0.0625rem;
+}
+.supporter .bottom .plot .box,
+.supporter .bottom .units .box,
+.supporter .bottom .company .box,
+.supporter .bottom .tanks .box {
+  margin: 0 auto;
+  height: 80%;
+}
+.supporter .bottom .plot .label,
+.supporter .bottom .units .label,
+.supporter .bottom .company .label,
+.supporter .bottom .tanks .label {
+  font-size: 50%;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -40%);
+}
+.supporter .bottom .plot .item,
+.supporter .bottom .units .item,
+.supporter .bottom .company .item,
+.supporter .bottom .tanks .item {
+  height: 20%;
+  font-size: 0.15rem;
+  text-align: center;
+}
+.supporter .bottom .plot .publicheight,
+.supporter .bottom .units .publicheight,
+.supporter .bottom .company .publicheight,
+.supporter .bottom .tanks .publicheight {
+  height: 100%;
+}
+/* 单位模块 */
+.unit .bottom .box {
+  margin: 0 auto;
+  height: 90%;
+}
+.unit .bottom #unit {
+  padding: 0.125rem;
+  height: 100%;
+}
+/* 企业模块 */
+.company .bottom .box {
+  margin: 0 auto;
+  height: 90%;
+}
+.company .bottom #companylist {
+  padding: 0.0625rem;
+  height: 100%;
+}
+/* 灌区模块 */
+.tank .bottom .box {
+  margin: 0 auto;
+  height: 90%;
+}
+.tank .bottom #tank {
+  padding: 0.125rem;
+  height: 100%;
+}
+.column {
+  width: 26%;
+}
+.column:nth-child(2) {
+  width: 48%;
+}

@@ -1,0 +1,344 @@
+/*清除元素默认的内外边距  */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/*让所有斜体 不倾斜*/
+em,
+i {
+  font-style: normal;
+}
+/*去掉列表前面的小点*/
+li {
+  list-style: none;
+}
+/*图片没有边框   去掉图片底侧的空白缝隙*/
+img {
+  border: 0;
+  /*ie6*/
+  vertical-align: middle;
+}
+/*让button 按钮 变成小手*/
+button {
+  cursor: pointer;
+}
+/*取消链接的下划线*/
+a {
+  color: #666;
+}
+a:hover {
+  color: #e33333;
+}
+h4 {
+  font-weight: 400;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+  min-width: 15rem;
+  min-height: 7.5rem;
+  overflow: hidden;
+}
+body {
+  position: relative;
+  background: url("../icons/bg.png") 0 0 / 100% 100% no-repeat;
+}
+/* 实现rem适配 */
+@media (max-width: 1920px) {
+  .header {
+    height: 8%;
+  }
+  .container {
+    top: 10%;
+    bottom: 0.1375rem;
+  }
+}
+.column {
+  flex: 26%;
+}
+.column:nth-child(2) {
+  flex: 48%;
+}
+/* 头部区域 */
+.header {
+  position: relative;
+  height: 8%;
+  overflow: hidden;
+}
+.time {
+  position: absolute;
+  top: 0.1875rem;
+  left: 0.375rem;
+  color: #fff;
+  font-size: 0.225rem;
+}
+.title {
+  width: 100%;
+  height: 100%;
+  padding: 0 0.1rem 0 0.1rem;
+}
+.name {
+  color: #C7D1FA;
+  position: absolute;
+  font-size: 0.35rem;
+  top: 0.125rem;
+  left: 37%;
+}
+.data {
+  position: absolute;
+  top: 0.1875rem;
+  right: 0.375rem;
+}
+.data button {
+  height: 0.3375rem;
+  border-radius: 0.0625rem;
+  text-align: center;
+  line-height: 0.3375rem;
+  border: 0 solid transparent;
+  background: #4F60A6;
+  color: #C7D1FA;
+  margin: 0.025rem;
+  font-size: 0.15rem;
+}
+.data span {
+  position: absolute;
+  top: -0.675rem;
+  left: -1.0625rem;
+  right: -0.625rem;
+  padding: 0.3rem 0.45rem;
+  color: #9FAEE5;
+  font-size: 0.2rem;
+}
+/* 底部区域 */
+.container {
+  position: absolute;
+  top: 10%;
+  bottom: 0.1375rem;
+  left: 0;
+  right: 0;
+  color: #000;
+  height: 90%;
+}
+.pannel {
+  margin: 0 0.1rem 0 0.1rem;
+  background: url(../icons/bg_1.png) no-repeat 0 0;
+  background-size: 100% 100%;
+  flex: 60%;
+  border-radius: 0.0625rem;
+}
+.inner {
+  margin: 0.1rem 0.1rem 0 0.1rem;
+  background: url(../icons/bg-2.png) no-repeat 0 0;
+  background-size: 100% 100%;
+  flex: 40%;
+  border-radius: 0.0625rem;
+}
+.pannel .top .water,
+.inner .top .water {
+  font-size: 0.15rem;
+  padding: 0.125rem 0 0 0.1875rem;
+}
+.pannel .top .water span,
+.inner .top .water span {
+  color: #fff;
+  text-decoration: underline;
+}
+.pannel .top .layui-form,
+.inner .top .layui-form {
+  position: absolute;
+  right: 0.1875rem;
+  top: 0.125rem;
+}
+.pannel .top .layui-input,
+.inner .top .layui-input {
+  margin-left: 0.25rem;
+  width: 1.125rem;
+  height: 0.35rem;
+  background-color: #161E45;
+  border-color: #304189;
+  color: #7E85BD;
+}
+.pannel .top .layui-form-select dl,
+.inner .top .layui-form-select dl {
+  left: 0.2625rem;
+  top: 0.4375rem;
+  min-width: 1.125rem;
+  background-color: #161E45;
+  color: #7E85BD;
+  border-color: #304189;
+}
+.pannel .top .layui-form-select dl dd.layui-this,
+.inner .top .layui-form-select dl dd.layui-this {
+  background-color: #0E133B;
+  color: #7E85BD;
+}
+.pannel .bottom,
+.inner .bottom {
+  margin-top: 0.3125rem;
+  width: 100%;
+  height: 90%;
+}
+/* 公共样式 */
+.supporter,
+.unit,
+.company,
+.tank {
+  position: relative;
+}
+/* 地图模块 */
+.map {
+  height: 100%;
+  position: relative;
+  /* 下拉菜单 */
+  /* 提示文本 */
+}
+.map .chart {
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.map .geo {
+  height: 100%;
+}
+.map .select {
+  position: absolute;
+  top: 0.125rem;
+  left: 0.125rem;
+}
+.map .select .layui-icon-right:before {
+  content: "" !important;
+}
+.map .select .layui-input {
+  margin-left: 0.25rem;
+  width: 1.75rem;
+  height: 0.35rem;
+  background-color: #fff;
+  border-color: #6D7CBF;
+  color: #7E85BD;
+}
+.map .select .layui-btn {
+  width: 1.625rem;
+  height: 0.35rem;
+  background-color: #fff;
+  border: 0.025rem solid #6D7CBF;
+  color: #7E85BD;
+  line-height: normal;
+  padding-left: 0.1875rem;
+  text-align: left;
+}
+.map .select .layui-btn .layui-icon {
+  position: absolute;
+  top: 0.1rem;
+  right: 0.1rem;
+}
+.map .select .layui-form-select dl {
+  left: 0.2625rem;
+  top: 0.4375rem;
+  min-width: 1.75rem;
+  background-color: #fff;
+  border-color: #6D7CBF;
+  color: #7E85BD;
+  text-align: center;
+  min-height: 200px;
+}
+.map .select .layui-form-select dl dd.layui-this {
+  background-color: #E4E7F0;
+  color: #7E85BD;
+}
+.map .hint {
+  position: absolute;
+  bottom: 0.375rem;
+  right: 0.4375rem;
+  border: #5462AB solid 0.0125rem;
+  background-color: rgba(255, 255, 255);
+  height: 3.5rem;
+  border-radius: 0.0625rem;
+}
+.map .hint ul {
+  width: 100%;
+  padding: 0.25rem;
+}
+.map .hint ul li {
+  width: 100%;
+  height: 0.35rem;
+  background: url(../icons/08.png) no-repeat;
+  background-size: 0.15rem 0.15rem;
+  font-size: 0.15rem;
+}
+.map .hint ul li:nth-child(2) {
+  background: url(../icons/05.png) no-repeat;
+}
+.map .hint ul li:nth-child(3) {
+  background: url(../icons/04.png) no-repeat;
+}
+.map .hint ul li:nth-child(4) {
+  background: url(../icons/03.png) no-repeat;
+}
+.map .hint ul li:nth-child(5) {
+  background: url(../icons/06.png) no-repeat;
+}
+.map .hint ul li:nth-child(6) {
+  background: url(../icons/0132.png) no-repeat;
+}
+.map .hint ul li:nth-child(7) {
+  background: url(../icons/01.png) no-repeat;
+}
+.map .hint ul li:nth-child(8) {
+  background: url(../icons/09.png) no-repeat;
+}
+.map .hint ul li:nth-child(9) {
+  background: url(../icons/07.png) no-repeat;
+}
+.map .hint ul li span {
+  padding-left: 0.3rem;
+  color: #5966AC;
+}
+.ol-popup {
+  width: 4.25rem;
+  height: 2.5rem;
+  position: absolute;
+  background-color: rgba(255, 255, 255);
+  box-shadow: 0 0.0125rem 0.05rem rgba(0, 0, 0, 0.5);
+  padding: 0.175rem;
+  color: #000;
+  border-radius: 0.125rem;
+  border: 0.0125rem solid #7A8DD2;
+  font-size: 0.15rem;
+  bottom: 0.15rem;
+  left: -0.625rem;
+  min-width: 60%;
+}
+.information div:nth-child(n+2) {
+  margin: 0.0625rem 0;
+}
+.addclass {
+  width: 2rem;
+  height: 0.8rem;
+  font-size: 0.15rem;
+}
+.ol-popup:after,
+.ol-popup:before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.ol-popup:after {
+  border-top-color: rgba(255, 255, 255);
+  border-width: 0.125rem;
+  left: 0.6rem;
+  margin-left: -0.125rem;
+}
+.ol-popup:before {
+  border-top-color: #cccccc;
+  border-width: 0.1375rem;
+  left: 0.6rem;
+  margin-left: -0.1375rem;
+}
+.ol-zoom {
+  display: none;
+}
