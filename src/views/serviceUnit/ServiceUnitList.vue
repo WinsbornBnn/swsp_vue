@@ -9,37 +9,54 @@
               <a-input placeholder="请输入单位名称" v-model="queryParam.dwmc"></a-input>
             </a-form-item>
           </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+          <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="组织机构代码">
               <a-input placeholder="请输入组织机构代码" v-model="queryParam.zzjg"></a-input>
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <template v-if="toggleSearchStatus">
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="单位所在地">
                 <a-input placeholder="请输入单位所在地" v-model="queryParam.dwszd"></a-input>
               </a-form-item>
             </a-col>
-            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="单位地址">
                 <a-input placeholder="请输入单位地址" v-model="queryParam.dwdz"></a-input>
               </a-form-item>
-            </a-col>
+            </a-col> -->
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="单位类型">
                 <a-input placeholder="请输入单位类型" v-model="queryParam.dwlx"></a-input>
               </a-form-item>
             </a-col>
+             <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="是否节水型">
+                <a-select
+                  style="width: 200px"
+                  placeholder="请选择"
+                  v-model="queryParam.sfjsx"
+                >
+                  <a-select-option value="1"> 省级节水型 </a-select-option>
+                  <a-select-option value="2"> 非节水型 </a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
-              <a-form-item label="节水技改">
+              <a-form-item label="是否节水技改">
                 <a-select
                   style="width: 200px"
                   placeholder="请选择"
                   v-model="queryParam.type"
                 >
-                  <a-select-option value="1"> 节水技改生活服务单位 </a-select-option>
-                  <a-select-option value="2"> 非节水技改生活服务单位 </a-select-option>
+                  <a-select-option value="1"> 节水技改 </a-select-option>
+                  <a-select-option value="2"> 未节水技改 </a-select-option>
                 </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="公布时间">
+                <a-date-picker :value-format="'YYYY年MM月DD日'" v-model="queryParam.gbsj" />
               </a-form-item>
             </a-col>
           </template>

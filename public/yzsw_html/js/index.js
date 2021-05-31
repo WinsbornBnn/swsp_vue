@@ -19,7 +19,7 @@ layui.use(['layer', 'dropdown'], () => {
   });
   // 获取所有的企业数据
   var num1, num2, num3, num4, num5 = null;
-  var value = ['机关(单位)', '学校', '医院', '宾馆', '其他'];
+  var value = ['机关(单位)', '学校', '医院', '宾馆', '教育基地', '其他'];
   let url = 'serviceUnit/serviceUnit/list';
   for (let i = 0; i < value.length; i++) {
     switch (value[i]) {
@@ -51,9 +51,9 @@ layui.use(['layer', 'dropdown'], () => {
   }
   const children = [{
     title: '全部', value: '全部'
-    , id: 3
+    , id: 33333
   }, {
-    title: `机关(单位)(${num1}个)`, value: '机关(单位)'
+    title: `机关(单位)(${num1 - 1}个)`, value: '机关(单位)'
     , id: 3
   }, {
     title: `学校(${num2}个)`, value: '学校'
@@ -61,10 +61,17 @@ layui.use(['layer', 'dropdown'], () => {
   }, {
     title: `医院(${num3}个)`, value: '医院'
     , id: 1
+  },
+  {
+    title: `宾馆(${num4}个)`,
+    value: '宾馆',
+    id: 6
   }, {
-    title: `宾馆(${num4}个)`, value: '宾馆'
-    , id: 6
-  }, {
+    title: `教育基地(1个)`,
+    value: '教育基地',
+    id: 9
+  },
+  {
     title: `其他(${num5}个)`, value: '其他'
     , id: 7
   }];
@@ -173,8 +180,9 @@ layui.use(['layer', 'dropdown'], () => {
       }
       switch (obj.value) {
         case '全部':
+          url = 'serviceUnit/serviceUnit/list';
           removeRandomFeature();
-          YesObject(obj, url);
+          AllType(url);
           break;
         case '机关(单位)':
           type = '行政机关';
@@ -193,9 +201,9 @@ layui.use(['layer', 'dropdown'], () => {
           break;
         case '学校':
           type = '学校';
-          url = 'serviceUnit/serviceUnit/staticData1';
+          // url = 'serviceUnit/serviceUnit/staticData1';
           removeRandomFeature();
-          SchoolType(obj, url, type);
+          YesObject(obj, url, type);
           break;
         case '医院':
           type = '医院';
@@ -204,6 +212,11 @@ layui.use(['layer', 'dropdown'], () => {
           break;
         case '宾馆':
           type = '宾馆';
+          removeRandomFeature();
+          YesObject(obj, url, type);
+          break;
+        case '教育基地':
+          type = '高邮市海潮污水处理厂';
           removeRandomFeature();
           YesObject(obj, url, type);
           break;
@@ -279,11 +292,11 @@ layui.use(['layer', 'dropdown'], () => {
   /**
    所有类
    */
-  // 查询学校类
-  function SchoolType (obj, url, type) {
-    let data = getList(url, { pageSize: 10000, dwlx: type });
+  // 查询所有省级单位类
+  function AllType (url) {
+    let data = getList(url, { pageSize: 10000 });
     let axis = [];
-    data.forEach(item => {
+    data.records.forEach(item => {
       let t1 = item.xcoor ? item.xcoor : null;
       let t2 = item.ycoor ? item.ycoor : null;
       let id = item.id;
@@ -291,10 +304,32 @@ layui.use(['layer', 'dropdown'], () => {
       let title = item.dwmc;
       let gbdw = item.gbdw ? item.gbdw : '江苏省水利厅';
       let gbdwjb = item.gbdwjb ? item.gbdwjb : '省级';
-      let address = item.dwdz;
+      let address = item.dwdz ? item.dwdz : '暂无';
       let location = item.dwszd;
       let design = '单位';
-      var src = `./icons/0${obj.id}.png`;
+      let src = './icons/03.png';
+      switch (item.dwlx) {
+        case '事业单位':
+          src = './icons/03.png';
+          break;
+        case '学校':
+          src = './icons/04.png';
+          break;
+        case '医院':
+          src = './icons/01.png';
+          break;
+        case '宾馆':
+          src = './icons/06.png';
+          break;
+        case '其他':
+          src = './icons/07.png';
+          break;
+        case '行政机关':
+          src = './icons/03.png';
+          break;
+        default:
+          break;
+      }
       let units = {
         dwlx: item.dwlx,
         ysrs: item.ysrs ? item.ysrs : 0,
@@ -334,7 +369,12 @@ layui.use(['layer', 'dropdown'], () => {
   }
   // 有子集菜单类
   function YesObject (obj, url, type) {
-    let data = getList(url, { pageSize: 10000, dwlx: type });
+    let data = null;
+    if (type === '高邮市海潮污水处理厂') {
+      data = getList(url, { pageSize: 10000, dwmc: type });
+    } else {
+      data = getList(url, { pageSize: 10000, dwlx: type });
+    }
     let axis = [];
     data.records.forEach(item => {
       let t1 = item.xcoor ? item.xcoor : null;
@@ -481,7 +521,7 @@ layui.use(['layer', 'dropdown'], () => {
       addRandomFeature(item.axis, scale);
     });
   }
-  // 所有市级类
+  // 所有市级单位类
   function ShiObject (url) {
     let shiUnitsList = getList(url, { pageSize: 10000 });
     let axis = [];
@@ -492,12 +532,34 @@ layui.use(['layer', 'dropdown'], () => {
       let id = item.id;
       let images = item.images ? item.images : null;
       let title = item.dwmc;
-      let gbdw = item.gbdw ? item.gbdw : '江苏省水利厅';
-      let gbdwjb = item.gbdwjb ? item.gbdwjb : '省级';
-      let address = item.dwdz;
+      let gbdw = item.gbdw ? item.gbdw : '扬州市水利局';
+      let gbdwjb = item.gbdwjb ? item.gbdwjb : '市级';
+      let address = item.dwdz ? item.dwdz : '暂无';
       let location = item.dwszd;
       let design = '单位';
-      let src = './icons/02.png';
+      let src = '';
+      switch (item.dwlx) {
+        case '事业单位':
+          src = './icons/03.png';
+          break;
+        case '学校':
+          src = './icons/04.png';
+          break;
+        case '医院':
+          src = './icons/01.png';
+          break;
+        case '宾馆':
+          src = './icons/07.png';
+          break;
+        case '其他':
+          src = './icons/06.png';
+          break;
+        case '行政机关':
+          src = './icons/03.png';
+          break;
+        default:
+          break;
+      }
       let shiUnits = {
         dwlx: item.dwlx,
         ysrs: item.ysrs ? item.ysrs : 0,
@@ -570,8 +632,8 @@ layui.use(['layer', 'dropdown'], () => {
             t2 = item.ycoor ? item.ycoor : null;
             id = item.id;
             images = item.images ? item.images : null;
-            gbdw = item.gbdw;
-            gbdwjb = item.gbdwjb;
+            gbdw = item.gbdw ? item.gbdw : '江苏省水利厅';
+            gbdwjb = item.gbdwjb ? item.gbdwjb : '省级';
             title = item.xqmc;
             address = item.xqdz;
             location = item.xqszd;
@@ -608,8 +670,8 @@ layui.use(['layer', 'dropdown'], () => {
             t2 = item.ycoor ? item.ycoor : null;
             id = item.id;
             images = item.images ? item.images : null;
-            gbdw = item.gbdw;
-            gbdwjb = item.gbdwjb;
+            gbdw = item.gbdw ? item.gbdw : '江苏省水利厅';
+            gbdwjb = item.gbdwjb ? item.gbdwjb : '省级';
             title = item.qymc;
             address = item.qydz;
             location = item.qyszd;
@@ -649,8 +711,8 @@ layui.use(['layer', 'dropdown'], () => {
             t2 = item.ycoor ? item.ycoor : null;
             id = item.id;
             images = item.images ? item.images : null;
-            gbdw = item.gbdw;
-            gbdwjb = item.gbdwjb;
+            gbdw = item.gbdw ? item.gbdw : '江苏省水利厅';
+            gbdwjb = item.gbdwjb ? item.gbdwjb : '省级';
             title = item.gqmc;
             address = item.gqdz;
             location = item.gqszd;
@@ -751,7 +813,7 @@ layui.use(['layer', 'dropdown'], () => {
       let address = item.dwdz;
       let location = item.dwszd;
       let design = '单位';
-      let src = './icons/02.png';
+      let src = './icons/03.png';
       let units = {
         dwlx: item.dwlx,
         ysrs: item.ysrs ? item.ysrs : 0,
@@ -828,7 +890,7 @@ layui.use(['layer', 'dropdown'], () => {
             address = item.xqdz;
             location = item.xqszd;
             design = '小区';
-            src = './icons/07.png';
+            src = './icons/05.png';
             plot = {
               zhrs: item.zhrs ? item.zhrs : 0,
               zhysl: item.zhysl ? item.zhysl : 0,
@@ -866,7 +928,7 @@ layui.use(['layer', 'dropdown'], () => {
             address = item.qydz;
             location = item.qyszd;
             design = '企业';
-            src = './icons/07.png';
+            src = './icons/08.png';
             company = {
               hyfl: item.hyfl,
               zycp: item.zycp,
@@ -903,7 +965,7 @@ layui.use(['layer', 'dropdown'], () => {
             address = item.gqdz;
             location = item.gqszd;
             design = '灌区';
-            src = './icons/07.png';
+            src = './icons/0132.png';
             tanks = {
               gqgmlx: item.gqgmlx,
               zyzw: item.zyzw,
@@ -941,7 +1003,7 @@ layui.use(['layer', 'dropdown'], () => {
             address = item.dwdz;
             location = item.dwszd;
             design = '单位';
-            src = './icons/07.png';
+            src = './icons/03.png';
             units = {
               dwlx: item.dwlx,
               ysrs: item.ysrs ? item.ysrs : 0,
@@ -1085,7 +1147,6 @@ layui.use(['layer', 'dropdown'], () => {
     map.forEachFeatureAtPixel(evt.pixel, (e) => {
       const data = e.values_;
       if (data.name === 'icon') {
-        console.log(e);
         let imagesurl = [];
         let newimages = [];
         if (data.images) {
@@ -1162,13 +1223,12 @@ layui.use(['layer', 'dropdown'], () => {
           </div>
           <div class="bottom" id="bottom">
           </div>`;
-          let zycp = data.company.zycp.split("、")
+            let zycp = data.company.zycp.split("、")
             for (let i = 0; i < zycp.length; i++) {
-              console.log(zycp[i]);
               $("#first").before(`
-              <p>主要产品${i+1}</p>
-              <p>产品${i+1}取水用水量</p>
-              <p>产品${i+1}用水量</p>
+              <p>主要产品${i + 1}</p>
+              <p>产品${i + 1}取水用水量</p>
+              <p>产品${i + 1}用水量</p>
               `);
               $("#second").before(`
               <p>${zycp[i]}</p>

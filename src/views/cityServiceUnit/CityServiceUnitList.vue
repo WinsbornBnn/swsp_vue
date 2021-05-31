@@ -15,31 +15,48 @@
             </a-form-item>
           </a-col>
           <template v-if="toggleSearchStatus">
-            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="单位地址">
                 <a-input placeholder="请输入单位地址" v-model="queryParam.dwdz"></a-input>
               </a-form-item>
-            </a-col>
+            </a-col> -->
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="单位类型">
                 <a-input placeholder="请输入单位类型" v-model="queryParam.dwlx"></a-input>
               </a-form-item>
             </a-col>
-            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="用水人数（人）">
                 <a-input placeholder="请输入用水人数（人）" v-model="queryParam.ysrs"></a-input>
               </a-form-item>
+            </a-col> -->
+             <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="是否节水型">
+                <a-select
+                  style="width: 200px"
+                  placeholder="请选择"
+                  v-model="queryParam.sfjsx"
+                >
+                  <a-select-option value="1"> 市级节水型 </a-select-option>
+                  <a-select-option value="2"> 非节水型 </a-select-option>
+                </a-select>
+              </a-form-item>
             </a-col>
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
-              <a-form-item label="节水技改">
+              <a-form-item label="是否节水技改">
                 <a-select
                   style="width: 200px"
                   placeholder="请选择"
                   v-model="queryParam.type"
                 >
-                  <a-select-option value="1"> 节水技改生活服务单位</a-select-option>
-                  <a-select-option value="2"> 非节水技改生活服务单位</a-select-option>
+                  <a-select-option value="1"> 节水技改</a-select-option>
+                  <a-select-option value="2"> 未节水技改</a-select-option>
                 </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="公布时间">
+                <a-date-picker :value-format="'YYYY年MM月DD日'" v-model="queryParam.gbsj" />
               </a-form-item>
             </a-col>
           </template>

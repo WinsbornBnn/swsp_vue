@@ -99,6 +99,9 @@ layui.use(['layer', 'form',], () => {
   unitsper = (units / allunits).toFixed(4) * 100;
   companyper = (company / allcompany).toFixed(4) * 100;
   tanksper = (tanks / alltanks).toFixed(4) * 100;
+  console.log(tanks);
+  console.log(alltanks);
+  console.log(tanksper);
   document.querySelector('.plot').innerHTML = `
       <div class="box">
         <div id="plot" class="publicheight"></div>

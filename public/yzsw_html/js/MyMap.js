@@ -286,6 +286,28 @@ const created = () => {
           location = item.dwszd;
           design = '单位';
           src = './icons/03.png';
+          switch (item.dwlx) {
+            case '事业单位':
+              src = './icons/03.png';
+              break;
+            case '学校':
+              src = './icons/04.png';
+              break;
+            case '医院':
+              src = './icons/01.png';
+              break;
+            case '宾馆':
+              src = './icons/07.png';
+              break;
+            case '其他':
+              src = './icons/06.png';
+              break;
+            case '行政机关':
+              src = './icons/03.png';
+              break;
+            default:
+              break;
+          }
           units = {
             dwlx: item.dwlx,
             ysrs: item.ysrs ? item.ysrs : 0,
@@ -327,6 +349,29 @@ const created = () => {
           location = item.dwszd;
           design = '单位';
           src = './icons/02.png';
+          // let src = '';
+          switch (item.dwlx) {
+            case '事业单位':
+              src = './icons/03.png';
+              break;
+            case '学校':
+              src = './icons/04.png';
+              break;
+            case '医院':
+              src = './icons/01.png';
+              break;
+            case '宾馆':
+              src = './icons/07.png';
+              break;
+            case '其他':
+              src = './icons/06.png';
+              break;
+            case '行政机关':
+              src = './icons/03.png';
+              break;
+            default:
+              break;
+          }
           units = {
             dwlx: item.dwlx,
             ysrs: item.ysrs ? item.ysrs : 0,
