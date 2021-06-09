@@ -12,7 +12,7 @@
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="灌区名称">
-          <a-input placeholder="请输入灌区名称" v-decorator="['gqmc', {}]" />
+          <a-input placeholder="请输入灌区名称" v-decorator="['gqmc', {rules: [{ required: true, message: '请输入灌区名称 ' }]}]" />
         </a-form-item>
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="灌区所在地">
           <a-input placeholder="请输入灌区所在地" v-decorator="['gqszd', {}]" />

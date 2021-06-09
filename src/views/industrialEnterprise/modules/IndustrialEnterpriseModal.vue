@@ -12,17 +12,16 @@
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="企业名称">
-          <a-input placeholder="请输入企业名称" v-decorator="['qymc', {}]" />
+          <a-input placeholder="请输入企业名称" v-decorator="['qymc', { rules: [{ required: true, message: '请输入企业名称 ' }]}]" />
         </a-form-item>
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="组织机构代码">
-          <a-input placeholder="请输入组织机构代码" v-decorator="['zzjgdm', {}]" />
+          <a-input placeholder="请输入组织机构代码" v-decorator="['zzjgdm', { }]" />
         </a-form-item>
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="企业所在地">
-          <a-input placeholder="请输入企业所在地" v-decorator="['qyszd', {}]" />
+          <a-input placeholder="请输入企业所在地" v-decorator="['qyszd', { }]" />
         </a-form-item>
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="企业地址">
-          <!-- <a-input placeholder="请输入企业地址" v-decorator="['qydz', {}]" /> -->
-          <a-input-search placeholder="请输入企业地址" size="large" v-decorator="['qydz', {}]" @search="onSearch">
+          <a-input-search placeholder="请输入企业地址" size="large" v-decorator="['qydz', { }]" @search="onSearch">
             <a-button slot="enterButton"> 打开地图 </a-button>
           </a-input-search>
           <j-map-input-desc

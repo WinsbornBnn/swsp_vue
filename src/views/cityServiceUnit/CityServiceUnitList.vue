@@ -30,13 +30,9 @@
                 <a-input placeholder="请输入用水人数（人）" v-model="queryParam.ysrs"></a-input>
               </a-form-item>
             </a-col> -->
-             <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="是否节水型">
-                <a-select
-                  style="width: 200px"
-                  placeholder="请选择"
-                  v-model="queryParam.sfjsx"
-                >
+                <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.sfjsx_key">
                   <a-select-option value="1"> 市级节水型 </a-select-option>
                   <a-select-option value="2"> 非节水型 </a-select-option>
                 </a-select>
@@ -44,11 +40,7 @@
             </a-col>
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="是否节水技改">
-                <a-select
-                  style="width: 200px"
-                  placeholder="请选择"
-                  v-model="queryParam.type"
-                >
+                <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.type">
                   <a-select-option value="1"> 节水技改</a-select-option>
                   <a-select-option value="2"> 未节水技改</a-select-option>
                 </a-select>
@@ -120,10 +112,16 @@
         :dataSource="dataSource"
         :pagination="ipagination"
         :loading="loading"
+        :scroll="{ x: true }"
         class="j-table-force-nowrap"
         :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
         @change="handleTableChange"
       >
+        <span slot="num" slot-scope="text, record, index">{{
+          ipagination.current === 1
+            ? parseInt(index) + 1
+            : ipagination.pageSize * (ipagination.current - 1) + parseInt(index) + 1
+        }}</span>
         <span slot="action" slot-scope="text, record">
           <a @click="handleEdit(record)">编辑</a>
 
@@ -168,14 +166,18 @@ export default {
           title: '#',
           dataIndex: '',
           key: 'rowIndex',
-          width: 60,
+          width: 40,
+          fixed: "left",
           align: 'center',
-          customRender: function (t, r, index) {
-            return parseInt(index) + 1
-          }
+          scopedSlots: { customRender: 'num' },
+          // customRender: function (t, r, index) {
+          //   return parseInt(index) + 1
+          // }
         },
         {
           title: '单位名称',
+          fixed: "left",
+          width: 240,
           align: "center",
           dataIndex: 'dwmc'
         },
@@ -333,6 +335,8 @@ export default {
           title: '操作',
           dataIndex: 'action',
           align: 'center',
+          fixed: "right",
+          width: 100,
           scopedSlots: { customRender: 'action' }
         }
       ],

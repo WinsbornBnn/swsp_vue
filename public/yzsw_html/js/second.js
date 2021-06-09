@@ -4,255 +4,255 @@ layui.use(['layer', 'form', 'dropdown'], () => {
     form = layui.form,
     $ = layui.jquery;
     layer.msg('欢迎来到扬州市节水型载体可视化平台');
-    // 获取所有节水载体数目
-    var allplot, allunits, allcompany, alltanks = null;
-    let alldata = getList('industrialEnterprise/industrialEnterprise/staticNum', { type: 1 });
-    alldata.forEach(item => {
-      if (item.name === "企业") {
-        allcompany = item.num
-      } else if (item.name === "灌区") {
-        alltanks = item.num
-      } else if (item.name === "小区") {
-        allplot = item.num
-      } else {
-        allunits = item.num
+  // 获取所有省级节水载体数目
+  var allplot, allunits, allcompany, alltanks = null;
+  let alldata = getList('industrialEnterprise/industrialEnterprise/staticNum', { type: 1 });
+  alldata.forEach(item => {
+    if (item.name === "企业") {
+      allcompany = item.num
+    } else if (item.name === "灌区") {
+      alltanks = item.num
+    } else if (item.name === "小区") {
+      allplot = item.num
+    } else {
+      allunits = item.num
+    }
+  });
+  // 获取所有市级类数目
+  let allcitynum = getList('industrialEnterprise/industrialEnterprise/staticNum', {type:2 })
+  var citynums;
+  allcitynum.forEach(item => {
+    if(item.name === '单位'){
+        citynums = item.num
+    }
+  });
+  // 获取所有的单位类型数据
+  var num1, num2, num3, num4, num5 = null;
+  var value = ['机关(单位)', '学校', '医院', '宾馆', '教育基地', '其他'];
+  // let url = 'serviceUnit/serviceUnit/list';
+  const utilsnum = getList('serviceUnit/serviceUnit/staticDataCom',{type:1})
+  for (let i = 0; i < value.length; i++) {
+    switch (value[i]) {
+      case '机关(单位)':
+        num1 = utilsnum.jgdw_num;
+        break;
+      case '学校':
+        num2 = utilsnum.xx_num;
+        break;
+      case '医院':
+        num3 = utilsnum.yy_num;
+        break;
+      case '宾馆':
+        num4 = utilsnum.bg_num;
+        break;
+      case '其他':
+        num5 = utilsnum.qt_num;
+        break;
+      default:
+        break;
+    }
+  }
+  // 获取所有技改类数目
+  let provincenum, citynum, athernum = null;
+  let allnum = getList('industrialEnterprise/industrialEnterprise/staticData1', { type: 1 })
+  allnum.forEach(item => {
+    if (item.name === '省级载体节水技改') {
+      provincenum = item.num
+    } else if (item.name === '市级单位节水技改') {
+      citynum = item.num
+    } else {
+      athernum = item.num
+    }
+  })
+  const children = [{
+    title: '全部', value: '全部'
+    , id: 33333
+  }, {
+    title: `机关(单位)(${num1 - 1}个)`, value: '机关(单位)'
+    , id: 3
+  }, {
+    title: `学校(${num2}个)`, value: '学校'
+    , id: 4
+  }, {
+    title: `医院(${num3}个)`, value: '医院'
+    , id: 1
+  },
+  {
+    title: `宾馆(${num4}个)`,
+    value: '宾馆',
+    id: 6
+  }, {
+    title: `教育基地(1个)`,
+    value: '教育基地',
+    id: 9
+  },
+  {
+    title: `其他(${num5}个)`, value: '其他'
+    , id: 7
+  }];
+  dropdown.render({
+    elem: '#select'
+    , data: [
+      {
+        title: '节水型载体',
+        value: '节水型载体',
+        id: 110,
+        child: [
+          {
+            title: `全部节水型载体(${allcompany + alltanks + allplot + allunits + citynums}个)`,
+            value: '全部节水型载体',
+            id: 5
+          },
+          {
+            title: `省级节水型小区(${allplot}个)`,
+            value: '省级节水型小区',
+            id: 5
+          }, {
+            title: `省级节水型单位(${allunits}个)`,
+            id: 33,
+            value: '省级节水型单位',
+            child: children
+          }, {
+            title: `省级节水型工业企业(${allcompany}个)`,
+            id: 8,
+            value: '省级节水型工业企业'
+          }, {
+            title: `省级节水型灌区(${alltanks}个)`, value: '省级节水型灌区'
+            , id: 132
+          }, {
+            title: `市级节水型单位(${citynums}个)`, value: '市级节水型单位'
+            , id: 2
+          }
+        ]
+      },
+      {
+        title: '节水技改类项目',
+        id: 120, value: '节水技改类项目',
+        child: [
+          {
+            title: `全部技改项目(${provincenum + citynum + athernum}个)`, value: '全部技改项目'
+            , id: 50
+          }, {
+            title: `省级载体中的技改项目(${provincenum}个)`, value: '省级载体中的技改项目'
+            , id: 333
+          }, {
+            title: `市级载体中的技改项目(${citynum}个)`, value: '市级载体中的技改项目'
+            , id: 83
+          }, {
+            title: `其他技改项目(${athernum}个)`, value: '其他技改项目'
+            , id: 23
+          }
+        ]
       }
-    });
-    // 获取所有的企业数据
-    var num1, num2, num3, num4, num5 = null;
-    var value = ['机关（单位）', '学校', '医院', '宾馆', '其他'];
-    let url = 'serviceUnit/serviceUnit/list';
-    for (let i = 0; i < value.length; i++) {
-      switch (value[i]) {
-        case '机关（单位）':
-          let res1 = getList(url, { pageSize: 10000, dwlx: '行政机关' });
-          let res2 = getList(url, { pageSize: 10000, dwlx: '事业单位' });
-          let res3 = getList(url, { pageSize: 10000, dwlx: '机关' });
-          num1 = res1.total + res2.total + res3.total;
+    ]
+    , id: 'select'
+    //菜单被点击的事件
+    , click: (obj) => {
+      let url = 'serviceUnit/serviceUnit/list';
+      let type = '';
+      let gbdwjb = '省级';
+      switch (obj.value) {
+        case '全部节水型载体':
+          remove()
+          created()
+          break;
+        case '省级节水型小区':
+          url = 'residentialQuarters/residentialQuarters/list';
+          removeRandomFeature();
+          NoObject(obj, url);
+          break;
+        case '省级节水型工业企业':
+          url = 'industrialEnterprise/industrialEnterprise/list';
+          removeRandomFeature();
+          NoObject(obj, url);
+          break;
+        case '省级节水型灌区':
+          url = 'irrigationArea/irrigationArea/list';
+          removeRandomFeature();
+          NoObject(obj, url);
+          break;
+        case '市级节水型单位':
+          url = 'serviceUnit/serviceUnit/list';
+          removeRandomFeature();
+          gbdwjb = '市级';
+          ShiObject(url,gbdwjb);
+          break;
+        default:
+          break;
+      }
+      switch (obj.value) {
+        case '全部':
+          url = 'serviceUnit/serviceUnit/list';
+          removeRandomFeature();
+          AllType(url);
+          break;
+        case '机关(单位)':
+          type = '行政机关';
+          removeRandomFeature();
+          for (let i = 0; i < 3; i++) {
+            if (type === '行政机关') {
+              YesObject(obj, url, type,gbdwjb);
+              type = '事业单位';
+            } else if (type === '事业单位') {
+              YesObject(obj, url, type,gbdwjb);
+              type = '机关';
+            } else if (type === '机关') {
+              YesObject(obj, url, type,gbdwjb);
+            }
+          }
           break;
         case '学校':
-          let data = getList(url, { pageSize: 10000, dwlx: '学校' });
-          num2 = data.total;
+          type = '学校';
+          removeRandomFeature();
+          YesObject(obj, url, type,gbdwjb);
           break;
         case '医院':
-          let data1 = getList(url, { pageSize: 10000, dwlx: '医院' });
-          num3 = data1.total;
+          type = '医院';
+          removeRandomFeature();
+          YesObject(obj, url, type,gbdwjb);
           break;
         case '宾馆':
-          let data2 = getList(url, { pageSize: 10000, dwlx: '宾馆' });
-          num4 = data2.total;
+          type = '宾馆';
+          removeRandomFeature();
+          YesObject(obj, url, type,gbdwjb);
+          break;
+        case '教育基地':
+          type = '高邮市海潮污水处理厂';
+          removeRandomFeature();
+          YesObject(obj, url, type,gbdwjb);
           break;
         case '其他':
-          let data3 = getList(url, { pageSize: 10000, dwlx: '其他' });
-          num5 = data3.total;
+          type = '其他';
+          removeRandomFeature();
+          YesObject(obj, url, type,gbdwjb);
+          break;
+        default:
+          break;
+      }
+      switch (obj.value) {
+        case '全部技改项目':
+          removeRandomFeature();
+          allShengImprove();
+          allShiImprove();
+          allAtherImprove();
+          break;
+        case '省级载体中的技改项目':
+          removeRandomFeature();
+          allShengImprove();
+          break;
+        case '市级载体中的技改项目':
+          removeRandomFeature();
+          allShiImprove();
+          break;
+        case '其他技改项目':
+          removeRandomFeature();
+          allAtherImprove();
           break;
         default:
           break;
       }
     }
-    const children = [{
-      title: '全部', value: '全部'
-      , id: 33333
-    }, {
-      title: `机关(单位)(${num1 - 1}个)`, value: '机关(单位)'
-      , id: 3
-    }, {
-      title: `学校(${num2}个)`, value: '学校'
-      , id: 4
-    }, {
-      title: `医院(${num3}个)`, value: '医院'
-      , id: 1
-    },
-    {
-      title: `宾馆(${num4}个)`,
-      value: '宾馆',
-      id: 6
-    }, {
-      title: `教育基地(1个)`,
-      value: '教育基地',
-      id: 9
-    },
-    {
-      title: `其他(${num5}个)`, value: '其他'
-      , id: 7
-    }];
-    // 获取所有市级类数目
-    let allcitynum = getList('cityServiceUnit/cityServiceUnit/list', { pageSize: 10000 })
-    // 获取所有技改类数目
-    let provincenum, citynum, athernum = null;
-    let allnum = getList('industrialEnterprise/industrialEnterprise/staticData1', { type: 1 })
-    allnum.forEach(item => {
-      if (item.name === '省级载体节水技改') {
-        provincenum = item.num
-      } else if (item.name === '市级单位节水技改') {
-        citynum = item.num
-      } else {
-        athernum = item.num
-      }
-    })
-    dropdown.render({
-      elem: '#select'
-      , data: [
-        {
-          title: '节水型载体',
-          value: '节水型载体',
-          id: 110,
-          child: [
-            {
-              title: `全部节水型载体(${allcompany + alltanks + allplot + allunits + allcitynum.total}个)`,
-              value: '全部节水型载体',
-              id: 5
-            },
-            {
-              title: `省级节水型小区(${allplot}个)`,
-              value: '省级节水型小区',
-              id: 5
-            }, {
-              title: `省级节水型单位(${allunits}个)`,
-              id: 33,
-              value: '省级节水型单位',
-              child: children
-            }, {
-              title: `省级节水型工业企业(${allcompany}个)`,
-              id: 8,
-              value: '省级节水型工业企业'
-            }, {
-              title: `省级节水型灌区(${alltanks}个)`, value: '省级节水型灌区'
-              , id: 132
-            }, {
-              title: `市级节水型单位(${allcitynum.total}个)`, value: '市级节水型单位'
-              , id: 2
-            }
-          ]
-        },
-        {
-          title: '节水技改类项目',
-          id: 120, value: '节水技改类项目',
-          child: [
-            {
-              title: `全部技改项目(${provincenum + citynum + athernum}个)`, value: '全部技改项目'
-              , id: 50
-            }, {
-              title: `省级载体中的技改项目(${provincenum}个)`, value: '省级载体中的技改项目'
-              , id: 333
-            }, {
-              title: `市级载体中的技改项目(${citynum}个)`, value: '市级载体中的技改项目'
-              , id: 83
-            }, {
-              title: `其他技改项目(${athernum}个)`, value: '其他技改项目'
-              , id: 23
-            }
-          ]
-        }
-      ]
-      , id: 'select'
-      //菜单被点击的事件
-      , click: (obj) => {
-        let url = 'serviceUnit/serviceUnit/list';
-        let type = '';
-        switch (obj.value) {
-          case '全部节水型载体':
-            setTimeout(() => {
-              window.location.reload();
-            }, 1500);
-            break;
-          case '省级节水型小区':
-            url = 'residentialQuarters/residentialQuarters/list';
-            removeRandomFeature();
-            NoObject(obj, url);
-            break;
-          case '省级节水型工业企业':
-            url = 'industrialEnterprise/industrialEnterprise/list';
-            removeRandomFeature();
-            NoObject(obj, url);
-            break;
-          case '省级节水型灌区':
-            url = 'irrigationArea/irrigationArea/list';
-            removeRandomFeature();
-            NoObject(obj, url);
-            break;
-          case '市级节水型单位':
-            url = 'cityServiceUnit/cityServiceUnit/list';
-            removeRandomFeature();
-            ShiObject(url);
-            break;
-          default:
-            break;
-        }
-        switch (obj.value) {
-          case '全部':
-            url = 'serviceUnit/serviceUnit/list';
-            removeRandomFeature();
-            AllType(url);
-            break;
-          case '机关(单位)':
-            type = '行政机关';
-            removeRandomFeature();
-            for (let i = 0; i < 3; i++) {
-              if (type === '行政机关') {
-                YesObject(obj, url, type);
-                type = '事业单位';
-              } else if (type === '事业单位') {
-                YesObject(obj, url, type);
-                type = '机关';
-              } else if (type === '机关') {
-                YesObject(obj, url, type);
-              }
-            }
-            break;
-          case '学校':
-            type = '学校';
-            // url = 'serviceUnit/serviceUnit/staticData1';
-            removeRandomFeature();
-            YesObject(obj, url, type);
-            break;
-          case '医院':
-            type = '医院';
-            removeRandomFeature();
-            YesObject(obj, url, type);
-            break;
-          case '宾馆':
-            type = '宾馆';
-            removeRandomFeature();
-            YesObject(obj, url, type);
-            break;
-          case '教育基地':
-            type = '高邮市海潮污水处理厂';
-            removeRandomFeature();
-            YesObject(obj, url, type);
-            break;
-          case '其他':
-            type = '其他';
-            removeRandomFeature();
-            YesObject(obj, url, type);
-            break;
-          default:
-            break;
-        }
-        switch (obj.value) {
-          case '全部技改项目':
-            removeRandomFeature();
-            allShengImprove();
-            allShiImprove();
-            allAtherImprove();
-            break;
-          case '省级载体中的技改项目':
-            removeRandomFeature();
-            allShengImprove();
-            break;
-          case '市级载体中的技改项目':
-            removeRandomFeature();
-            allShiImprove();
-            break;
-          case '其他技改项目':
-            removeRandomFeature();
-            allAtherImprove();
-            break;
-          default:
-            break;
-        }
-      }
-    });
+  });
   $("#back").on('click', () => {
     const token = getQueryVariable('token');
     window.location.href = './index.html?token=' + token;
@@ -293,7 +293,8 @@ layui.use(['layer', 'form', 'dropdown'], () => {
    */
   // 查询所有省级单位类
   function AllType (url) {
-    let data = getList(url, { pageSize: 10000 });
+    let data = getList(url, { pageSize: 10000,gbdwjb:'省级' });
+    console.log(data);
     let axis = [];
     data.records.forEach(item => {
       let t1 = item.xcoor ? item.xcoor : null;
@@ -367,12 +368,12 @@ layui.use(['layer', 'form', 'dropdown'], () => {
     });
   }
   // 有子集菜单类
-  function YesObject (obj, url, type) {
+  function YesObject (obj, url, type,gbdwjb) {
     let data = null;
     if (type === '高邮市海潮污水处理厂') {
       data = getList(url, { pageSize: 10000, dwmc: type });
     } else {
-      data = getList(url, { pageSize: 10000, dwlx: type });
+      data = getList(url, { pageSize: 10000, dwlx: type,gbdwjb:gbdwjb });
     }
     let axis = [];
     data.records.forEach(item => {
@@ -521,8 +522,8 @@ layui.use(['layer', 'form', 'dropdown'], () => {
     });
   }
   // 所有市级单位类
-  function ShiObject (url) {
-    let shiUnitsList = getList(url, { pageSize: 10000 });
+  function ShiObject (url,gbdwjb) {
+    let shiUnitsList = getList(url, { pageSize: 10000,gbdwjb:gbdwjb });
     let axis = [];
     let allObj = [];
     shiUnitsList.records.forEach(item => {

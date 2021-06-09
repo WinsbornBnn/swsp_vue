@@ -9,14 +9,13 @@ function getQueryVariable (variable) {
 }
 
 const ajax = (options) => {
-  const token = getQueryVariable('token');
   return new Promise((resolve, reject) => {
     $.ajax({
       url: options.url,
       type: options.methods || 'get',
       data: options.data || {},
+      dataType:'json',
       headers: {
-        'X-Access-Token': token,
         'Content-Type': 'application/json;charset=UTF-8'
       },
       success: res => {
@@ -28,7 +27,7 @@ const ajax = (options) => {
     })
   })
 }
-const BaseUrl = 'http://192.168.2.112:8080/swsp/'
+const BaseUrl = 'http://218.88.22.189:8088/swsp/'
 const getList = (url, params) => {
   const token = getQueryVariable('token');
   var data = "";

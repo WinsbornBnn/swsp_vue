@@ -3,7 +3,7 @@ layui.use(['layer', 'dropdown'], () => {
     dropdown = layui.dropdown,
     $ = layui.jquery;
   layer.msg('欢迎来到扬州市节水型载体可视化平台');
-  // 获取所有节水载体数目
+  // 获取所有省级节水载体数目
   var allplot, allunits, allcompany, alltanks = null;
   let alldata = getList('industrialEnterprise/industrialEnterprise/staticNum', { type: 1 });
   alldata.forEach(item => {
@@ -17,38 +17,52 @@ layui.use(['layer', 'dropdown'], () => {
       allunits = item.num
     }
   });
-  // 获取所有的企业数据
+  // 获取所有市级类数目
+  let allcitynum = getList('industrialEnterprise/industrialEnterprise/staticNum', {type:2 })
+  var citynums;
+  allcitynum.forEach(item => {
+    if(item.name === '单位'){
+        citynums = item.num
+    }
+  });
+  // 获取所有的单位类型数据
   var num1, num2, num3, num4, num5 = null;
   var value = ['机关(单位)', '学校', '医院', '宾馆', '教育基地', '其他'];
-  let url = 'serviceUnit/serviceUnit/list';
+  // let url = 'serviceUnit/serviceUnit/list';
+  const utilsnum = getList('serviceUnit/serviceUnit/staticDataCom',{type:1})
   for (let i = 0; i < value.length; i++) {
     switch (value[i]) {
       case '机关(单位)':
-        let res1 = getList(url, { pageSize: 10000, dwlx: '行政机关' });
-        let res2 = getList(url, { pageSize: 10000, dwlx: '事业单位' });
-        let res3 = getList(url, { pageSize: 10000, dwlx: '机关' });
-        num1 = res1.total + res2.total + res3.total;
+        num1 = utilsnum.jgdw_num;
         break;
       case '学校':
-        let data = getList(url, { pageSize: 10000, dwlx: '学校' });
-        num2 = data.total;
+        num2 = utilsnum.xx_num;
         break;
       case '医院':
-        let data1 = getList(url, { pageSize: 10000, dwlx: '医院' });
-        num3 = data1.total;
+        num3 = utilsnum.yy_num;
         break;
       case '宾馆':
-        let data2 = getList(url, { pageSize: 10000, dwlx: '宾馆' });
-        num4 = data2.total;
+        num4 = utilsnum.bg_num;
         break;
       case '其他':
-        let data3 = getList(url, { pageSize: 10000, dwlx: '其他' });
-        num5 = data3.total;
+        num5 = utilsnum.qt_num;
         break;
       default:
         break;
     }
   }
+  // 获取所有技改类数目
+  let provincenum, citynum, athernum = null;
+  let allnum = getList('industrialEnterprise/industrialEnterprise/staticData1', { type: 1 })
+  allnum.forEach(item => {
+    if (item.name === '省级载体节水技改') {
+      provincenum = item.num
+    } else if (item.name === '市级单位节水技改') {
+      citynum = item.num
+    } else {
+      athernum = item.num
+    }
+  })
   const children = [{
     title: '全部', value: '全部'
     , id: 33333
@@ -75,20 +89,6 @@ layui.use(['layer', 'dropdown'], () => {
     title: `其他(${num5}个)`, value: '其他'
     , id: 7
   }];
-  // 获取所有市级类数目
-  let allcitynum = getList('cityServiceUnit/cityServiceUnit/list', { pageSize: 10000 })
-  // 获取所有技改类数目
-  let provincenum, citynum, athernum = null;
-  let allnum = getList('industrialEnterprise/industrialEnterprise/staticData1', { type: 1 })
-  allnum.forEach(item => {
-    if (item.name === '省级载体节水技改') {
-      provincenum = item.num
-    } else if (item.name === '市级单位节水技改') {
-      citynum = item.num
-    } else {
-      athernum = item.num
-    }
-  })
   dropdown.render({
     elem: '#select'
     , data: [
@@ -98,7 +98,7 @@ layui.use(['layer', 'dropdown'], () => {
         id: 110,
         child: [
           {
-            title: `全部节水型载体(${allcompany + alltanks + allplot + allunits + allcitynum.total}个)`,
+            title: `全部节水型载体(${allcompany + alltanks + allplot + allunits + citynums}个)`,
             value: '全部节水型载体',
             id: 5
           },
@@ -119,7 +119,7 @@ layui.use(['layer', 'dropdown'], () => {
             title: `省级节水型灌区(${alltanks}个)`, value: '省级节水型灌区'
             , id: 132
           }, {
-            title: `市级节水型单位(${allcitynum.total}个)`, value: '市级节水型单位'
+            title: `市级节水型单位(${citynums}个)`, value: '市级节水型单位'
             , id: 2
           }
         ]
@@ -149,11 +149,11 @@ layui.use(['layer', 'dropdown'], () => {
     , click: (obj) => {
       let url = 'serviceUnit/serviceUnit/list';
       let type = '';
+      let gbdwjb = '省级';
       switch (obj.value) {
         case '全部节水型载体':
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
+          remove()
+          created()
           break;
         case '省级节水型小区':
           url = 'residentialQuarters/residentialQuarters/list';
@@ -171,9 +171,10 @@ layui.use(['layer', 'dropdown'], () => {
           NoObject(obj, url);
           break;
         case '市级节水型单位':
-          url = 'cityServiceUnit/cityServiceUnit/list';
+          url = 'serviceUnit/serviceUnit/list';
           removeRandomFeature();
-          ShiObject(url);
+          gbdwjb = '市级';
+          ShiObject(url,gbdwjb);
           break;
         default:
           break;
@@ -189,41 +190,40 @@ layui.use(['layer', 'dropdown'], () => {
           removeRandomFeature();
           for (let i = 0; i < 3; i++) {
             if (type === '行政机关') {
-              YesObject(obj, url, type);
+              YesObject(obj, url, type,gbdwjb);
               type = '事业单位';
             } else if (type === '事业单位') {
-              YesObject(obj, url, type);
+              YesObject(obj, url, type,gbdwjb);
               type = '机关';
             } else if (type === '机关') {
-              YesObject(obj, url, type);
+              YesObject(obj, url, type,gbdwjb);
             }
           }
           break;
         case '学校':
           type = '学校';
-          // url = 'serviceUnit/serviceUnit/staticData1';
           removeRandomFeature();
-          YesObject(obj, url, type);
+          YesObject(obj, url, type,gbdwjb);
           break;
         case '医院':
           type = '医院';
           removeRandomFeature();
-          YesObject(obj, url, type);
+          YesObject(obj, url, type,gbdwjb);
           break;
         case '宾馆':
           type = '宾馆';
           removeRandomFeature();
-          YesObject(obj, url, type);
+          YesObject(obj, url, type,gbdwjb);
           break;
         case '教育基地':
           type = '高邮市海潮污水处理厂';
           removeRandomFeature();
-          YesObject(obj, url, type);
+          YesObject(obj, url, type,gbdwjb);
           break;
         case '其他':
           type = '其他';
           removeRandomFeature();
-          YesObject(obj, url, type);
+          YesObject(obj, url, type,gbdwjb);
           break;
         default:
           break;
@@ -294,7 +294,7 @@ layui.use(['layer', 'dropdown'], () => {
    */
   // 查询所有省级单位类
   function AllType (url) {
-    let data = getList(url, { pageSize: 10000 });
+    let data = getList(url, { pageSize: 10000,gbdwjb:'省级' });
     let axis = [];
     data.records.forEach(item => {
       let t1 = item.xcoor ? item.xcoor : null;
@@ -368,12 +368,12 @@ layui.use(['layer', 'dropdown'], () => {
     });
   }
   // 有子集菜单类
-  function YesObject (obj, url, type) {
+  function YesObject (obj, url, type,gbdwjb) {
     let data = null;
     if (type === '高邮市海潮污水处理厂') {
       data = getList(url, { pageSize: 10000, dwmc: type });
     } else {
-      data = getList(url, { pageSize: 10000, dwlx: type });
+      data = getList(url, { pageSize: 10000, dwlx: type,gbdwjb:gbdwjb });
     }
     let axis = [];
     data.records.forEach(item => {
@@ -522,8 +522,8 @@ layui.use(['layer', 'dropdown'], () => {
     });
   }
   // 所有市级单位类
-  function ShiObject (url) {
-    let shiUnitsList = getList(url, { pageSize: 10000 });
+  function ShiObject (url,gbdwjb) {
+    let shiUnitsList = getList(url, { pageSize: 10000,gbdwjb:gbdwjb });
     let axis = [];
     let allObj = [];
     shiUnitsList.records.forEach(item => {

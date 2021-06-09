@@ -12,7 +12,7 @@
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="小区名称">
-          <a-input placeholder="请输入小区名称" v-decorator="['xqmc', {}]" />
+          <a-input placeholder="请输入小区名称" v-decorator="['xqmc', {rules: [{ required: true, message: '请输入小区名称 ' }]}]" />
         </a-form-item>
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="小区所在地">
           <a-input placeholder="请输入小区所在地" v-decorator="['xqszd', {}]" />

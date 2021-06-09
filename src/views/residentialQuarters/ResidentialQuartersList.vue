@@ -14,6 +14,15 @@
               <a-input placeholder="请输入小区所在地" v-model="queryParam.xqszd"></a-input>
             </a-form-item>
           </a-col>
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="是否节水型">
+                <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.sfjsx_key">
+                  <a-select-option value="1"> 省级节水型 </a-select-option>
+                  <a-select-option value="3"> 市级节水型 </a-select-option>
+                  <a-select-option value="2"> 非节水型 </a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
           <template v-if="toggleSearchStatus">
             <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="小区地址">
@@ -31,25 +40,8 @@
               </a-form-item>
             </a-col> -->
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
-              <a-form-item label="是否节水型">
-                <a-select
-                  style="width: 200px"
-                  placeholder="请选择"
-                  v-model="queryParam.sfjsx"
-                >
-                  <a-select-option value="1"> 省级节水型 </a-select-option>
-                  <a-select-option value="3"> 市级节水型 </a-select-option>
-                  <a-select-option value="2"> 非节水型 </a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="是否节水技改">
-                <a-select
-                  style="width: 200px"
-                  placeholder="请选择"
-                  v-model="queryParam.type"
-                >
+                <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.type">
                   <a-select-option value="1"> 节水技改</a-select-option>
                   <a-select-option value="2"> 未节水技改</a-select-option>
                 </a-select>
@@ -67,7 +59,7 @@
               <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
               <a @click="handleToggleSearch" style="margin-left: 8px">
                 {{ toggleSearchStatus ? '收起' : '展开' }}
-                <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>
+                <a-icon :type="toggleSearchStatus ? 'up' : 'down'" />
               </a>
             </span>
           </a-col>
@@ -92,12 +84,13 @@
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
           <a-menu-item key="1" @click="batchDel">
-            <a-icon type="delete"/>
+            <a-icon type="delete" />
             删除
           </a-menu-item>
         </a-menu>
-        <a-button style="margin-left: 8px"> 批量操作
-          <a-icon type="down"/>
+        <a-button style="margin-left: 8px">
+          批量操作
+          <a-icon type="down" />
         </a-button>
       </a-dropdown>
     </div>
@@ -120,16 +113,22 @@
         :dataSource="dataSource"
         :pagination="ipagination"
         :loading="loading"
+        :scroll="{ x: true }"
         class="j-table-force-nowrap"
         :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
         @change="handleTableChange"
       >
+        <span slot="num" slot-scope="text, record, index">{{
+          ipagination.current === 1
+            ? parseInt(index) + 1
+            : ipagination.pageSize * (ipagination.current - 1) + parseInt(index) + 1
+        }}</span>
         <span slot="action" slot-scope="text, record">
           <a @click="handleEdit(record)">编辑</a>
 
-          <a-divider type="vertical"/>
+          <a-divider type="vertical" />
           <a-dropdown>
-            <a class="ant-dropdown-link">更多 <a-icon type="down"/></a>
+            <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>
             <a-menu slot="overlay">
               <a-menu-item>
                 <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
@@ -149,162 +148,168 @@
 </template>
 
 <script>
-  import '@/assets/less/TableExpand.less'
-  import ResidentialQuartersModal from './modules/ResidentialQuartersModal'
-  import { JeecgListMixin } from '@/mixins/JeecgListMixin'
+import '@/assets/less/TableExpand.less'
+import ResidentialQuartersModal from './modules/ResidentialQuartersModal'
+import { JeecgListMixin } from '@/mixins/JeecgListMixin'
 
-  export default {
-    name: 'ResidentialQuartersList',
-    mixins: [JeecgListMixin],
-    components: {
-      ResidentialQuartersModal
-    },
-    data() {
-      return {
-        description: '省级-居民小区管理页面',
-        // 表头
-        columns: [
-          {
-            title: '#',
-            dataIndex: '',
-            key: 'rowIndex',
-            width: 60,
-            align: 'center',
-            customRender: function(t, r, index) {
-              return parseInt(index) + 1
-            }
-          },
-          {
-            title: '小区名称',
-            align: 'center',
-            dataIndex: 'xqmc'
-          },
-          {
-            title: '小区所在地',
-            align: 'center',
-            dataIndex: 'xqszd'
-          },
-          {
-            title: '小区地址',
-            align: 'center',
-            dataIndex: 'xqdz'
-          },
-          {
-            title: '物业管理单位',
-            align: 'center',
-            dataIndex: 'wygldw'
-          },
-          {
-            title: '年住户人口数量（人）',
-            align: 'center',
-            dataIndex: 'zhrs'
-          },
-          {
-            title: '年住户用水总量（万m³）',
-            align: 'center',
-            dataIndex: 'zhysl'
-          },
-          {
-            title: '人均月用水量（m3/（人·月））',
-            align: 'center',
-            dataIndex: 'rjyys'
-          },
-          {
-            title: '人均日用水量（L/人·d）',
-            align: 'center',
-            dataIndex: 'rjys'
-          },
-          {
-            title: '省定额值（L/（人·d））',
-            align: 'center',
-            dataIndex: 'dez'
-          },
-          {
-            title: '节水技改-项目名称',
-            align: 'center',
-            dataIndex: 'xmmc'
-          },
-          {
-            title: '节水技改-项目级别',
-            align: 'center',
-            dataIndex: 'xmjb'
-          },
-          {
-            title: '节水技改-财政投入（万元）',
-            align: 'center',
-            dataIndex: 'cztr'
-          },
-          {
-            title: '节水技改-单位投入（万元）',
-            align: 'center',
-            dataIndex: 'dwtr'
-          },
-          {
-            title: '节水技改投入（万元）',
-            align: 'center',
-            dataIndex: 'jsjgtr'
-          },
-          {
-            title: '公布节水型居民小区文件',
-            align: 'center',
-            dataIndex: 'jsxjm'
-          },
-          {
-            title: '公布单位名称',
-            align: 'center',
-            dataIndex: 'gbdw'
-          },
-          {
-            title: '联合公布单位名称',
-            align: 'center',
-            dataIndex: 'lhgbdw'
-          },
-          {
-            title: '公布单位级别',
-            align: 'center',
-            dataIndex: 'gbdwjb'
-          },
-          {
-            title: '公布时间',
-            align: 'center',
-            dataIndex: 'gbsj'
-          },
-          {
-            title: '复核时间',
-            align: 'center',
-            dataIndex: 'fhsj'
-          },
-          {
-            title: '备注',
-            align: 'center',
-            dataIndex: 'bz'
-          },
+export default {
+  name: 'ResidentialQuartersList',
+  mixins: [JeecgListMixin],
+  components: {
+    ResidentialQuartersModal
+  },
+  data () {
+    return {
+      description: '省级-居民小区管理页面',
+      // 表头
+      columns: [
+        {
+          title: '#',
+          dataIndex: '',
+          key: 'rowIndex',
+          width: 40,
+          fixed: "left",
+          align: 'center',
+          scopedSlots: { customRender: 'num' },
+          // customRender: function(t, r, index) {
+          //   return parseInt(index) + 1
+          // }
+        },
+        {
+          title: '小区名称',
+          align: 'center',
+          fixed: "left",
+          width: 240,
+          dataIndex: 'xqmc'
+        },
+        {
+          title: '小区所在地',
+          align: 'center',
+          dataIndex: 'xqszd'
+        },
+        {
+          title: '小区地址',
+          align: 'center',
+          dataIndex: 'xqdz'
+        },
+        {
+          title: '物业管理单位',
+          align: 'center',
+          dataIndex: 'wygldw'
+        },
+        {
+          title: '年住户人口数量（人）',
+          align: 'center',
+          dataIndex: 'zhrs'
+        },
+        {
+          title: '年住户用水总量（万m³）',
+          align: 'center',
+          dataIndex: 'zhysl'
+        },
+        {
+          title: '人均月用水量（m3/（人·月））',
+          align: 'center',
+          dataIndex: 'rjyys'
+        },
+        {
+          title: '人均日用水量（L/人·d）',
+          align: 'center',
+          dataIndex: 'rjys'
+        },
+        {
+          title: '省定额值（L/（人·d））',
+          align: 'center',
+          dataIndex: 'dez'
+        },
+        {
+          title: '节水技改-项目名称',
+          align: 'center',
+          dataIndex: 'xmmc'
+        },
+        {
+          title: '节水技改-项目级别',
+          align: 'center',
+          dataIndex: 'xmjb'
+        },
+        {
+          title: '节水技改-财政投入（万元）',
+          align: 'center',
+          dataIndex: 'cztr'
+        },
+        {
+          title: '节水技改-单位投入（万元）',
+          align: 'center',
+          dataIndex: 'dwtr'
+        },
+        {
+          title: '节水技改投入（万元）',
+          align: 'center',
+          dataIndex: 'jsjgtr'
+        },
+        {
+          title: '公布节水型居民小区文件',
+          align: 'center',
+          dataIndex: 'jsxjm'
+        },
+        {
+          title: '公布单位名称',
+          align: 'center',
+          dataIndex: 'gbdw'
+        },
+        {
+          title: '联合公布单位名称',
+          align: 'center',
+          dataIndex: 'lhgbdw'
+        },
+        {
+          title: '公布单位级别',
+          align: 'center',
+          dataIndex: 'gbdwjb'
+        },
+        {
+          title: '公布时间',
+          align: 'center',
+          dataIndex: 'gbsj'
+        },
+        {
+          title: '复核时间',
+          align: 'center',
+          dataIndex: 'fhsj'
+        },
+        {
+          title: '备注',
+          align: 'center',
+          dataIndex: 'bz'
+        },
 
-          {
-            title: '操作',
-            dataIndex: 'action',
-            align: 'center',
-            scopedSlots: { customRender: 'action' }
-          }
-        ],
-        url: {
-          list: '/residentialQuarters/residentialQuarters/list',
-          delete: '/residentialQuarters/residentialQuarters/delete',
-          deleteBatch: '/residentialQuarters/residentialQuarters/deleteBatch',
-          exportXlsUrl: 'residentialQuarters/residentialQuarters/exportXls',
-          importExcelUrl: 'residentialQuarters/residentialQuarters/importExcel',
-          jgListUrl: 'residentialQuarters/residentialQuarters/staticData2'
+        {
+          title: '操作',
+          dataIndex: 'action',
+          align: 'center',
+          fixed: "right",
+          width: 100,
+          scopedSlots: { customRender: 'action' }
         }
+      ],
+      url: {
+        list: '/residentialQuarters/residentialQuarters/list',
+        delete: '/residentialQuarters/residentialQuarters/delete',
+        deleteBatch: '/residentialQuarters/residentialQuarters/deleteBatch',
+        exportXlsUrl: 'residentialQuarters/residentialQuarters/exportXls',
+        importExcelUrl: 'residentialQuarters/residentialQuarters/importExcel',
+        jgListUrl: 'residentialQuarters/residentialQuarters/staticData2'
       }
-    },
-    computed: {
-      importExcelUrl: function() {
-        return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`
-      }
-    },
-    methods: {}
-  }
+    }
+  },
+  computed: {
+    importExcelUrl: function () {
+      return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`
+    }
+  },
+  methods: {}
+}
 </script>
 <style scoped>
-  @import '~@assets/less/common.less';
+@import '~@assets/less/common.less';
 </style>

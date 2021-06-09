@@ -22,60 +22,93 @@ const map = new ol.Map({
   })
 })
 /* 获取扬州geo json数据 */
-const url = './json/yangzhou.json';
-ajax({
-  url: url,
-  type: 'get'
-}).then(res => {
-  const areaGeo = res;
-  addArea(areaGeo);
-}).catch(err => {
-  return false;
-})
 /* 设置区域 */
-const addArea = (geo = []) => {
-  if (geo.length == 0) return false;
-  let areaFeature = null;
+const url = ['./json/yangzhou_full.json','./json/yangzhou.json'];
+let areaFeature = null;
   // 设置图层
   const areaLayer = new ol.layer.Vector({
     source: new ol.source.Vector({
-      features: []
+      features: [],
     }),
     stopEvent: true
   });
-  geo.features.forEach(item => {
-    if (item.geometry.type === "MultiPolygon") {
-      areaFeature = new ol.Feature({
-        geometry: new ol.geom.MultiPolygon(
-          item.geometry.coordinates
-        ).transform("EPSG:4326", "EPSG:3857"),
-        name: 'area'
-      });
-    }
-    areaFeature.setStyle(
-      new ol.style.Style({
-        fill: new ol.style.Fill({ color: "#4e98f440" }),
-        stroke: new ol.style.Stroke({
-          width: 2,
-          color: [255, 0, 0, .8]
-        }),
-        text: new ol.style.Text({ //文本样式
-          font: '0.25rem Calibri,sans-serif',
-          fill: new ol.style.Fill({
-            color: '#f00'
-          }),
-          text: item.properties.name,
-          stroke: new ol.style.Stroke({
-            color: '#fff',
-            width: 1
-          })
-        })
+  url.forEach(item => {
+    if (item === './json/yangzhou_full.json') {
+      // 区级
+      ajax({
+        url: item,
+        type: 'get'
+      }).then(res => {
+        const areaGeo = res;
+        areaGeo.features.forEach(item => {
+          if (item.geometry.type === "MultiPolygon") {
+            areaFeature = new ol.Feature({
+              geometry: new ol.geom.MultiPolygon(
+                item.geometry.coordinates
+              ).transform("EPSG:4326", "EPSG:3857"),
+              name: 'area'
+            });
+          }
+          areaFeature.setStyle(
+            new ol.style.Style({
+              fill: new ol.style.Fill({ color: "#4e98f440" }),
+              stroke: new ol.style.Stroke({
+                width: 2,
+                // lineDash:[1,2,3,4,5,6,7,8],
+                color: [0,255,0, .8]
+              }),
+              text: new ol.style.Text({ //文本样式
+                font: '0.25rem Calibri,sans-serif',
+                fill: new ol.style.Fill({
+                  color: '#f00'
+                }),
+                text: item.properties.name,
+                stroke: new ol.style.Stroke({
+                  color: '#fff',
+                  width: 1
+                })
+              })
+            })
+          );
+          areaLayer.getSource().addFeatures([areaFeature]);
+        });
+      }).catch(err => {
+        return false;
       })
-    );
-    areaLayer.getSource().addFeatures([areaFeature]);
+    }else if (item === './json/yangzhou.json') { 
+      // 市级
+      ajax({
+        url: item,
+        type: 'get'
+      }).then(res => {
+        console.log(res);
+        const areaGeo = res;
+        areaGeo.features.forEach(item => {
+          if (item.geometry.type === "MultiPolygon") {
+            areaFeature = new ol.Feature({
+              geometry: new ol.geom.MultiPolygon(
+                item.geometry.coordinates
+              ).transform("EPSG:4326", "EPSG:3857"),
+              name: 'area'
+            });
+          }
+          areaFeature.setStyle(
+            new ol.style.Style({
+              stroke: new ol.style.Stroke({
+                width: 2,
+                // lineDash:[0],
+                color: [255,0,0, .8]
+              })
+            })
+          );
+          areaLayer.getSource().addFeatures([areaFeature]);
+        });
+      }).catch(err => {
+        return false;
+      })
+    }
   });
   map.addLayer(areaLayer);
-}
 /* 在地图上标点 */
 // 封装函数，矢量标注样式函数，设置image为图标 Icon
 const LabelStyle = (icon, scale) => {
@@ -134,8 +167,7 @@ const created = () => {
     plotsUrl: 'residentialQuarters/residentialQuarters/list',
     companyUrl: 'industrialEnterprise/industrialEnterprise/list',
     tanksUrl: 'irrigationArea/irrigationArea/list',
-    unitsUrl: 'serviceUnit/serviceUnit/list',
-    shiUnitsUrl: 'cityServiceUnit/cityServiceUnit/list'
+    unitsUrl: 'serviceUnit/serviceUnit/list'
   }
   let axis = [];
   let t1 = null;
@@ -335,70 +367,6 @@ const created = () => {
           })
         });
         break;
-      case 'shiUnitsUrl':
-        let shiUnitsList = getList(url[key], { pageSize: 10000 });
-        shiUnitsList.records.forEach(item => {
-          t1 = item.xcoor ? item.xcoor : null;
-          t2 = item.ycoor ? item.ycoor : null;
-          id = item.id;
-          images = item.images ? item.images : null;
-          title = item.dwmc;
-          gbdw = item.gbdw ? item.gbdw : '江苏省水利厅';
-          gbdwjb = item.gbdwjb ? item.gbdwjb : '省级';
-          address = item.dwdz;
-          location = item.dwszd;
-          design = '单位';
-          src = './icons/02.png';
-          // let src = '';
-          switch (item.dwlx) {
-            case '事业单位':
-              src = './icons/03.png';
-              break;
-            case '学校':
-              src = './icons/04.png';
-              break;
-            case '医院':
-              src = './icons/01.png';
-              break;
-            case '宾馆':
-              src = './icons/07.png';
-              break;
-            case '其他':
-              src = './icons/06.png';
-              break;
-            case '行政机关':
-              src = './icons/03.png';
-              break;
-            default:
-              break;
-          }
-          units = {
-            dwlx: item.dwlx,
-            ysrs: item.ysrs ? item.ysrs : 0,
-            sjysl: item.sjysl ? item.sjysl : 0,
-            rjysl: item.rjysl ? item.rjysl : 0,
-            cztr: item.cztr ? item.cztr : 0,
-            dez: item.dez ? item.dez : 0,
-            jsjgtr: item.jsjgtr ? item.jsjgtr : 0,
-            xmmc: item.xmmc ? item.xmmc : '暂无',
-            ysldw: item.ysldw ? item.ysldw : ' m3/（人·a）',
-            ysrsdw: item.ysrsdw ? item.ysrsdw : '人'
-          };
-          axis.push({
-            zb: [t1, t2],
-            Id: id,
-            src: src,
-            images: images,
-            title: title,
-            gbdw: gbdw,
-            gbdwjb: gbdwjb,
-            address: address,
-            location: location,
-            design: design,
-            units: units
-          })
-        });
-        break;
       default:
         break;
     }
@@ -456,4 +424,12 @@ const addRandomFeature = (axis, scale) => {
     zIndex: 2000
   });
   map.addLayer(vectorLayer1);
+}
+// 二次移除加载
+const remove = () => {
+  vectorSource.forEachFeature(function (e) {
+    vectorSource.removeFeature(vectorSource.getFeatureById(e.getId()));
+    map.removeLayer(vectorLayer);
+    map.addLayer(vectorLayer);
+  });
 }

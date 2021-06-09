@@ -12,7 +12,7 @@
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="单位名称">
-          <a-input placeholder="请输入单位名称" v-decorator="['dwmc', {}]" />
+          <a-input placeholder="请输入单位名称" v-decorator="['dwmc', {rules: [{ required: true, message: '请输入单位名称 ' }]}]" />
         </a-form-item>
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="组织机构代码">
           <a-input placeholder="请输入组织机构代码" v-decorator="['zzjg', {}]" />

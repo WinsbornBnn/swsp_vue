@@ -4,6 +4,7 @@ layui.use(['layer', 'form',], () => {
   var plot, units, company, tanks = null;
   var allplot, allunits, allcompany, alltanks = null;
   var plotper, unitsper, companyper, tanksper = null;
+  // 数据字典的值
   let alldata = getList('sys/dict/getDictItems/js_count');
   alldata.forEach(item => {
     if (item.text === "企业") {
@@ -16,6 +17,7 @@ layui.use(['layer', 'form',], () => {
       allunits = item.value
     }
   });
+  // 第一个省市级切换
   form.on('select(allprovince)', function (obj) {
     type = obj.value;
     let data = getList('industrialEnterprise/industrialEnterprise/staticNum', { type: type });
@@ -30,10 +32,12 @@ layui.use(['layer', 'form',], () => {
         units = item.num ? item.num : 0;
       }
     });
+    // 百分比计算
     plotper = (plot / allplot).toFixed(4) * 100;
     unitsper = (units / allunits).toFixed(4) * 100;
     companyper = (company / allcompany).toFixed(4) * 100;
     tanksper = (tanks / alltanks).toFixed(4) * 100;
+    // 渲染页面
     document.querySelector('.plot').innerHTML = `
       <div class="box">
         <div id="plot" class="publicheight"></div>
@@ -80,9 +84,11 @@ layui.use(['layer', 'form',], () => {
     getPlot(plot, allplot)
     getUnits(units, allunits)
   });
+  // 其余三个省市级切换
   form.on('select(allunits)', function (obj) { type = obj.value; getUnit(type) });
   form.on('select(allcompany)', function (obj) { type = obj.value; getCompanyList(type) });
   form.on('select(alltanks)', function (obj) { type = obj.value; getTank(type) });
+  // 所有省级的统计数量
   let data = getList('industrialEnterprise/industrialEnterprise/staticNum', { type: type });
   data.forEach(item => {
     if (item.name === "企业") {
@@ -95,13 +101,12 @@ layui.use(['layer', 'form',], () => {
       units = item.num ? item.num : 0
     }
   });
+  // 计算百分比
   plotper = (plot / allplot).toFixed(4) * 100;
   unitsper = (units / allunits).toFixed(4) * 100;
   companyper = (company / allcompany).toFixed(4) * 100;
   tanksper = (tanks / alltanks).toFixed(4) * 100;
-  console.log(tanks);
-  console.log(alltanks);
-  console.log(tanksper);
+  // 渲染页面
   document.querySelector('.plot').innerHTML = `
       <div class="box">
         <div id="plot" class="publicheight"></div>
@@ -376,7 +381,7 @@ layui.use(['layer', 'form',], () => {
                   return "#46B0AE"
                 } else if (params.data >= 40 && params.data < 60) {
                   return "#F5B8A5"
-                } else if (params.data >= 60 && params.data <= 80) {
+                } else if (params.data >= 60) {
                   return "#D785AB"
                 }
               }
@@ -419,7 +424,7 @@ layui.use(['layer', 'form',], () => {
     let myCompanyList = echarts.init(document.getElementById('companylist'));
     let option = {
       legend: {
-        data: ["小型", "中型", "大型"],
+        data: ["高耗水", "重点监控", "规模以上","一般用水"],
         selectedMode: false,
         borderRadius: 5,
         itemHeight: 3,
@@ -497,7 +502,7 @@ layui.use(['layer', 'form',], () => {
       ],
       series: [
         {
-          name: "小型",
+          name: "高耗水",
           type: "bar",
           data: [small, '-', '-', '-'],
           itemStyle: {
@@ -517,7 +522,7 @@ layui.use(['layer', 'form',], () => {
           barWidth: 10
         },
         {
-          name: "中型",
+          name: "重点监控",
           type: "bar",
           data: ['-', center, '-', '-'],
           barWidth: 10,
@@ -538,7 +543,7 @@ layui.use(['layer', 'form',], () => {
         },
         {
           type: "bar",
-          name: "大型",
+          name: "规模以上",
           data: ['-', '-', strong, '-'],
           barWidth: 10,
           itemStyle: {
@@ -558,7 +563,7 @@ layui.use(['layer', 'form',], () => {
         },
         {
           type: "bar",
-          name: 0,
+          name: '一般用水',
           data: ['-', '-', '-', ather],
           barWidth: 10,
           itemStyle: {
@@ -595,8 +600,8 @@ layui.use(['layer', 'form',], () => {
   const getTank = (type) => {
     let data = getList('irrigationArea/irrigationArea/staticData', { type: type });
     let small = 0;
-    let center = null;
-    let strong = null;
+    let center = 0;
+    let strong = 0;
     data.forEach(item => {
       if (item.gqgmlx == "小型") {
         small = item.num ? item.num : 0;

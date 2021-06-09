@@ -14,6 +14,14 @@
               <a-input placeholder="请输入组织机构代码" v-model="queryParam.zzjgdm"></a-input>
             </a-form-item>
           </a-col>
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="是否节水型">
+                <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.sfjsx_key">
+                  <a-select-option value="1"> 省级节水型</a-select-option>
+                  <a-select-option value="2"> 非节水型</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
           <template v-if="toggleSearchStatus">
             <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="企业所在地">
@@ -31,14 +39,6 @@
               </a-form-item>
             </a-col>
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
-              <a-form-item label="是否节水型">
-                <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.sfjsx">
-                  <a-select-option value="1"> 省级节水型</a-select-option>
-                  <a-select-option value="2"> 非节水型</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="是否节水技改">
                 <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.type">
                   <a-select-option value="1"> 节水技改</a-select-option>
@@ -48,7 +48,7 @@
             </a-col>
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="是否高耗水">
-                <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.sfghs">
+                <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.sfghs_key">
                   <a-select-option value="1"> 高耗水</a-select-option>
                   <a-select-option value="2"> 非高耗水</a-select-option>
                 </a-select>
@@ -56,7 +56,7 @@
             </a-col>
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="是否重点监控">
-                <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.zdys">
+                <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.zdys_key">
                   <a-select-option value="1"> 重点监控</a-select-option>
                   <a-select-option value="2"> 一般用水户</a-select-option>
                 </a-select>
@@ -64,7 +64,7 @@
             </a-col>
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="公布时间">
-                <a-date-picker :value-format="'YYYY年MM月DD日'" v-model="queryParam.gbsj"/>
+                <a-date-picker :value-format="'YYYY年MM月DD日'" v-model="queryParam.gbsj" />
               </a-form-item>
             </a-col>
           </template>
@@ -128,13 +128,18 @@
         :dataSource="dataSource"
         :pagination="ipagination"
         :loading="loading"
+        :scroll="{ x: true }"
         class="j-table-force-nowrap"
         :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
         @change="handleTableChange"
       >
+        <span slot="num" slot-scope="text, record, index">{{
+          ipagination.current === 1
+            ? parseInt(index) + 1
+            : ipagination.pageSize * (ipagination.current - 1) + parseInt(index) + 1
+        }}</span>
         <span slot="action" slot-scope="text, record">
           <a @click="handleEdit(record)">编辑</a>
-
           <a-divider type="vertical" />
           <a-dropdown>
             <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>
@@ -176,15 +181,19 @@ export default {
           title: '#',
           dataIndex: '',
           key: 'rowIndex',
-          width: 60,
+          width: 40,
+          fixed: "left",
           align: 'center',
-          customRender: function (t, r, index) {
-            return parseInt(index) + 1
-          }
+          scopedSlots: { customRender: 'num' },
+          // customRender: function (t, r, index) {
+          //   return parseInt(index) + 1
+          // }
         },
         {
           title: '企业名称',
           align: 'center',
+          fixed: "left",
+          width: 240,
           dataIndex: 'qymc'
         },
         {
@@ -372,6 +381,8 @@ export default {
           title: '操作',
           dataIndex: 'action',
           align: 'center',
+          fixed: "right",
+          width: 100,
           scopedSlots: { customRender: 'action' }
         }
       ],

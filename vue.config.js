@@ -12,7 +12,7 @@ function resolve(dir) {
  console.log("构建环境："+process.env.NODE_ENV)
  if(process.env.NODE_ENV == 'development'){
    //开发环境
-   process.env.VUE_APP_API_URL = 'http://192.168.2.112:8080/swsp'
+   process.env.VUE_APP_API_URL = 'http://218.88.22.189:8088/swsp'
  }else if(process.env.NODE_ENV == 'production'){
    //生产环境
    process.env.VUE_APP_API_URL = 'http://localhost:8080/swsp'
