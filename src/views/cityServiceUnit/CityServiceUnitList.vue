@@ -6,28 +6,28 @@
         <a-row :gutter="24">
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="单位名称">
-              <a-input placeholder="请输入单位名称" v-model="queryParam.dwmc"></a-input>
+              <j-input placeholder="请输入单位名称" v-model="queryParam.dwmc"></j-input>
             </a-form-item>
           </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="单位所在地">
-              <a-input placeholder="请输入单位所在地" v-model="queryParam.dwszd"></a-input>
+              <j-input placeholder="请输入单位所在地" v-model="queryParam.dwszd"></j-input>
             </a-form-item>
           </a-col>
           <template v-if="toggleSearchStatus">
             <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="单位地址">
-                <a-input placeholder="请输入单位地址" v-model="queryParam.dwdz"></a-input>
+                <j-input placeholder="请输入单位地址" v-model="queryParam.dwdz"></j-input>
               </a-form-item>
             </a-col> -->
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="单位类型">
-                <a-input placeholder="请输入单位类型" v-model="queryParam.dwlx"></a-input>
+                <j-input placeholder="请输入单位类型" v-model="queryParam.dwlx"></j-input>
               </a-form-item>
             </a-col>
             <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="用水人数（人）">
-                <a-input placeholder="请输入用水人数（人）" v-model="queryParam.ysrs"></a-input>
+                <j-input placeholder="请输入用水人数（人）" v-model="queryParam.ysrs"></j-input>
               </a-form-item>
             </a-col> -->
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
@@ -150,12 +150,14 @@
 import '@/assets/less/TableExpand.less'
 import CityServiceUnitModal from './modules/CityServiceUnitModal'
 import { JeecgListMixin } from '@/mixins/JeecgListMixin'
+import JInput from '@/components/jeecg/JInput'
 
 export default {
   name: 'CityServiceUnitList',
   mixins: [JeecgListMixin],
   components: {
-    CityServiceUnitModal
+    CityServiceUnitModal,
+    JInput
   },
   data () {
     return {
@@ -232,9 +234,9 @@ export default {
           dataIndex: 'ysldw'
         },
         {
-          title: '节水技改-节水措施',
+          title: '节水技改-项目名称',
           align: 'center',
-          dataIndex: 'jscs'
+          dataIndex: 'xmmc'
         },
         {
           title: '节水技改-项目级别',

@@ -26,7 +26,7 @@ layui.use(['layer', 'dropdown'], () => {
     }
   });
   // 获取所有的单位类型数据
-  var num1, num2, num3, num4, num5 = null;
+  var num1, num2, num3, num4, num5,num6 = 0;
   var value = ['机关(单位)', '学校', '医院', '宾馆', '教育基地', '其他'];
   // let url = 'serviceUnit/serviceUnit/list';
   const utilsnum = getList('serviceUnit/serviceUnit/staticDataCom',{type:1})
@@ -46,6 +46,9 @@ layui.use(['layer', 'dropdown'], () => {
         break;
       case '其他':
         num5 = utilsnum.qt_num;
+        break;
+        case '教育基地':
+        num6 = utilsnum.jyjd_num;
         break;
       default:
         break;
@@ -67,7 +70,7 @@ layui.use(['layer', 'dropdown'], () => {
     title: '全部', value: '全部'
     , id: 33333
   }, {
-    title: `机关(单位)(${num1 - 1}个)`, value: '机关(单位)'
+    title: `机关(单位)(${num1}个)`, value: '机关(单位)'
     , id: 3
   }, {
     title: `学校(${num2}个)`, value: '学校'
@@ -81,7 +84,7 @@ layui.use(['layer', 'dropdown'], () => {
     value: '宾馆',
     id: 6
   }, {
-    title: `教育基地(1个)`,
+    title: `教育基地(${num6}个)`,
     value: '教育基地',
     id: 9
   },
@@ -186,19 +189,20 @@ layui.use(['layer', 'dropdown'], () => {
           AllType(url);
           break;
         case '机关(单位)':
-          type = '行政机关';
+          type = '机关';
           removeRandomFeature();
-          for (let i = 0; i < 3; i++) {
-            if (type === '行政机关') {
-              YesObject(obj, url, type,gbdwjb);
-              type = '事业单位';
-            } else if (type === '事业单位') {
-              YesObject(obj, url, type,gbdwjb);
-              type = '机关';
-            } else if (type === '机关') {
-              YesObject(obj, url, type,gbdwjb);
-            }
-          }
+          YesObject(obj, url, type,gbdwjb);
+          // for (let i = 0; i < 3; i++) {
+          //   if (type === '行政机关') {
+          //     YesObject(obj, url, type,gbdwjb);
+          //     type = '事业单位';
+          //   } else if (type === '事业单位') {
+          //     YesObject(obj, url, type,gbdwjb);
+          //     type = '机关';
+          //   } else if (type === '机关') {
+          //     YesObject(obj, url, type,gbdwjb);
+          //   }
+          // }
           break;
         case '学校':
           type = '学校';
@@ -216,7 +220,7 @@ layui.use(['layer', 'dropdown'], () => {
           YesObject(obj, url, type,gbdwjb);
           break;
         case '教育基地':
-          type = '高邮市海潮污水处理厂';
+          type = '教育基地';
           removeRandomFeature();
           YesObject(obj, url, type,gbdwjb);
           break;
@@ -370,11 +374,12 @@ layui.use(['layer', 'dropdown'], () => {
   // 有子集菜单类
   function YesObject (obj, url, type,gbdwjb) {
     let data = null;
-    if (type === '高邮市海潮污水处理厂') {
-      data = getList(url, { pageSize: 10000, dwmc: type });
-    } else {
-      data = getList(url, { pageSize: 10000, dwlx: type,gbdwjb:gbdwjb });
-    }
+    data = getList(url, { pageSize: 10000, unit: type,gbdwjb:gbdwjb });
+    // if (type === '高邮市海潮污水处理厂') {
+    //   data = getList(url, { pageSize: 10000, dwmc: type });
+    // } else {
+    //   data = getList(url, { pageSize: 10000, unit: type,gbdwjb:gbdwjb });
+    // }
     let axis = [];
     data.records.forEach(item => {
       let t1 = item.xcoor ? item.xcoor : null;

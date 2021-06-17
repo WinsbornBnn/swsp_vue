@@ -6,12 +6,12 @@
         <a-row :gutter="24">
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="企业名称">
-              <a-input placeholder="请输入企业名称" v-model="queryParam.qymc"></a-input>
+              <j-input placeholder="请输入企业名称" v-model="queryParam.qymc"></j-input>
             </a-form-item>
           </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="组织机构代码">
-              <a-input placeholder="请输入组织机构代码" v-model="queryParam.zzjgdm"></a-input>
+              <j-input placeholder="请输入组织机构代码" v-model="queryParam.zzjgdm"></j-input>
             </a-form-item>
           </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
@@ -25,17 +25,17 @@
           <template v-if="toggleSearchStatus">
             <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="企业所在地">
-                <a-input placeholder="请输入企业所在地" v-model="queryParam.qyszd"></a-input>
+                <j-input placeholder="请输入企业所在地" v-model="queryParam.qyszd"></j-input>
               </a-form-item>
             </a-col> -->
             <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="企业地址">
-                <a-input placeholder="请输入企业地址" v-model="queryParam.qydz"></a-input>
+                <j-input placeholder="请输入企业地址" v-model="queryParam.qydz"></j-input>
               </a-form-item>
             </a-col> -->
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="行业分类">
-                <a-input placeholder="请输入行业分类" v-model="queryParam.hyfl"></a-input>
+                <j-input placeholder="请输入行业分类" v-model="queryParam.hyfl"></j-input>
               </a-form-item>
             </a-col>
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
@@ -165,12 +165,14 @@
 import '@/assets/less/TableExpand.less'
 import IndustrialEnterpriseModal from './modules/IndustrialEnterpriseModal'
 import { JeecgListMixin } from '@/mixins/JeecgListMixin'
+import JInput from '@/components/jeecg/JInput'
 
 export default {
   name: 'IndustrialEnterpriseList',
   mixins: [JeecgListMixin],
   components: {
-    IndustrialEnterpriseModal
+    IndustrialEnterpriseModal,
+    JInput
   },
   data () {
     return {

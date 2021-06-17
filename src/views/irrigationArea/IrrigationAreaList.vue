@@ -6,12 +6,12 @@
         <a-row :gutter="24">
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="灌区名称">
-              <a-input placeholder="请输入灌区名称" v-model="queryParam.gqmc"></a-input>
+              <j-input placeholder="请输入灌区名称" v-model="queryParam.gqmc"></j-input>
             </a-form-item>
           </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="灌区所在地">
-              <a-input placeholder="请输入灌区所在地" v-model="queryParam.gqszd"></a-input>
+              <j-input placeholder="请输入灌区所在地" v-model="queryParam.gqszd"></j-input>
             </a-form-item>
           </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
@@ -26,22 +26,22 @@
           <template v-if="toggleSearchStatus">
             <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="灌区地址">
-                <a-input placeholder="请输入灌区地址" v-model="queryParam.gqdz"></a-input>
+                <j-input placeholder="请输入灌区地址" v-model="queryParam.gqdz"></j-input>
               </a-form-item>
             </a-col> -->
             <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="灌区管理单位">
-                <a-input placeholder="请输入灌区管理单位" v-model="queryParam.gqgldw"></a-input>
+                <j-input placeholder="请输入灌区管理单位" v-model="queryParam.gqgldw"></j-input>
               </a-form-item>
             </a-col> -->
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="灌区规模类型">
-                <a-input placeholder="请输入灌区规模类型" v-model="queryParam.gqgmlx"></a-input>
+                <j-input placeholder="请输入灌区规模类型" v-model="queryParam.gqgmlx"></j-input>
               </a-form-item>
             </a-col>
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="主要作物">
-                <a-input placeholder="请输入主要作物" v-model="queryParam.zyzw"></a-input>
+                <j-input placeholder="请输入主要作物" v-model="queryParam.zyzw"></j-input>
               </a-form-item>
             </a-col>
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
@@ -150,12 +150,14 @@
 import '@/assets/less/TableExpand.less'
 import IrrigationAreaModal from './modules/IrrigationAreaModal'
 import { JeecgListMixin } from '@/mixins/JeecgListMixin'
+import JInput from '@/components/jeecg/JInput'
 
 export default {
   name: "IrrigationAreaList",
   mixins: [JeecgListMixin],
   components: {
-    IrrigationAreaModal
+    IrrigationAreaModal,
+    JInput
   },
   data () {
     return {

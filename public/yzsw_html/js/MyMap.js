@@ -396,6 +396,7 @@ const removeRandomFeature = () => {
   });
 }
 const addRandomFeature = (axis, scale) => {
+  console.log(axis);
   map.removeLayer(vectorLayer);
   map.removeLayer(vectorLayer1);
   for (const key in axis) {

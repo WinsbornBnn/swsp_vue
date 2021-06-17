@@ -12,7 +12,10 @@
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="小区名称">
-          <a-input placeholder="请输入小区名称" v-decorator="['xqmc', {rules: [{ required: true, message: '请输入小区名称 ' }]}]" />
+          <a-input
+            placeholder="请输入小区名称"
+            v-decorator="['xqmc', { rules: [{ required: true, message: '请输入小区名称 ' }] }]"
+          />
         </a-form-item>
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="小区所在地">
           <a-input placeholder="请输入小区所在地" v-decorator="['xqszd', {}]" />
@@ -32,10 +35,13 @@
           <a-input placeholder="请输入物业管理单位" v-decorator="['wygldw', {}]" />
         </a-form-item>
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="年住户人口数量（人）">
-          <a-input-number v-decorator="['zhrs', {}]" />
+          <a-input-number @change="onPeopleNum" v-decorator="['zhrs', {}]" />
         </a-form-item>
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="年住户用水总量（万m³）">
-          <a-input-number v-decorator="['zhysl', {}]" />
+          <a-input-number @change="onWaterNum" v-decorator="['zhysl', {}]" />
+        </a-form-item>
+        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="人均月用水量（m3/（人·月））">
+          <a-input-number v-decorator="['rjyys', {}]" />
         </a-form-item>
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="人均日用水量（L/人·d）">
           <a-input-number v-decorator="['rjys', {}]" />
@@ -96,8 +102,10 @@ export default {
   data () {
     return {
       title: "操作",
+      waterNum: 0,
+      peopleNum: 0,
       mapVisible: false,
-      fileList:[],
+      fileList: [],
       visible: false,
       model: {},
       labelCol: {
@@ -128,11 +136,11 @@ export default {
     },
     mapLocationSave (data) {
       this.model.xqdz = data.address
-      this.model.xcoor = data.latitude
-      this.model.ycoor = data.longitude
-      this.form.setFieldsValue(pick(this.model,'xqdz'))
+      this.model.ycoor = data.latitude
+      this.model.xcoor = data.longitude
+      this.form.setFieldsValue(pick(this.model, 'xqdz'))
     },
-    change(data){
+    change (data) {
       this.model.images = data
     },
     add () {
@@ -146,7 +154,7 @@ export default {
       this.model = Object.assign({}, record);
       this.visible = true;
       this.$nextTick(() => {
-        this.form.setFieldsValue(pick(this.model, 'xqmc', 'xqszd', 'xqdz', 'wygldw', 'zhrs', 'zhysl', 'rjys', 'jsxjm', 'gbdw', 'lhgbdw', 'gbdwjb', 'gbsj', 'fhsj', 'bz', 'nd', 'jscs'))
+        this.form.setFieldsValue(pick(this.model, 'xqmc', 'xqszd', 'xqdz', 'wygldw', 'zhrs', 'zhysl', 'rjys', 'rjyys', 'jsxjm', 'gbdw', 'lhgbdw', 'gbdwjb', 'gbsj', 'fhsj', 'bz', 'nd', 'jscs'))
         //时间格式化
       });
 
@@ -194,11 +202,34 @@ export default {
     handleCancel () {
       this.close()
     },
-
-
+    // 人均月用水量 = (年住户总量 / 年住户人口数 / 12 ) * 10000
+    // 人均日用水量 = (年住户总量 / 年住户人口数 / 365 ) * 1000,0000
+    onWaterNum (value) {
+      this.waterNum = value
+      this.model.rjys = this.dayNum
+      this.model.rjyys = this.moonNum
+      this.form.setFieldsValue(pick(this.model, 'rjys','rjyys'))
+    },
+    onPeopleNum (value) {
+      this.peopleNum = value
+      this.model.rjys = this.dayNum
+      this.model.rjyys = this.moonNum
+      this.form.setFieldsValue(pick(this.model, 'rjys','rjyys'))
+    }
+  },
+  computed: {
+    moonNum () {
+      return ((this.waterNum / this.peopleNum / 12) * 10000).toFixed(2)
+    },
+    dayNum () {
+      return ((this.waterNum / this.peopleNum / 365) * 10000000).toFixed(2)
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
+.ant-form-item-label{
+  width: 27%;
+}
 </style>

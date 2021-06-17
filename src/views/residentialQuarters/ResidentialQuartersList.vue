@@ -6,12 +6,12 @@
         <a-row :gutter="24">
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="小区名称">
-              <a-input placeholder="请输入小区名称" v-model="queryParam.xqmc"></a-input>
+              <j-input placeholder="请输入小区名称" v-model="queryParam.xqmc"></j-input>
             </a-form-item>
           </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="小区所在地">
-              <a-input placeholder="请输入小区所在地" v-model="queryParam.xqszd"></a-input>
+              <j-input placeholder="请输入小区所在地" v-model="queryParam.xqszd"></j-input>
             </a-form-item>
           </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
@@ -26,17 +26,17 @@
           <template v-if="toggleSearchStatus">
             <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="小区地址">
-                <a-input placeholder="请输入小区地址" v-model="queryParam.xqdz"></a-input>
+                <j-input placeholder="请输入小区地址" v-model="queryParam.xqdz"></j-input>
               </a-form-item>
             </a-col>
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="物业管理单位">
-                <a-input placeholder="请输入物业管理单位" v-model="queryParam.wygldw"></a-input>
+                <j-input placeholder="请输入物业管理单位" v-model="queryParam.wygldw"></j-input>
               </a-form-item>
             </a-col>
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="年住户人口数量（人）">
-                <a-input placeholder="请输入年住户人口数量（人）" v-model="queryParam.zhrs"></a-input>
+                <j-input placeholder="请输入年住户人口数量（人）" v-model="queryParam.zhrs"></j-input>
               </a-form-item>
             </a-col> -->
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
@@ -151,12 +151,14 @@
 import '@/assets/less/TableExpand.less'
 import ResidentialQuartersModal from './modules/ResidentialQuartersModal'
 import { JeecgListMixin } from '@/mixins/JeecgListMixin'
+import JInput from '@/components/jeecg/JInput'
 
 export default {
   name: 'ResidentialQuartersList',
   mixins: [JeecgListMixin],
   components: {
-    ResidentialQuartersModal
+    ResidentialQuartersModal,
+    JInput
   },
   data () {
     return {

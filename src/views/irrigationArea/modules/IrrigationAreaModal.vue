@@ -137,8 +137,8 @@ export default {
     },
     mapLocationSave (data) {
       this.model.gqdz = data.address
-      this.model.xcoor = data.latitude
-      this.model.ycoor = data.longitude
+      this.model.ycoor = data.latitude
+      this.model.xcoor = data.longitude
       this.form.setFieldsValue(pick(this.model,'gqdz'))
     },
     change(data){

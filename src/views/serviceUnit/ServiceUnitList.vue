@@ -6,12 +6,12 @@
         <a-row :gutter="24">
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="单位名称">
-              <a-input placeholder="请输入单位名称" v-model="queryParam.dwmc"></a-input>
+              <j-input placeholder="请输入单位名称" v-model="queryParam.dwmc"></j-input>
             </a-form-item>
           </a-col>
           <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="组织机构代码">
-              <a-input placeholder="请输入组织机构代码" v-model="queryParam.zzjg"></a-input>
+              <j-input placeholder="请输入组织机构代码" v-model="queryParam.zzjg"></j-input>
             </a-form-item>
           </a-col> -->
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
@@ -24,18 +24,30 @@
           </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="单位类型">
-              <a-input placeholder="请输入单位类型" v-model="queryParam.dwlx"></a-input>
+              <!-- <j-input placeholder="请输入单位类型" v-model="queryParam.dwlx"></j-input> -->
+              <a-select
+                style="width: 200px"
+                placeholder="请选择单位类型"
+                v-model="queryParam.unit"
+              >
+                <a-select-option value="医院"> 医院 </a-select-option>
+                <a-select-option value="学校"> 学校 </a-select-option>
+                <a-select-option value="机关"> 机关（单位） </a-select-option>
+                <a-select-option value="宾馆"> 宾馆 </a-select-option>
+                <a-select-option value="教育基地"> 节水教育基地 </a-select-option>
+                <a-select-option value="其他"> 其他 </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <template v-if="toggleSearchStatus">
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="单位所在地">
-                <a-input placeholder="请输入单位所在地" v-model="queryParam.dwszd"></a-input>
+                <j-input placeholder="请输入单位所在地" v-model="queryParam.dwszd"></j-input>
               </a-form-item>
             </a-col>
             <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="单位地址">
-                <a-input placeholder="请输入单位地址" v-model="queryParam.dwdz"></a-input>
+                <j-input placeholder="请输入单位地址" v-model="queryParam.dwdz"></j-input>
               </a-form-item>
             </a-col> -->
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
@@ -153,12 +165,14 @@
 import '@/assets/less/TableExpand.less'
 import ServiceUnitModal from './modules/ServiceUnitModal'
 import { JeecgListMixin } from '@/mixins/JeecgListMixin'
+import JInput from '@/components/jeecg/JInput'
 
 export default {
   name: "ServiceUnitList",
   mixins: [JeecgListMixin],
   components: {
-    ServiceUnitModal
+    ServiceUnitModal,
+    JInput
   },
   data () {
     return {
@@ -235,9 +249,9 @@ export default {
           dataIndex: 'ysldw'
         },
         {
-          title: '节水技改-节水措施',
+          title: '节水技改-项目名称',
           align: 'center',
-          dataIndex: 'jscs'
+          dataIndex: 'xmmc'
         },
         {
           title: '节水技改-项目级别',
@@ -360,7 +374,6 @@ export default {
     }
   },
   methods: {
-
   }
 }
 </script>
