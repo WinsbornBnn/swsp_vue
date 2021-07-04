@@ -5,7 +5,7 @@
         :activeKey="customActiveKey"
         :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
         @change="handleTabClick">
-        <a-tab-pane key="tab1" tab="账号密码登陆">
+        <a-tab-pane key="tab1">
           <a-form-item>
             <a-input
               size="large"
@@ -458,5 +458,9 @@
 <style>
   .valid-error .ant-select-selection__placeholder{
     color: #f5222d;
+  }
+  
+  .ant-tabs-ink-bar{
+        background-color: #f5222d00;
   }
 </style>

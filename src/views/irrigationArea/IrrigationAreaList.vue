@@ -9,52 +9,42 @@
               <j-input placeholder="请输入灌区名称" v-model="queryParam.gqmc"></j-input>
             </a-form-item>
           </a-col>
+          
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="灌区所在地">
-              <j-input placeholder="请输入灌区所在地" v-model="queryParam.gqszd"></j-input>
+            <a-form-item label="公布单位级别">
+              <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.gbdwjb">
+                <a-select-option value="省级"> 省级 </a-select-option>
+                <a-select-option value="市级"> 市级 </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
-              <a-form-item label="是否节水型">
-                <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.sfjsx_key">
-                  <a-select-option value="1"> 省级节水型 </a-select-option>
-                  <a-select-option value="3"> 市级节水型 </a-select-option>
-                  <a-select-option value="2"> 非节水型 </a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
+            <a-form-item label="灌区规模类型">
+              <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.gqgmlx">
+                <a-select-option value="大型"> 大型 </a-select-option>
+                <a-select-option value="中型"> 中型 </a-select-option>
+                <a-select-option value="小型"> 小型 </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          
           <template v-if="toggleSearchStatus">
-            <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
-              <a-form-item label="灌区地址">
-                <j-input placeholder="请输入灌区地址" v-model="queryParam.gqdz"></j-input>
-              </a-form-item>
-            </a-col> -->
-            <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
-              <a-form-item label="灌区管理单位">
-                <j-input placeholder="请输入灌区管理单位" v-model="queryParam.gqgldw"></j-input>
-              </a-form-item>
-            </a-col> -->
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
-              <a-form-item label="灌区规模类型">
-                <j-input placeholder="请输入灌区规模类型" v-model="queryParam.gqgmlx"></j-input>
-              </a-form-item>
-            </a-col>
-            <a-col :xl="6" :lg="7" :md="8" :sm="24">
-              <a-form-item label="主要作物">
-                <j-input placeholder="请输入主要作物" v-model="queryParam.zyzw"></j-input>
-              </a-form-item>
-            </a-col>
-            <a-col :xl="6" :lg="7" :md="8" :sm="24">
-              <a-form-item label="是否节水技改">
-                <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.type">
-                  <a-select-option value="1"> 节水技改 </a-select-option>
-                  <a-select-option value="2"> 未节水技改 </a-select-option>
+              <a-form-item label="灌区所在地">
+                <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.addr">
+                  <a-select-option value="高邮市"> 高邮市 </a-select-option>
+                  <a-select-option value="仪征市"> 仪征市 </a-select-option>
+                  <a-select-option value="邗江区"> 邗江区 </a-select-option>
+                  <a-select-option value="广陵区"> 广陵区 </a-select-option>
+                  <a-select-option value="江都区"> 江都区 </a-select-option>
+                  <a-select-option value="宝应县"> 宝应县 </a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
+
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="公布时间">
-                <a-date-picker :value-format="'YYYY年MM月DD日'" v-model="queryParam.gbsj" />
+                <j-input  v-model="queryParam.gbsj" placeholder="请输入年份 例如 2021" ></j-input>
               </a-form-item>
             </a-col>
           </template>
@@ -74,8 +64,8 @@
 
     <!-- 操作按钮区域 -->
     <div class="table-operator">
-      <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
-      <a-button type="primary" icon="download" @click="handleExportXls('省级-农业灌区')">导出</a-button>
+      <a-button @click="handleAdd" type="primary" icon="plus" v-has="'irrigation:add'">新增</a-button>
+      <a-button type="primary" icon="download" @click="handleExportXls('省级-农业灌区')" v-has="'irrigation:out'">导出</a-button>
       <a-upload
         name="file"
         :showUploadList="false"
@@ -83,10 +73,11 @@
         :headers="tokenHeader"
         :action="importExcelUrl"
         @change="handleImportExcel"
+         v-has="'irrigation:imp'"
       >
         <a-button type="primary" icon="import">导入</a-button>
       </a-upload>
-      <a-dropdown v-if="selectedRowKeys.length > 0">
+      <a-dropdown v-if="selectedRowKeys.length > 0" v-has="'irrigation:delete'">
         <a-menu slot="overlay">
           <a-menu-item key="1" @click="batchDel"><a-icon type="delete" />删除</a-menu-item>
         </a-menu>
@@ -123,7 +114,7 @@
             : ipagination.pageSize * (ipagination.current - 1) + parseInt(index) + 1
         }}</span>
         <span slot="action" slot-scope="text, record">
-          <a @click="handleEdit(record)">编辑</a>
+          <a @click="handleEdit(record)" v-has="'irrigation:edit'">编辑</a>
 
           <a-divider type="vertical" />
           <a-dropdown>
@@ -225,7 +216,7 @@ export default {
         },
 
         {
-          title: '单位面积用水量（m3/亩）',
+          title: '单位面积用水量（m³/亩）',
           align: "center",
           dataIndex: 'dwmjysl'
         },
@@ -234,32 +225,6 @@ export default {
           align: "center",
           dataIndex: 'ggsyxlyxs'
         },
-        {
-          title: '节水技改-项目名称',
-          align: 'center',
-          dataIndex: 'xmmc'
-        },
-        {
-          title: '节水技改-项目级别',
-          align: 'center',
-          dataIndex: 'xmjb'
-        },
-        {
-          title: '节水技改-财政投入（万元）',
-          align: 'center',
-          dataIndex: 'cztr'
-        },
-        {
-          title: '节水技改灌区投入（万元）',
-          align: 'center',
-          dataIndex: 'gqtr'
-        },
-        {
-          title: '节水技改投入（万元）',
-          align: 'center',
-          dataIndex: 'jsjgtr'
-        },
-
         {
           title: '公布节水型农业灌区文件',
           align: "center",

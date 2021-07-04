@@ -27,13 +27,7 @@ const ajax = (options) => {
     })
   })
 }
-<<<<<<< .mine
-const BaseUrl = 'http://192.168.2.13:8080/swsp/'
-||||||| .r68
 const BaseUrl = 'http://127.0.0.1:8080/swsp/'
-=======
-const BaseUrl = 'http://219.142.250.239:8089/swsp/'
->>>>>>> .r70
 const getList = (url, params) => {
   const token = getQueryVariable('token');
   var data = "";

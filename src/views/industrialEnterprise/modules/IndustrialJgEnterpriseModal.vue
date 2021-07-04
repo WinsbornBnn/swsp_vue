@@ -18,11 +18,11 @@
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="组织机构代码">
           <a-input placeholder="请输入组织机构代码" v-decorator="['zzjgdm', { }]" />
         </a-form-item>
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="企业所在地">
-          <a-input placeholder="请输入企业所在地" v-decorator="['qyszd', { }]" />
+        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="所在地">
+          <a-input placeholder="请输入所在地" v-decorator="['qyszd', { }]" />
         </a-form-item>
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="企业地址">
-          <a-input-search placeholder="请输入企业地址" size="large" v-decorator="['qydz', { }]" @search="onSearch">
+        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="地址">
+          <a-input-search placeholder="请输入地址" size="large" v-decorator="['qydz', { }]" @search="onSearch">
             <a-button slot="enterButton"> 打开地图 </a-button>
           </a-input-search>
           <j-map-input-desc
@@ -65,9 +65,26 @@
           
         </a-form-item>
         
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="定额值">
-          <a-input placeholder="请输入定额值" v-decorator="['dez', {}]" />
+        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="节水技改-项目名称">
+          <a-input placeholder="请输入节水技改-项目名称" v-decorator="['xmmc', {}]" />
         </a-form-item>
+        
+        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="节水技改-项目级别">
+          <a-input placeholder="请输入节水技改-项目级别" v-decorator="['xmjb', {}]" />
+        </a-form-item>
+        
+        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="节水技改-财政投入（万元）">
+          <a-input placeholder="请输入节水技改-财政投入（万元）" v-decorator="['cztr', {}]" />
+        </a-form-item>
+        
+        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="节水技改-企业投入（万元）">
+          <a-input placeholder="请输入节水技改-企业投入（万元）" v-decorator="['qytr', {}]" />
+        </a-form-item>
+        
+        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="节水技改投入（万元）">
+          <a-input placeholder="请输入节水技改投入（万元）" v-decorator="['jsjgtr', {}]" />
+        </a-form-item>
+        
         
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="重复用水量（万m³）">
           <a-input placeholder="请输入重复用水量（万m³）" v-decorator="['cfysl', {}]" />
@@ -91,44 +108,6 @@
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="非常规水源替代率(%)">
           <a-input placeholder="请输入非常规水源替代率" v-decorator="['fcgsytdl', {}]" />
         </a-form-item>
-        
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="按是否高耗水行业分类">
-          <a-input placeholder="请输入按是否高耗水行业分类" v-decorator="['sfghs', {}]" />
-        </a-form-item>
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="按是否重点用水用水监控企业分类">
-          <a-input placeholder="请输入按是否重点用水用水监控企业分类" v-decorator="['zdys', {}]" />
-        </a-form-item>
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="按是否规模以上">
-          <a-input placeholder="请输入按是否规模以上" v-decorator="['sfgm', {}]" />
-        </a-form-item>
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="节水措施">
-          <a-input placeholder="请输入节水措施" v-decorator="['jscs', {}]" />
-        </a-form-item>
-        
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="公布节水型工业企业文件">
-          <a-input placeholder="请输入公布节水型工业企业文件" v-decorator="['qywj', {}]" />
-        </a-form-item>
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="公布单位名称">
-          <a-input placeholder="请输入公布单位名称" v-decorator="['gbdw', {}]" />
-        </a-form-item>
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="联合公布单位名称">
-          <a-input placeholder="请输入联合公布单位名称" v-decorator="['lhgbdw', {}]" />
-        </a-form-item>
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="公布单位级别">
-          <a-input placeholder="请输入公布单位级别" v-decorator="['gbdwjb', {}]" />
-        </a-form-item>
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="公布时间">
-          <a-input placeholder="请输入公布时间" v-decorator="['gbsj', {}]" />
-        </a-form-item>
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="复核时间">
-          <a-input placeholder="请输入复核时间" v-decorator="['fhsj', {}]" />
-        </a-form-item>
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="备注">
-          <a-input placeholder="请输入备注" v-decorator="['bz', {}]" />
-        </a-form-item>
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="年度">
-          <a-input placeholder="请输入年度" v-decorator="['nd', {}]" />
-        </a-form-item>
         <a-form-item label="大门" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <j-image-upload class="avatar-uploader" text="上传" v-model="avatarList" ></j-image-upload>
         </a-form-item>
@@ -150,18 +129,18 @@ import { httpAction } from '@/api/manage'
 import pick from 'lodash.pick'
 import moment from "moment"
 import JMoreImageUpload from '../../../components/jeecg/JMoreImageUpload'
-import JImageUpload from '../../../components/jeecg/JImageUpload'
 import JMapInputDesc from '../../../components/jeecg/JMapInputDesc.vue'
+import JImageUpload from '../../../components/jeecg/JImageUpload'
 
 export default {
   name: "IndustrialEnterpriseModal",
   components: {
-    JImageUpload,
     JMoreImageUpload,
-    JMapInputDesc
+    JMapInputDesc,
+    JImageUpload
   },
   data () {
-    return {  
+    return {
       title: "操作",
       mapVisible: false,
       visible: false,
@@ -171,12 +150,11 @@ export default {
         xs: { span: 24 },
         sm: { span: 5 },
       },
-      avatarList:[],
       wrapperCol: {
         xs: { span: 24 },
         sm: { span: 16 },
       },
-
+      avatarList:[],
       confirmLoading: false,
       form: this.$form.createForm(this),
       validatorRules: {
@@ -219,7 +197,7 @@ export default {
       this.model = Object.assign({}, record);
       this.visible = true;
       this.$nextTick(() => {
-        this.form.setFieldsValue(pick(this.model, 'qymc','zzjgdm','qyszd','qydz','hyfl','zycp','zycpclz','zycpcldw','sjysl','dwcpysz','dez','dwcpysdw','cfysl','cflyl','jsx','fcgsy','fcgsylyl','fcgsytdl','sfghs','zdys','sfgm','qywj','gbdw','lhgbdw','gbdwjb','gbsj','fhsj','bz'))
+        this.form.setFieldsValue(pick(this.model, 'xmmc','cztr','qytr','xmjb','jsjgtr','xmjb','qymc','zzjgdm','qyszd','qydz','hyfl','zycp','zycpclz','zycpcldw','sjysl','dwcpysz','dez','dwcpysdw','cfysl','cflyl','jsx','fcgsy','fcgsylyl','fcgsytdl','sfghs','zdys','sfgm','qywj','gbdw','lhgbdw','gbdwjb','gbsj','fhsj','bz'))
         //时间格式化
       });
 

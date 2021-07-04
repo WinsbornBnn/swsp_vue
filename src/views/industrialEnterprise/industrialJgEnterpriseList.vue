@@ -5,24 +5,31 @@
       <a-form layout="inline" @keyup.enter.native="searchQuery">
         <a-row :gutter="24">
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="企业名称">
-              <j-input placeholder="请输入企业名称" v-model="queryParam.qymc"></j-input>
+            <a-form-item label="项目名称">
+              <j-input placeholder="请输入项目名称" v-model="queryParam.xmmc"></j-input>
             </a-form-item>
           </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="公布单位级别">
-              <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.gbdwjb">
+            <a-form-item label="项目级别">
+              <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.xmjb">
                 <a-select-option value="省级"> 省级 </a-select-option>
                 <a-select-option value="市级"> 市级 </a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="行业分类">
-              <j-input placeholder="请输入行业分类" v-model="queryParam.hyfl"></j-input>
+            <a-form-item label="项目所在地">
+              <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.addr">
+                <a-select-option value="高邮市"> 高邮市 </a-select-option>
+                <a-select-option value="仪征市"> 仪征市 </a-select-option>
+                <a-select-option value="邗江区"> 邗江区 </a-select-option>
+                <a-select-option value="广陵区"> 广陵区 </a-select-option>
+                <a-select-option value="江都区"> 江都区 </a-select-option>
+                <a-select-option value="宝应县"> 宝应县 </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
-          <template v-if="toggleSearchStatus">
+          <!-- <template v-if="toggleSearchStatus">
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="是否高耗水">
                 <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.sfghs_key">
@@ -44,28 +51,15 @@
                 <j-input  v-model="queryParam.gbsj" placeholder="请输入年份 例如 2021" ></j-input>
               </a-form-item>
             </a-col>
-            <a-col :xl="6" :lg="7" :md="8" :sm="24">
-              <a-form-item label="企业所在区县">
-                <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.addr">
-                  <a-select-option value="高邮市"> 高邮市 </a-select-option>
-                  <a-select-option value="仪征市"> 仪征市 </a-select-option>
-                  <a-select-option value="邗江区"> 邗江区 </a-select-option>
-                  <a-select-option value="广陵区"> 广陵区 </a-select-option>
-                  <a-select-option value="江都区"> 江都区 </a-select-option>
-                  <a-select-option value="宝应县"> 宝应县 </a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            
-          </template>
+          </template> -->
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
               <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
-              <a @click="handleToggleSearch" style="margin-left: 8px">
+              <!-- <a @click="handleToggleSearch" style="margin-left: 8px">
                 {{ toggleSearchStatus ? '收起' : '展开' }}
                 <a-icon :type="toggleSearchStatus ? 'up' : 'down'" />
-              </a>
+              </a> -->
             </span>
           </a-col>
         </a-row>
@@ -74,8 +68,8 @@
 
     <!-- 操作按钮区域 -->
     <div class="table-operator">
-      <a-button @click="handleAdd" type="primary" icon="plus" v-has="'industry:add'" >新增</a-button>
-      <a-button type="primary" icon="download" @click="handleExportXls('省级-工业企业')" v-has="'industry:out'" >导出</a-button>
+      <a-button @click="handleAdd" type="primary" icon="plus" v-has="'jp:add'">新增</a-button>
+      <a-button type="primary" icon="download" @click="handleExportXls('节水减排示范项目')" v-has="'jp:out'">导出</a-button>
       <a-upload
         name="file"
         :showUploadList="false"
@@ -83,11 +77,11 @@
         :headers="tokenHeader"
         :action="importExcelUrl"
         @change="handleImportExcel"
-        v-has="'industry:imp'"
+        v-has="'jp:imp'"
       >
-        <a-button type="primary" icon="import" v-has="'industry:imp'">导入</a-button>
+        <a-button type="primary" icon="import" v-has="'jp:imp'">导入</a-button>
       </a-upload>
-      <a-dropdown v-if="selectedRowKeys.length > 0" v-has="'industry:delete'">
+      <a-dropdown v-if="selectedRowKeys.length > 0" v-has="'jp:delete'">
         <a-menu slot="overlay">
           <a-menu-item key="1" @click="batchDel">
             <a-icon type="delete" />
@@ -130,9 +124,9 @@
             : ipagination.pageSize * (ipagination.current - 1) + parseInt(index) + 1
         }}</span>
         <span slot="action" slot-scope="text, record">
-          <a @click="handleEdit(record)" v-has="'industry:edit'">编辑</a>
+          <a @click="handleEdit(record)" v-has="'jp:edit'">编辑</a>
           <a-divider type="vertical" />
-          <a-dropdown  v-has="'industry:delete'">
+          <a-dropdown  v-has="'jp:delete'">
             <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>
             <a-menu slot="overlay">
               <a-menu-item>
@@ -148,13 +142,13 @@
     <!-- table区域-end -->
 
     <!-- 表单区域 -->
-    <industrialEnterprise-modal ref="modalForm" @ok="modalFormOk"></industrialEnterprise-modal>
+    <industrial-jg-enterprise-modal ref="modalForm" @ok="modalFormOk"></industrial-jg-enterprise-modal>
   </a-card>
 </template>
 
 <script>
 import '@/assets/less/TableExpand.less'
-import IndustrialEnterpriseModal from './modules/IndustrialEnterpriseModal'
+import IndustrialJgEnterpriseModal from './modules/IndustrialJgEnterpriseModal'
 import { JeecgListMixin } from '@/mixins/JeecgListMixin'
 import JInput from '@/components/jeecg/JInput'
 
@@ -162,7 +156,7 @@ export default {
   name: 'IndustrialEnterpriseList',
   mixins: [JeecgListMixin],
   components: {
-    IndustrialEnterpriseModal,
+    IndustrialJgEnterpriseModal,
     JInput
   },
   data () {
@@ -195,12 +189,12 @@ export default {
           dataIndex: 'zzjgdm'
         },
         {
-          title: '企业所在地',
+          title: '所在地',
           align: 'center',
           dataIndex: 'qyszd'
         },
         {
-          title: '企业地址',
+          title: '地址',
           align: 'center',
           dataIndex: 'qydz'
         },
@@ -236,42 +230,42 @@ export default {
           align: 'center',
           dataIndex: 'dwcpysz'
         },
-        {
-          title: '定额值',
-          align: 'center',
-          dataIndex: 'dez'
-        },
+        // {
+        //   title: '定额值',
+        //   align: 'center',
+        //   dataIndex: 'dez'
+        // },
         {
           title: '单位产品用水量-单位',
           align: 'center',
           dataIndex: 'dwcpysdw'
         },
 
-        // {
-        //   title: '节水技改-项目名称',
-        //   align: 'center',
-        //   dataIndex: 'xmmc'
-        // },
-        // {
-        //   title: '节水技改-项目级别',
-        //   align: 'center',
-        //   dataIndex: 'xmjb'
-        // },
-        // {
-        //   title: '节水技改-财政投入（万元）',
-        //   align: 'center',
-        //   dataIndex: 'cztr'
-        // },
-        // {
-        //   title: '节水技改-企业投入（万元）',
-        //   align: 'center',
-        //   dataIndex: 'qytr'
-        // },
-        // {
-        //   title: '节水技改投入（万元）',
-        //   align: 'center',
-        //   dataIndex: 'jsjgtr'
-        // },
+        {
+          title: '节水技改-项目名称',
+          align: 'center',
+          dataIndex: 'xmmc'
+        },
+        {
+          title: '节水技改-项目级别',
+          align: 'center',
+          dataIndex: 'xmjb'
+        },
+        {
+          title: '节水技改-财政投入（万元）',
+          align: 'center',
+          dataIndex: 'cztr'
+        },
+        {
+          title: '节水技改-企业投入（万元）',
+          align: 'center',
+          dataIndex: 'qytr'
+        },
+        {
+          title: '节水技改投入（万元）',
+          align: 'center',
+          dataIndex: 'jsjgtr'
+        },
         {
           title: '重复用水量（万m³）',
           align: 'center',
@@ -283,21 +277,21 @@ export default {
           dataIndex: 'cflyl'
         },
 
-        // {
-        //   title: '冷却水循环率（%）',
-        //   align: 'center',
-        //   dataIndex: 'lqsxhl'
-        // },
-        // {
-        //   title: '冷凝水回用率（%）',
-        //   align: 'center',
-        //   dataIndex: 'lnshyl'
-        // },
-        // {
-        //   title: '废水回用率（%）',
-        //   align: 'center',
-        //   dataIndex: 'fshyl'
-        // },
+        {
+          title: '冷却水循环率（%）',
+          align: 'center',
+          dataIndex: 'lqsxhl'
+        },
+        {
+          title: '冷凝水回用率（%）',
+          align: 'center',
+          dataIndex: 'lnshyl'
+        },
+        {
+          title: '废水回用率（%）',
+          align: 'center',
+          dataIndex: 'fshyl'
+        },
         {
           title: '节水量（万m³）',
           align: 'center',
@@ -318,57 +312,57 @@ export default {
           align: 'center',
           dataIndex: 'fcgsytdl'
         },
-        {
-          title: '按是否高耗水行业分类',
-          align: 'center',
-          dataIndex: 'sfghs'
-        },
-        {
-          title: '按是否重点用水用水监控企业分类',
-          align: 'center',
-          dataIndex: 'zdys'
-        },
-        {
-          title: '按是否规模以上',
-          align: 'center',
-          dataIndex: 'sfgm'
-        },
+        // {
+        //   title: '按是否高耗水行业分类',
+        //   align: 'center',
+        //   dataIndex: 'sfghs'
+        // },
+        // {
+        //   title: '按是否重点用水用水监控企业分类',
+        //   align: 'center',
+        //   dataIndex: 'zdys'
+        // },
+        // {
+        //   title: '按是否规模以上',
+        //   align: 'center',
+        //   dataIndex: 'sfgm'
+        // },
 
-        {
-          title: '公布节水型工业企业文件',
-          align: 'center',
-          dataIndex: 'qywj'
-        },
-        {
-          title: '公布单位名称',
-          align: 'center',
-          dataIndex: 'gbdw'
-        },
-        {
-          title: '联合公布单位名称',
-          align: 'center',
-          dataIndex: 'lhgbdw'
-        },
-        {
-          title: '公布单位级别',
-          align: 'center',
-          dataIndex: 'gbdwjb'
-        },
-        {
-          title: '公布时间',
-          align: 'center',
-          dataIndex: 'gbsj'
-        },
-        {
-          title: '复核时间',
-          align: 'center',
-          dataIndex: 'fhsj'
-        },
-        {
-          title: '备注',
-          align: 'center',
-          dataIndex: 'bz'
-        },
+        // {
+        //   title: '公布节水型工业企业文件',
+        //   align: 'center',
+        //   dataIndex: 'qywj'
+        // },
+        // {
+        //   title: '公布单位名称',
+        //   align: 'center',
+        //   dataIndex: 'gbdw'
+        // },
+        // {
+        //   title: '联合公布单位名称',
+        //   align: 'center',
+        //   dataIndex: 'lhgbdw'
+        // },
+        // {
+        //   title: '公布单位级别',
+        //   align: 'center',
+        //   dataIndex: 'gbdwjb'
+        // },
+        // {
+        //   title: '公布时间',
+        //   align: 'center',
+        //   dataIndex: 'gbsj'
+        // },
+        // {
+        //   title: '复核时间',
+        //   align: 'center',
+        //   dataIndex: 'fhsj'
+        // },
+        // {
+        //   title: '备注',
+        //   align: 'center',
+        //   dataIndex: 'bz'
+        // },
 
         {
           title: '操作',
@@ -380,7 +374,7 @@ export default {
         }
       ],
       url: {
-        list: '/industrialEnterprise/industrialEnterprise/list',
+        list: '/industrialEnterprise/industrialEnterprise/listjg',
         delete: '/industrialEnterprise/industrialEnterprise/delete',
         deleteBatch: '/industrialEnterprise/industrialEnterprise/deleteBatch',
         exportXlsUrl: 'industrialEnterprise/industrialEnterprise/exportXls',

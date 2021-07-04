@@ -3,10 +3,9 @@
     <div class="container">
       <div class="top">
         <div class="header">
-          <a href="/">
-            <img src="~@/assets/logo.svg" class="logo" alt="logo">
-            <span class="title">扬州市智慧节水平台</span>
-          </a>
+      <!--      <img src="~@/assets/logo.svg" class="logo" alt="logo"> -->
+            <span class="title" style="    color: rgb(1 85 130);font-size: 40px;" >扬州市节水型社会建设信息化平台</span>
+            <p class="title" style="color: rgb(1 85 130);font-size: 40px;">(节水型载体可视化系统)</p>
         </div>
         <div class="desc">
 
@@ -65,7 +64,7 @@
     .container {
       width: 100%;
       min-height: 100%;
-      background: #f0f2f5 url(~@/assets/background.svg) no-repeat 50%;
+      background: #f0f2f5 url(~@/assets/bg.jpg) no-repeat 100%;
       background-size: 100%;
       padding: 110px 0 144px;
       position: relative;
@@ -99,7 +98,7 @@
           }
 
           .title {
-            font-size: 33px;
+            font-size: 24px;
             color: rgba(0, 0, 0, .85);
             font-family: "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
             font-weight: 600;

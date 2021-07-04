@@ -3,13 +3,17 @@
     <!-- 查询区域 -->
     <div class="table-page-search-wrapper">
       <a-form layout="inline" @keyup.enter.native="searchQuery">
-        
         <a-row :gutter="24">
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="小区名称">
-              <j-input placeholder="请输入小区名称" v-model="queryParam.xqmc"></j-input>
+            <a-form-item label="教育基地名称">
+              <j-input placeholder="请输入教育基地名称" v-model="queryParam.dwmc"></j-input>
             </a-form-item>
           </a-col>
+          <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <a-form-item label="组织机构代码">
+              <j-input placeholder="请输入组织机构代码" v-model="queryParam.zzjg"></j-input>
+            </a-form-item>
+          </a-col> -->
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="公布单位级别">
               <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.gbdwjb">
@@ -53,8 +57,8 @@
 
     <!-- 操作按钮区域 -->
     <div class="table-operator">
-      <a-button @click="handleAdd" type="primary" icon="plus" v-has="'residential:add'">新增</a-button>
-      <a-button type="primary" icon="download" @click="handleExportXls('省级-居民小区')" v-has="'residential:out'">导出</a-button>
+      <a-button @click="handleAdd" type="primary" icon="plus" v-has="'jd:add'">新增</a-button>
+      <a-button type="primary" icon="download" @click="handleExportXls('省级-生活服务业单位')" v-has="'jd:out'">导出</a-button>
       <a-upload
         name="file"
         :showUploadList="false"
@@ -62,21 +66,15 @@
         :headers="tokenHeader"
         :action="importExcelUrl"
         @change="handleImportExcel"
-        v-has="'residential:imp'"
+        v-has="'jd:imp'"
       >
         <a-button type="primary" icon="import">导入</a-button>
       </a-upload>
-      <a-dropdown v-if="selectedRowKeys.length > 0"   v-has="'residential:delete'">
+      <a-dropdown v-if="selectedRowKeys.length > 0" v-has="'jd:delete'">
         <a-menu slot="overlay">
-          <a-menu-item key="1" @click="batchDel">
-            <a-icon type="delete" />
-            删除
-          </a-menu-item>
+          <a-menu-item key="1" @click="batchDel"><a-icon type="delete" />删除</a-menu-item>
         </a-menu>
-        <a-button style="margin-left: 8px">
-          批量操作
-          <a-icon type="down" />
-        </a-button>
+        <a-button style="margin-left: 8px"> 批量操作 <a-icon type="down" /></a-button>
       </a-dropdown>
     </div>
 
@@ -109,10 +107,10 @@
             : ipagination.pageSize * (ipagination.current - 1) + parseInt(index) + 1
         }}</span>
         <span slot="action" slot-scope="text, record">
-          <a @click="handleEdit(record)" v-has="'residential:edit'">编辑</a>
+          <a @click="handleEdit(record)"  v-has="'jd:edit'">编辑</a>
 
           <a-divider type="vertical" />
-          <a-dropdown     v-has="'residential:delete'">
+          <a-dropdown  v-has="'jd:delete'">
             <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>
             <a-menu slot="overlay">
               <a-menu-item>
@@ -128,26 +126,26 @@
     <!-- table区域-end -->
 
     <!-- 表单区域 -->
-    <residentialQuarters-modal ref="modalForm" @ok="modalFormOk"></residentialQuarters-modal>
+    <serviceUnit-modal ref="modalForm" @ok="modalFormOk"></serviceUnit-modal>
   </a-card>
 </template>
 
 <script>
 import '@/assets/less/TableExpand.less'
-import ResidentialQuartersModal from './modules/ResidentialQuartersModal'
+import ServiceUnitModal from './modules/ServiceUnitModal'
 import { JeecgListMixin } from '@/mixins/JeecgListMixin'
 import JInput from '@/components/jeecg/JInput'
 
 export default {
-  name: 'ResidentialQuartersList',
+  name: "ServiceUnitList",
   mixins: [JeecgListMixin],
   components: {
-    ResidentialQuartersModal,
+    ServiceUnitModal,
     JInput
   },
   data () {
     return {
-      description: '省级-居民小区管理页面',
+      description: '省级-生活服务业单位管理页面',
       // 表头
       columns: [
         {
@@ -156,121 +154,132 @@ export default {
           key: 'rowIndex',
           width: 40,
           fixed: "left",
-          align: 'center',
+          align: "center",
           scopedSlots: { customRender: 'num' },
-          // customRender: function(t, r, index) {
-          //   return parseInt(index) + 1
+          // customRender: function (t, r, index) {
+          //   return parseInt(index) + 1;
           // }
         },
         {
-          title: '小区名称',
-          align: 'center',
+          title: '单位名称',
+          align: "center",
           fixed: "left",
           width: 240,
-          dataIndex: 'xqmc'
+          dataIndex: 'dwmc'
         },
         {
-          title: '小区所在地',
-          align: 'center',
-          dataIndex: 'xqszd'
+          title: '组织机构代码',
+          align: "center",
+          dataIndex: 'zzjg'
         },
         {
-          title: '小区地址',
-          align: 'center',
-          dataIndex: 'xqdz'
+          title: '单位所在地',
+          align: "center",
+          dataIndex: 'dwszd'
         },
         {
-          title: '物业管理单位',
-          align: 'center',
-          dataIndex: 'wygldw'
+          title: '单位地址',
+          align: "center",
+          dataIndex: 'dwdz'
         },
         {
-          title: '年住户人口数量（人）',
-          align: 'center',
-          dataIndex: 'zhrs'
+          title: '单位类型',
+          align: "center",
+          dataIndex: 'dwlx'
         },
         {
-          title: '年住户用水总量（万m³）',
-          align: 'center',
-          dataIndex: 'zhysl'
+          title: '用水人数/面积数值',
+          align: "center",
+          dataIndex: 'ysrsz'
         },
         {
-          title: '人均月用水量（m³/（人·月））',
-          align: 'center',
-          dataIndex: 'rjyys'
+          title: '用水人数/面积数单位',
+          align: "center",
+          dataIndex: 'ysrsdw'
         },
         {
-          title: '人均日用水量（L/人·d）',
-          align: 'center',
-          dataIndex: 'rjys'
+          title: '年实际用水量（万m³）',
+          align: "center",
+          dataIndex: 'sjysl'
         },
         {
-          title: '省定额值（L/（人·d））',
-          align: 'center',
+          title: '人均或单位面积用水量值',
+          align: "center",
+          dataIndex: 'yslz'
+        },
+        {
+          title: '定额值',
+          align: "center",
           dataIndex: 'dez'
         },
-
         {
-          title: '公布节水型居民小区文件',
-          align: 'center',
-          dataIndex: 'jsxjm'
+          title: '人均或单位面积用水量单位',
+          align: "center",
+          dataIndex: 'ysldw'
+        },
+        
+        {
+          title: '公布节水型生活服务业单位文件',
+          align: "center",
+          dataIndex: 'dwwj'
         },
         {
           title: '公布单位名称',
-          align: 'center',
+          align: "center",
           dataIndex: 'gbdw'
         },
         {
           title: '联合公布单位名称',
-          align: 'center',
+          align: "center",
           dataIndex: 'lhgbdw'
         },
         {
           title: '公布单位级别',
-          align: 'center',
+          align: "center",
           dataIndex: 'gbdwjb'
         },
         {
           title: '公布时间',
-          align: 'center',
+          align: "center",
           dataIndex: 'gbsj'
         },
         {
           title: '复核时间',
-          align: 'center',
+          align: "center",
           dataIndex: 'fhsj'
         },
         {
           title: '备注',
-          align: 'center',
+          align: "center",
           dataIndex: 'bz'
         },
-
         {
           title: '操作',
           dataIndex: 'action',
-          align: 'center',
+          align: "center",
           fixed: "right",
           width: 100,
-          scopedSlots: { customRender: 'action' }
+          scopedSlots: { customRender: 'action' },
         }
       ],
       url: {
-        list: '/residentialQuarters/residentialQuarters/list',
-        delete: '/residentialQuarters/residentialQuarters/delete',
-        deleteBatch: '/residentialQuarters/residentialQuarters/deleteBatch',
-        exportXlsUrl: 'residentialQuarters/residentialQuarters/exportXls',
-        importExcelUrl: 'residentialQuarters/residentialQuarters/importExcel',
-        jgListUrl: 'residentialQuarters/residentialQuarters/staticData2'
-      }
+        list: "/serviceUnit/serviceUnit/listjd",
+        delete: "/serviceUnit/serviceUnit/delete",
+        deleteBatch: "/serviceUnit/serviceUnit/deleteBatch",
+        exportXlsUrl: "serviceUnit/serviceUnit/exportXls",
+        importExcelUrl: "serviceUnit/serviceUnit/importExcel",
+        jgListUrl: 'serviceUnit/serviceUnit/staticData2'
+
+      },
     }
   },
   computed: {
     importExcelUrl: function () {
-      return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`
+      return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
     }
   },
-  methods: {}
+  methods: {
+  }
 }
 </script>
 <style scoped>

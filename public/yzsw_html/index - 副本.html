@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>可视化智能面板</title>
+  <link rel="stylesheet" href="css/flex.css">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/public.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css"
+    type="text/css">
+  <link rel="stylesheet" href="//unpkg.com/layui@2.6.5/dist/css/layui.css">
+  <!-- 引入layui -->
+  <script src="//unpkg.com/layui@2.6.5/dist/layui.js"></script>
+  <!-- 引入openlayers -->
+  <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
+  <!-- 引入JQuery -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+<body>
+  <!-- 头部区域  -->
+  <header class="header u-f">
+    <div class="column">
+      <div class="time">
+      </div>
+    </div>
+    <div class="column">
+      <img src="icons/title.png" alt class="title">
+      <div class="name">
+        扬 州 市 节 水 型 载 体 可 视 化 系 统
+      </div>
+    </div>
+    <div class="column">
+      <div class="data u-f">
+        <button id="reload" style="width: .75rem;">首页</button>
+        <button id="goIndex" style="width: 1.4875rem;">分类统计展示</button>
+        <button id="exitAll" style="display: none;width: 1rem;">数据管理</button>
+        <button id="goAll" style="width: .75rem;">全屏</button>
+      </div>
+    </div>
+  </header>
+  <div class="container u-f">
+    <!-- 左边区域 -->
+    <div class="column u-f-fdc">
+      <div class="left pannel u-f-fdc" id="left">
+      </div>
+    </div>
+    <!-- 中间地图区域 -->
+    <div class="column u-f-fdc">
+      <!-- 地图模块 -->
+      <div class="map u-f-fdc">
+        <div class="chart">
+          <div class="geo" id="geo">
+            <div id="popup" class="ol-popup">
+              <div id="popup-content">
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- 下拉菜单 -->
+        <div class="select">
+          <button class="layui-btn" id="select">
+            类别搜索
+            <i class="layui-icon layui-icon-down layui-font-12"></i>
+          </button>
+        </div>
+        <div class="hint">
+          <ul>
+            <li><span>工业企业</span></li>
+            <li><span>小区（社区）</span></li>
+            <li><span>学校</span></li>
+            <li><span>机关（单位）</span></li>
+            <li><span>宾馆</span></li>
+            <li><span>灌区</span></li>
+            <li><span>医院</span></li>
+            <li><span>教育基地</span></li>
+            <li><span>其他</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- 右边区域-->
+    <div class="column u-f">
+      <div class="right pannel u-f-fdc" id="right">
+      </div>
+    </div>
+  </div>
+  <script src="js/flexible.js"></script>
+  <script src="js/index.js"></script>
+  <script src="js/Ajax.js"></script>
+  <script src="js/MyTime.js"></script>
+  <script src="js/MyMap.js"></script>
+</body>
+
+</html>

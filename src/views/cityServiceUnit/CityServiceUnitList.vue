@@ -289,7 +289,7 @@ export default {
           dataIndex: 'fcgssy'
         },
         {
-          title: '非常规水源利用量（万m3）',
+          title: '非常规水源利用量（万m³）',
           align: 'center',
           dataIndex: 'fcgslyl'
         },

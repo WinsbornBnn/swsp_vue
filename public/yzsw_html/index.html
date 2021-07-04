@@ -18,6 +18,64 @@
   <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
   <!-- 引入JQuery -->
   <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <style>
+    .banner_img{
+      width: 100%;
+      height: 100%;
+    }
+    .box01 {
+      background-color: transparent;
+      border-bottom: 1px solid #cccccc;
+      border-right-width: 0px;
+      border-left-width: 0px;
+      border-top-width: 0px;
+      border-bottom-width: 0px;
+      border-top-style: none;
+      border-right-style: none;
+      border-left-style: none;
+      border-bottom: none;
+      padding: 0.3rem 0.45rem;
+      margin: 0;
+      resize:none;
+      color: #9FAEE5;
+      font-size: 0.22rem;
+    }
+    .search{
+        position: absolute;
+        top: 0.125rem;
+        right: 26%;
+        background-color: rgba(255, 255, 255);
+        width: 1.825rem;
+        height: 0.35rem;
+        background-color: #fff;
+        border: 0.025rem solid #6D7CBF;
+        color: #7E85BD;
+    }
+    .name_div{
+      width: 2.25rem;
+      height: 1rem;
+      position: absolute;
+      background-color: rgba(255, 255, 255);
+      box-shadow: 0 0.0125rem 0.05rem rgb(0 0 0 / 50%);
+      padding: 0.175rem;
+      color: #000;
+      border-radius: 0.125rem;
+      border: 0.0125rem solid #7A8DD2;
+      font-size: 0.15rem;
+      bottom: 0.15rem;
+      left: -0.625rem;
+      min-width: 60%;
+      margin-bottom: 30px;
+    }
+    .item_div_text{
+      height: 0.30rem;
+      font-size: 0.18rem;
+      line-height: 0.20rem;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  </style>
 </head>
 
 <body>
@@ -28,27 +86,59 @@
       </div>
     </div>
     <div class="column">
-      <img src="icons/title.png" alt class="title">
+      <img src="icons/title.png" alt class="title" style="width: 100%;">
       <div class="name">
-        扬 州 市 节 水 型 载 体 可 视 化 平 台
+        扬 州 市 节 水 型 载 体 可 视 化 系 统
       </div>
     </div>
     <div class="column">
       <div class="data u-f">
+        <button id="reload" style="width: .75rem;">刷新</button>
         <button id="goIndex" style="width: 1.4875rem;">分类统计展示</button>
-        <button id="exitAll" style="display: none;width: 1rem;">数据管理</button>
+        <button id="exitAll" style="display: none;width: 1rem;">返回</button>
         <button id="goAll" style="width: .75rem;">全屏</button>
       </div>
     </div>
-  </header>
+  </header> 
+  
   <div class="container u-f">
-    <!-- 左边区域 -->
-    <div class="column u-f-fdc">
-      <div class="left pannel u-f-fdc" id="left">
+    <div id="div_left" style="width: 25%;height: 100%;background: url(./icons/bg_1.png) no-repeat 0 0;background-size: 100% 100%;z-index: 999;position: absolute;left: 0px;top: 0px;">
+      <div style="height: 66%;width: 100%;">
+        
+        <div class="box01" style="width: 100%;height: 100%;" rows="" cols="">
+          <marquee id="describe_info" direction="up" onMouseOver="this.stop()" onMouseOut="this.start()"  scrolldelay="100" style="width: 100%;height: 100%;" >
+
+          </marquee>
+
+        </div>
+        
+      </div>
+      <div style="height: 34%;width: 100%;padding-top: 10px;">
+        <div class="layui-carousel" style="margin:10px 3% 10px 3% ;" id="banner01">
+          <div carousel-item="" id="banner01_img">
+
+          </div>
+        </div>
       </div>
     </div>
+    
+    <div id="div_left_item" style="display: none;width: 25%;height: 100%;z-index: 999;position: absolute;left: 0px;top: 0px;">
+      
+      <div style="height: 36%;width: 100%;background: url(./icons/bg_1.png) no-repeat 0 0;background-size: 100% 100%;">
+        <div id="left"></div>
+      </div>
+      
+      <div id="ba_img01" style="height: 32%;width: 100%;padding-top: 10px;display: none;">
+          
+      </div>
+      
+      <div id="ba_img02" style="height: 32%;width: 100%;padding-top: 10px;display: none;">
+
+      </div>
+      
+    </div>
     <!-- 中间地图区域 -->
-    <div class="column u-f-fdc">
+    <div id="div_center" class="column u-f-fdc">
       <!-- 地图模块 -->
       <div class="map u-f-fdc">
         <div class="chart">
@@ -57,17 +147,21 @@
               <div id="popup-content">
               </div>
             </div>
+            <div id="name_div" class="name_div">
+                <div id="name_div_content"></div>
+            </div>
           </div>
 
         </div>
         <!-- 下拉菜单 -->
-        <div class="select">
+        <div class="select" style="left: 26%;">
           <button class="layui-btn" id="select">
             类别搜索
             <i class="layui-icon layui-icon-down layui-font-12"></i>
           </button>
         </div>
-        <div class="hint">
+        <div class="hint" style="right: 26%;">
+          <div style="margin-left: 20px;margin-top: 8px;">图例</div>
           <ul>
             <li><span>工业企业</span></li>
             <li><span>小区（社区）</span></li>
@@ -78,21 +172,67 @@
             <li><span>医院</span></li>
             <li><span>教育基地</span></li>
             <li><span>其他</span></li>
+            <li><span>节水减排示范项目</span></li>
           </ul>
+        </div>
+       <!-- oninput="myInput()" onkeydown="keyup_submit(event);" -->
+        <div class="search">
+          <input placeholder="请输入需要查询的名称" style="color: #7E85BD;width: 100%;height: 100%;border: 0;border:none;border-radius:0; border-bottom:#8D8D8D 1px solid;box-shadow: 0px 0px 0px 0px;" type="text" id="search" />
+        </div>
+        
+      </div>
+    </div>
+    
+    <div id="div_right" style=" width: 25%;height: 100%;background: url(./icons/bg_1.png) no-repeat 0 0;background-size: 100% 100%;z-index: 999;position: absolute;right: 0px;top: 0px;">
+      
+      <div style="height: 33%;width: 100%;">
+        <div class="layui-carousel" style="margin:10px 3% 10px 3% ;" id="banner02">
+          <div carousel-item="" id="banner02_img">
+          </div>
+        </div>
+      </div>
+      
+      <div style="height: 33%;width: 100%;padding-top: 10px;">
+        <div class="layui-carousel" style="margin:10px 3% 10px 3% ;" id="banner03">
+          <div carousel-item="" id="banner03_img">
+          </div>
+        </div>
+      </div>
+      
+      <div style="height: 34%;width: 100%;padding-top: 10px;">
+        <div class="layui-carousel" style="margin:10px 3% 10px 3% ;" id="banner04">
+          <div carousel-item="" id="banner04_img">
+          </div>
         </div>
       </div>
     </div>
-    <!-- 右边区域-->
-    <div class="column u-f">
-      <div class="right pannel u-f-fdc" id="right">
-      </div>
+    
+    <div id="div_right_item" style="display: none;width: 25%;height: 100%;z-index: 999;position: absolute;right: 0px;top: 0px;">
+        
+        <div id="ba_img03" style="height: 36%;width: 100%;">
+            
+        </div>
+        
+        <div id="ba_img04" style="height: 32%;width: 100%;padding-top: 10px;">
+
+        </div>
+        
+        <div id="ba_img05" style="height: 32%;width: 100%;padding-top: 10px;">
+
+        </div>
+        
     </div>
+    
   </div>
+  
+  
   <script src="js/flexible.js"></script>
   <script src="js/index.js"></script>
   <script src="js/Ajax.js"></script>
   <script src="js/MyTime.js"></script>
   <script src="js/MyMap.js"></script>
+
+  
 </body>
 
 </html>

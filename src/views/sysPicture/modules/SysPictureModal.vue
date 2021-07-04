@@ -17,9 +17,16 @@
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="图片">
             <j-image-upload @change="change" class="avatar-uploader" text="上传" v-model="fileList"></j-image-upload>
         </a-form-item>
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="排序">
-          <a-input placeholder="请输入排序" v-decorator="['picturetwo', {}]" />
+        
+        <a-form-item label="位置"  :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-select style="width: 200px" placeholder="请选择" v-decorator="['picturetwo', {}]" >
+            <a-select-option value="左下"> 左下</a-select-option>
+            <a-select-option value="右上"> 右上</a-select-option>
+            <a-select-option value="右中"> 右中</a-select-option>
+            <a-select-option value="右下"> 右下</a-select-option>
+          </a-select>
         </a-form-item>
+
       </a-form>
     </a-spin>
   </j-modal>

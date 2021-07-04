@@ -2,21 +2,37 @@
   <a-card :bordered="false">
 
     <!-- 查询区域 -->
-    <div class="table-page-search-wrapper">
+<!--    <div class="table-page-search-wrapper">
       <a-form layout="inline" @keyup.enter.native="searchQuery">
         <a-row :gutter="24">
 
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="图片名称">
-              <a-input placeholder="请输入图片名称" v-model="queryParam.picturename"></a-input>
+            <a-form-item label="节水型工业企业用水量（万m³）">
+              <a-input placeholder="请输入节水型工业企业用水量（万m³）" v-model="queryParam.jsqyysl"></a-input>
             </a-form-item>
           </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="图片">
-              <a-input placeholder="请输入图片" v-model="queryParam.pictureone"></a-input>
+            <a-form-item label="市区工业企业用水量（万m³）">
+              <a-input placeholder="请输入市区工业企业用水量（万m³）" v-model="queryParam.qyysl"></a-input>
             </a-form-item>
           </a-col>
-        
+        <template v-if="toggleSearchStatus">
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <a-form-item label="节水型单位用水量（万m³）">
+              <a-input placeholder="请输入节水型单位用水量（万m³）" v-model="queryParam.jsdw"></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <a-form-item label="市区单位用水量（万m³）">
+              <a-input placeholder="请输入市区单位用水量（万m³）" v-model="queryParam.dw"></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <a-form-item label="节水型学校">
+              <a-input placeholder="请输入节水型学校" v-model="queryParam.jsxx"></a-input>
+            </a-form-item>
+          </a-col>
+          </template>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
@@ -30,21 +46,21 @@
 
         </a-row>
       </a-form>
-    </div>
+    </div> -->
 
     <!-- 操作按钮区域 -->
     <div class="table-operator">
       <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
-      <!-- <a-button type="primary" icon="download" @click="handleExportXls('..')">导出</a-button>
+      <!-- <a-button type="primary" icon="download" @click="handleExportXls('节水型载体建成率')">导出</a-button>
       <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
         <a-button type="primary" icon="import">导入</a-button>
       </a-upload> -->
-      <!-- <a-dropdown v-if="selectedRowKeys.length > 0">
+      <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
           <a-menu-item key="1" @click="batchDel"><a-icon type="delete"/>删除</a-menu-item>
         </a-menu>
         <a-button style="margin-left: 8px"> 批量操作 <a-icon type="down" /></a-button>
-      </a-dropdown> -->
+      </a-dropdown>
     </div>
 
     <!-- table区域-begin -->
@@ -88,24 +104,24 @@
     <!-- table区域-end -->
 
     <!-- 表单区域 -->
-    <sysPicture-modal ref="modalForm" @ok="modalFormOk"></sysPicture-modal>
+    <statisticsData-modal ref="modalForm" @ok="modalFormOk"></statisticsData-modal>
   </a-card>
 </template>
 
 <script>
   import '@/assets/less/TableExpand.less'
-  import SysPictureModal from './modules/SysPictureModal'
+  import StatisticsDataModal from './modules/StatisticsDataModal'
   import { JeecgListMixin } from '@/mixins/JeecgListMixin'
 
   export default {
-    name: "SysPictureList",
+    name: "StatisticsDataList",
     mixins:[JeecgListMixin],
     components: {
-      SysPictureModal
+      StatisticsDataModal
     },
     data () {
       return {
-        description: '..管理页面',
+        description: '节水型载体建成率管理页面',
         // 表头
         columns: [
           {
@@ -118,21 +134,57 @@
               return parseInt(index)+1;
             }
            },
+        {
+             title: '区县',
+             align:"center",
+             dataIndex: 'qx'
+            },
+        {
+             title: '年度',
+             align:"center",
+             dataIndex: 'nd'
+            },
 		   {
-            title: '图片名称',
+            title: '节水型工业企业用水量（万m³）',
             align:"center",
-            dataIndex: 'picturename'
+            dataIndex: 'jsqyysl'
            },
 		   {
-            title: '图片',
+            title: '市区工业企业用水量（万m³）',
             align:"center",
-            dataIndex: 'pictureone'
+            dataIndex: 'qyysl'
            },
 		   {
-            title: '排序',
+            title: '节水型单位用水量（万m³）',
             align:"center",
-            dataIndex: 'picturetwo'
+            dataIndex: 'jsdw'
            },
+		   {
+            title: '市区单位用水量（万m³）',
+            align:"center",
+            dataIndex: 'dw'
+           },
+		   {
+            title: '节水型学校',
+            align:"center",
+            dataIndex: 'jsxx'
+           },
+		   {
+            title: '学校总数',
+            align:"center",
+            dataIndex: 'xx'
+           },
+		   {
+            title: '节水型小区户数',
+            align:"center",
+            dataIndex: 'jsxq'
+           },
+		   {
+            title: '市区小区总户数',
+            align:"center",
+            dataIndex: 'xq'
+           },
+		   
           {
             title: '操作',
             dataIndex: 'action',
@@ -141,11 +193,11 @@
           }
         ],
 		url: {
-          list: "/sysPicture/sysPicture/list",
-          delete: "/sysPicture/sysPicture/delete",
-          deleteBatch: "/sysPicture/sysPicture/deleteBatch",
-          exportXlsUrl: "sysPicture/sysPicture/exportXls",
-          importExcelUrl: "sysPicture/sysPicture/importExcel",
+          list: "/data/statisticsData/list",
+          delete: "/data/statisticsData/delete",
+          deleteBatch: "/data/statisticsData/deleteBatch",
+          exportXlsUrl: "data/statisticsData/exportXls",
+          importExcelUrl: "data/statisticsData/importExcel",
        },
     }
   },

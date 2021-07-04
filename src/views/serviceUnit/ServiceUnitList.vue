@@ -30,11 +30,10 @@
                 placeholder="请选择单位类型"
                 v-model="queryParam.unit"
               >
-                <a-select-option value="医院"> 医院 </a-select-option>
-                <a-select-option value="学校"> 学校 </a-select-option>
-                <a-select-option value="机关"> 机关（单位） </a-select-option>
+                <a-select-option value="机关"> 机关 </a-select-option>
+                <a-select-option value="单位"> 事业单位 </a-select-option>
                 <a-select-option value="宾馆"> 宾馆 </a-select-option>
-                <a-select-option value="教育基地"> 节水教育基地 </a-select-option>
+                <a-select-option value="医院"> 医院 </a-select-option>
                 <a-select-option value="其他"> 其他 </a-select-option>
               </a-select>
             </a-form-item>
@@ -42,7 +41,14 @@
           <template v-if="toggleSearchStatus">
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="单位所在地">
-                <j-input placeholder="请输入单位所在地" v-model="queryParam.dwszd"></j-input>
+                <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.addr">
+                  <a-select-option value="高邮市"> 高邮市 </a-select-option>
+                  <a-select-option value="仪征市"> 仪征市 </a-select-option>
+                  <a-select-option value="邗江区"> 邗江区 </a-select-option>
+                  <a-select-option value="广陵区"> 广陵区 </a-select-option>
+                  <a-select-option value="江都区"> 江都区 </a-select-option>
+                  <a-select-option value="宝应县"> 宝应县 </a-select-option>
+                </a-select>
               </a-form-item>
             </a-col>
             <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
@@ -50,7 +56,7 @@
                 <j-input placeholder="请输入单位地址" v-model="queryParam.dwdz"></j-input>
               </a-form-item>
             </a-col> -->
-            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <!-- <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="是否节水型">
                 <a-select style="width: 200px" placeholder="请选择" v-model="queryParam.sfjsx_key">
                   <a-select-option value="1"> 省级节水型 </a-select-option>
@@ -66,10 +72,15 @@
                   <a-select-option value="2"> 未节水技改 </a-select-option>
                 </a-select>
               </a-form-item>
-            </a-col>
+            </a-col> 
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="公布时间">
                 <a-date-picker :value-format="'YYYY年MM月DD日'" v-model="queryParam.gbsj" />
+              </a-form-item>
+            </a-col>-->
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="公布时间">
+                <j-input  v-model="queryParam.gbsj" placeholder="请输入年份 例如 2021" ></j-input>
               </a-form-item>
             </a-col>
           </template>
@@ -89,8 +100,8 @@
 
     <!-- 操作按钮区域 -->
     <div class="table-operator">
-      <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
-      <a-button type="primary" icon="download" @click="handleExportXls('省级-生活服务业单位')">导出</a-button>
+      <a-button @click="handleAdd" type="primary" icon="plus" v-has="'unit:add'"  >新增</a-button>
+      <a-button type="primary" icon="download" @click="handleExportXls('单位')" v-has="'unit:out'">导出</a-button>
       <a-upload
         name="file"
         :showUploadList="false"
@@ -98,10 +109,11 @@
         :headers="tokenHeader"
         :action="importExcelUrl"
         @change="handleImportExcel"
+        v-has="'unit:imp'"
       >
         <a-button type="primary" icon="import">导入</a-button>
       </a-upload>
-      <a-dropdown v-if="selectedRowKeys.length > 0">
+      <a-dropdown v-if="selectedRowKeys.length > 0"  v-has="'unit:delete'">
         <a-menu slot="overlay">
           <a-menu-item key="1" @click="batchDel"><a-icon type="delete" />删除</a-menu-item>
         </a-menu>
@@ -138,10 +150,10 @@
             : ipagination.pageSize * (ipagination.current - 1) + parseInt(index) + 1
         }}</span>
         <span slot="action" slot-scope="text, record">
-          <a @click="handleEdit(record)">编辑</a>
+          <a @click="handleEdit(record)" v-has="'unit:edit'">编辑</a>
 
           <a-divider type="vertical" />
-          <a-dropdown>
+          <a-dropdown  v-has="'unit:delete'">
             <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>
             <a-menu slot="overlay">
               <a-menu-item>
@@ -229,7 +241,7 @@ export default {
           dataIndex: 'ysrsdw'
         },
         {
-          title: '年实际用水量（万m³）',
+          title: '年实际用水量（万m³/a）',
           align: "center",
           dataIndex: 'sjysl'
         },
@@ -248,71 +260,7 @@ export default {
           align: "center",
           dataIndex: 'ysldw'
         },
-        {
-          title: '节水技改-项目名称',
-          align: 'center',
-          dataIndex: 'xmmc'
-        },
-        {
-          title: '节水技改-项目级别',
-          align: 'center',
-          dataIndex: 'xmjb'
-        },
-        {
-          title: '节水技改-财政投入（万元）',
-          align: 'center',
-          dataIndex: 'cztr'
-        },
-        {
-          title: '节水技改-单位投入（万元）',
-          align: 'center',
-          dataIndex: 'dwtr'
-        },
-        {
-          title: '节水技改投入（万元）',
-          align: 'center',
-          dataIndex: 'jsjgtr'
-        },
-        {
-          title: '重复用水量（万m³）',
-          align: "center",
-          dataIndex: 'cfysl'
-        },
-        {
-          title: '重复利用率（%）',
-          align: "center",
-          dataIndex: 'cflyl'
-        },
-        {
-          title: '直接冷却循环率（%）',
-          align: 'center',
-          dataIndex: 'zjlqxhl'
-        },
-        {
-          title: '冷凝水回用率（%）',
-          align: 'center',
-          dataIndex: 'llshyl'
-        },
-        {
-          title: '废水回用率（%）',
-          align: 'center',
-          dataIndex: 'fshyl'
-        },
-        {
-          title: '非常规水利用-水源',
-          align: 'center',
-          dataIndex: 'fcgssy'
-        },
-        {
-          title: '非常规水源利用量（万m3）',
-          align: 'center',
-          dataIndex: 'fcgslyl'
-        },
-        {
-          title: '非常规水源替代率（%）',
-          align: 'center',
-          dataIndex: 'fcgsytdl'
-        },
+        
         {
           title: '公布节水型生活服务业单位文件',
           align: "center",

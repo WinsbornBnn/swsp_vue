@@ -12,13 +12,13 @@ function resolve(dir) {
  console.log("构建环境："+process.env.NODE_ENV)
  if(process.env.NODE_ENV == 'development'){
    //开发环境
-   process.env.VUE_APP_API_URL = 'http://192.168.2.16:8080/swsp'
+   process.env.VUE_APP_API_URL = 'http://192.168.2.13:8080/swsp'
  }else if(process.env.NODE_ENV == 'production'){
    //生产环境
    process.env.VUE_APP_API_URL = 'http://localhost:8080/swsp'
  }else if(process.env.NODE_ENV == 'test'){
    //测试环境-公司内网
-   process.env.VUE_APP_API_URL = 'http://218.88.21.139:8081/swsp'
+   process.env.VUE_APP_API_URL = 'http://219.142.250.239:8089/swsp/'
  }else{process.env.VUE_APP_API_URL=''}
 
 // vue.config.js

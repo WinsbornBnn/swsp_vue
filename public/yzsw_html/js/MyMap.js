@@ -138,13 +138,15 @@ const draw = (axis, scale) => {
       title: axis[key].title,
       gbdw: axis[key].gbdw,
       gbdwjb: axis[key].gbdwjb,
-      address: axis[key].address,
-      location: axis[key].location,
+      address: axis[key].address == null?'':axis[key].address ,
+      location: axis[key].location == null?'':axis[key].location ,
       design: axis[key].design,
+      time:axis[key].time,
       plot: axis[key].plot ? axis[key].plot : '',
       company: axis[key].company ? axis[key].company : '',
       tank: axis[key].tank ? axis[key].tank : '',
       units: axis[key].units ? axis[key].units : '',
+      dm:axis[key].dm ? axis[key].dm : '',
     });
     iconFeature.setId(axis[key].Id);
     //设置图标样式
@@ -166,8 +168,11 @@ const created = () => {
   let url = {
     plotsUrl: 'residentialQuarters/residentialQuarters/list',
     companyUrl: 'industrialEnterprise/industrialEnterprise/list',
+    jssfUrl: 'industrialEnterprise/industrialEnterprise/listjg', //节水示范项目
     tanksUrl: 'irrigationArea/irrigationArea/list',
-    unitsUrl: 'serviceUnit/serviceUnit/list'
+    unitsUrl: 'serviceUnit/serviceUnit/list',
+    schUrl: 'serviceUnit/serviceUnit/listsch',
+    jdUrl: 'serviceUnit/serviceUnit/listjd'
   }
   let axis = [];
   let t1 = null;
@@ -185,8 +190,49 @@ const created = () => {
   var tanks = {};
   var units = {};
   var src = '';
+  var gb_time = "";
+  var dm = "";
   for (const key in url) {
+    
     switch (key) {
+      case 'jssfUrl':
+        let jsxxList = getList(url[key], { pageSize: 10000 });
+        jsxxList.records.forEach(item => {
+          t1 = item.xcoor ? item.xcoor : null;
+          t2 = item.ycoor ? item.ycoor : null;
+          id = item.id;
+          images = item.images ? item.images : null;
+          gbdw = item.gbdw ? item.gbdw : '江苏省水利厅';
+          gbdwjb = item.xmjb ? item.xmjb : '省级';
+          title = item.qymc;
+          gb_time = item.gbsj;
+          dm = item.dm;
+          address = item.qyszd;
+          location = item.qydz;
+          design = '节水减排示范项目';
+          if(item.xmjb == "省级"){
+            src = './icons/sj_xx.png';
+          }else{
+            src = './icons/sjxx.png';
+          }
+          plot = item;
+          axis.push({
+            zb: [t1, t2],
+            src: src,
+            Id: id,
+            images: images,
+            title: title,
+            gbdw: gbdw,
+            gbdwjb: gbdwjb,
+            address: address,
+            location: location,
+            time:gb_time,
+            design: design,
+            plot: plot,
+            dm:dm
+          });
+        });
+        break;
       case 'plotsUrl':
         let plotList = getList(url[key], { pageSize: 10000 });
         plotList.records.forEach(item => {
@@ -197,6 +243,8 @@ const created = () => {
           gbdw = item.gbdw ? item.gbdw : '江苏省水利厅';
           gbdwjb = item.gbdwjb ? item.gbdwjb : '省级';
           title = item.xqmc;
+          dm = item.dm;
+          gb_time = item.gbsj;
           address = item.xqdz;
           location = item.xqszd;
           design = '小区';
@@ -208,8 +256,10 @@ const created = () => {
             xmmc: item.xmmc ? item.xmmc : '暂无',
             jsjgtr: item.jsjgtr ? item.jsjgtr : 0,
             cztr: item.cztr ? item.cztr : 0,
-            dez: item.dez ? item.dez : 0
+            dez: item.dez ? item.dez : 0,
+            time:gb_time
           };
+          
           axis.push({
             zb: [t1, t2],
             src: src,
@@ -220,9 +270,12 @@ const created = () => {
             gbdwjb: gbdwjb,
             address: address,
             location: location,
+            time:gb_time,
             design: design,
-            plot: plot
+            plot: plot,
+            dm:dm
           });
+  
         });
         break;
       case 'companyUrl':
@@ -235,6 +288,8 @@ const created = () => {
           gbdw = item.gbdw ? item.gbdw : '江苏省水利厅';
           gbdwjb = item.gbdwjb ? item.gbdwjb : '省级';
           title = item.qymc;
+          dm = item.dm;
+          gb_time = item.gbsj;
           address = item.qydz;
           location = item.qyszd;
           design = '企业';
@@ -244,12 +299,13 @@ const created = () => {
             zycp: item.zycp,
             sjysl: item.sjysl ? item.sjysl : 0,
             dwcpysdw: item.dwcpysdw ? item.dwcpysdw : 0,
-            dwcpys: item.dwcpys ? item.dwcpys : 0,
+            dwcpys: item.dwcpysz ? item.dwcpysz : 0,
             cflyl: item.cflyl ? item.cflyl : 0,
             jsjgtr: item.jsjgtr ? item.jsjgtr : 0,
             cztr: item.cztr ? item.cztr : 0,
             dez: item.dez ? item.dez : 0,
             xmmc: item.xmmc ? item.xmmc : '暂无',
+            time:gb_time
           };
           axis.push({
             zb: [t1, t2],
@@ -261,8 +317,10 @@ const created = () => {
             gbdwjb: gbdwjb,
             address: address,
             location: location,
+            time:gb_time,
             design: design,
-            company: company
+            company: company,
+            dm:dm
           });
         });
         break;
@@ -272,10 +330,12 @@ const created = () => {
           t1 = item.xcoor ? item.xcoor : null;
           t2 = item.ycoor ? item.ycoor : null;
           id = item.id;
+          dm = item.dm;
           images = item.images ? item.images : null;
           gbdw = item.gbdw ? item.gbdw : '江苏省水利厅';
           gbdwjb = item.gbdwjb ? item.gbdwjb : '省级';
           title = item.gqmc;
+          gb_time = item.gbsj;
           address = item.gqdz;
           location = item.gqszd;
           design = '灌区';
@@ -284,10 +344,13 @@ const created = () => {
             gqgmlx: item.gqgmlx,
             zyzw: item.zyzw,
             sjysl: item.sjysl ? item.sjysl : 0,
-            dwlzss: item.dwlzss ? item.dwlzss : 0,
+            dwlzss: item.dwmjysl ? item.dwmjysl : 0,
             cztr: item.cztr ? item.cztr : 0,
             xmmc: item.xmmc ? item.xmmc : '暂无',
-            jsjgtr: item.jsjgtr ? item.jsjgtr : 0
+            jsjgtr: item.jsjgtr ? item.jsjgtr : 0,
+            time:gb_time,
+            ggsyxlyxs:item.ggsyxlyxs == null?'':item.ggsyxlyxs
+            
           };
           axis.push({
             zb: [t1, t2],
@@ -299,8 +362,10 @@ const created = () => {
             gbdwjb: gbdwjb,
             address: address,
             location: location,
+            time:gb_time,
             design: design,
-            tank: tanks
+            tank: tanks,
+            dm:dm
           });
         });
         break;
@@ -310,11 +375,13 @@ const created = () => {
           t1 = item.xcoor ? item.xcoor : null;
           t2 = item.ycoor ? item.ycoor : null;
           id = item.id;
+          dm = item.dm;
           images = item.images ? item.images : null;
           title = item.dwmc;
           gbdw = item.gbdw ? item.gbdw : '江苏省水利厅';
           gbdwjb = item.gbdwjb ? item.gbdwjb : '省级';
           address = item.dwdz;
+          gb_time = item.gbsj;
           location = item.dwszd;
           design = '单位';
           src = './icons/03.png';
@@ -342,15 +409,16 @@ const created = () => {
           }
           units = {
             dwlx: item.dwlx,
-            ysrs: item.ysrs ? item.ysrs : 0,
+            ysrs: item.ysrsz ? item.ysrsz : 0,
             sjysl: item.sjysl ? item.sjysl : 0,
-            rjysl: item.rjysl ? item.rjysl : 0,
+            rjysl: item.yslz ? item.yslz : 0,
             cztr: item.cztr ? item.cztr : 0,
             dez: item.dez ? item.dez : 0,
             jsjgtr: item.jsjgtr ? item.jsjgtr : 0,
             xmmc: item.xmmc ? item.xmmc : '暂无',
             ysldw: item.ysldw ? item.ysldw : ' m3/（人·a）',
-            ysrsdw: item.ysrsdw ? item.ysrsdw : '人'
+            ysrsdw: item.ysrsdw ? item.ysrsdw : '人',
+            time:gb_time
           };
           axis.push({
             zb: [t1, t2],
@@ -362,11 +430,109 @@ const created = () => {
             gbdwjb: gbdwjb,
             address: address,
             location: location,
+            time:gb_time,
             design: design,
-            units: units
+            units: units,
+            dm:dm
           })
         });
         break;
+      case 'schUrl':
+        let schunitsList = getList(url[key], { pageSize: 10000 });
+        schunitsList.records.forEach(item => {
+          t1 = item.xcoor ? item.xcoor : null;
+          t2 = item.ycoor ? item.ycoor : null;
+          id = item.id;
+          dm = item.dm;
+          images = item.images ? item.images : null;
+          title = item.dwmc;
+          gbdw = item.gbdw ? item.gbdw : '江苏省水利厅';
+          gbdwjb = item.gbdwjb ? item.gbdwjb : '省级';
+          address = item.dwdz;
+          gb_time = item.gbsj;
+          location = item.dwszd;
+          design = '学校';
+          src = './icons/04.png';
+          
+          units = {
+            dwlx: item.dwlx,
+            ysrs: item.ysrsz ? item.ysrsz : 0,
+            sjysl: item.sjysl ? item.sjysl : 0,
+            rjysl: item.yslz ? item.yslz : 0,
+            cztr: item.cztr ? item.cztr : 0,
+            dez: item.dez ? item.dez : 0,
+            jsjgtr: item.jsjgtr ? item.jsjgtr : 0,
+            xmmc: item.xmmc ? item.xmmc : '暂无',
+            ysldw: item.ysldw ? item.ysldw : ' m3/（人·a）',
+            ysrsdw: item.ysrsdw ? item.ysrsdw : '人',
+            time:gb_time
+          };
+          axis.push({
+            zb: [t1, t2],
+            Id: id,
+            src: src,
+            images: images,
+            title: title,
+            gbdw: gbdw,
+            gbdwjb: gbdwjb,
+            address: address,
+            location: location,
+            time:gb_time,
+            design: design,
+            units: units,
+            dm:dm
+          })
+        });
+        break;
+        
+      case 'jdUrl':
+        let jdunitsList = getList(url[key], { pageSize: 10000 });
+        jdunitsList.records.forEach(item => {
+          t1 = item.xcoor ? item.xcoor : null;
+          t2 = item.ycoor ? item.ycoor : null;
+          id = item.id;
+          dm = item.dm;
+          images = item.images ? item.images : null;
+          title = item.dwmc;
+          gbdw = item.gbdw ? item.gbdw : '江苏省水利厅';
+          gbdwjb = item.gbdwjb ? item.gbdwjb : '省级';
+          address = item.dwdz;
+          gb_time = item.gbsj;
+          location = item.dwszd;
+          design = '节水教育基地';
+          src = './icons/09.png';
+
+          units = {
+            dwlx: item.dwlx,
+            ysrs: item.ysrsz ? item.ysrsz : 0,
+            sjysl: item.sjysl ? item.sjysl : 0,
+            rjysl: item.yslz ? item.yslz : 0,
+            cztr: item.cztr ? item.cztr : 0,
+            dez: item.dez ? item.dez : 0,
+            jsjgtr: item.jsjgtr ? item.jsjgtr : 0,
+            xmmc: item.xmmc ? item.xmmc : '暂无',
+            ysldw: item.ysldw ? item.ysldw : ' m3/（人·a）',
+            ysrsdw: item.ysrsdw ? item.ysrsdw : '人',
+            time:gb_time
+          };
+          axis.push({
+            zb: [t1, t2],
+            Id: id,
+            src: src,
+            images: images,
+            title: title,
+            gbdw: gbdw,
+            gbdwjb: gbdwjb,
+            address: address,
+            location: location,
+            time:gb_time,
+            design: design,
+            units: units,
+            dm:dm
+          })
+        });
+      break;
+        
       default:
         break;
     }
@@ -379,11 +545,14 @@ const created = () => {
   allObj.push({
     axis: axis
   })
+  // map.removeLayer(vectorLayer);
+  // map.removeLayer(vectorLayer1);
+  debugger
   allObj.forEach(item => {
-    draw(item.axis, scale);
+    addRandomFeature(item.axis, scale);
   });
 }
-created();
+
 var vectorSource1 = new ol.source.Vector({});
 var vectorLayer1 = null;
 // 5.删除点，需要先从Feature里移除icon，然后再移除图层，如果不从Feature里移除icon而直接移除图层，
@@ -408,13 +577,15 @@ const addRandomFeature = (axis, scale) => {
       title: axis[key].title,
       gbdw: axis[key].gbdw,
       gbdwjb: axis[key].gbdwjb,
-      address: axis[key].address,
-      location: axis[key].location,
+      address: axis[key].address == null?'':axis[key].address ,
+      location: axis[key].location == null?'':axis[key].location ,
       design: axis[key].design,
+      time:axis[key].time,
       plot: axis[key].plot ? axis[key].plot : '',
       company: axis[key].company ? axis[key].company : '',
       tank: axis[key].tank ? axis[key].tank : '',
       units: axis[key].units ? axis[key].units : '',
+      dm:axis[key].dm ? axis[key].dm : '',
     });
     rome.setId(axis[key].Id);
     rome.setStyle(LabelStyle(axis[key].src, scale));
@@ -434,3 +605,5 @@ const remove = () => {
     map.addLayer(vectorLayer);
   });
 }
+
+created();

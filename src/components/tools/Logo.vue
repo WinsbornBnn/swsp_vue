@@ -21,7 +21,7 @@
     props: {
       title: {
         type: String,
-        default: '智慧节水',
+        default: '',
         required: false
       },
       showTitle: {

@@ -1,42 +1,71 @@
 layui.use(['layer', 'form',], () => {
   let form = layui.form
   let type = 1;
-  var plot, units, company, tanks = null;
-  var allplot, allunits, allcompany, alltanks = null;
+  var plot = 0, units = 0, company = 0, tanks = 0;
+  var allplot = 0, allunits = 0, allcompany = 0, alltanks = 0;
   var plotper, unitsper, companyper, tanksper = null;
   // 数据字典的值
-  let alldata = getList('sys/dict/getDictItems/js_count');
-  alldata.forEach(item => {
-    if (item.text === "企业") {
-      allcompany = item.value
-    } else if (item.text === "灌区") {
-      alltanks = item.value
-    } else if (item.text === "小区") {
-      allplot = item.value
-    } else {
-      allunits = item.value
-    }
-  });
+  // let alldata = getList('sys/dict/getDictItems/js_count');
+  // alldata.forEach(item => {
+  //   if (item.text === "企业") {
+  //     allcompany = item.value
+  //   } else if (item.text === "灌区") {
+  //     alltanks = item.value
+  //   } else if (item.text === "小区") {
+  //     allplot = item.value
+  //   } else {
+  //     allunits = item.value
+  //   }
+  // });
   // 第一个省市级切换
-  form.on('select(allprovince)', function (obj) {
+  form.on('select(qx)', function (obj) {
     type = obj.value;
-    let data = getList('industrialEnterprise/industrialEnterprise/staticNum', { type: type });
-    data.forEach(item => {
-      if (item.name === "企业") {
-        company = item.num ? item.num : 0;
-      } else if (item.name === "灌区") {
-        tanks = item.num ? item.num : 0;
-      } else if (item.name === "小区") {
-        plot = item.num ? item.num : 0;
-      } else {
-        units = item.num ? item.num : 0;
-      }
-    });
-    // 百分比计算
-    plotper = (plot / allplot).toFixed(4) * 100;
-    unitsper = (units / allunits).toFixed(4) * 100;
-    companyper = (company / allcompany).toFixed(4) * 100;
-    tanksper = (tanks / alltanks).toFixed(4) * 100;
+    
+    let data = getList('data/statisticsData/queryByDq', {qx:type,nd:0});
+    if(data != null){
+      plot = Number(data.jsqyysl);
+      allplot = Number(data.qyysl);
+      units = Number(data.jsxx);
+      allunits = Number(data.xx);
+      company = Number(data.jsdw);
+      allcompany = Number(data.dw);
+      tanks = Number(data.jsxq);
+      alltanks = Number(data.xq);
+    }else{
+      plot = 0;
+      allplot = 0;
+      units = 0;
+      allunits = 0;
+      company = 0;
+      allcompany = 0;
+      tanks = 0;
+      alltanks = 0;
+      plotper = 0;
+      unitsper = 0;
+      companyper = 0;
+      tanksper = 0;
+    }
+    
+    // 计算百分比
+    if(allplot != 0){
+      plotper = (plot / allplot).toFixed(4) * 100;
+      plotper = Math.floor(plotper * 100) / 100; 
+    }
+    if(allunits != 0){
+      unitsper = (units / allunits).toFixed(4) * 100;
+      console.log(unitsper);
+      unitsper = Math.floor(unitsper * 100) / 100; 
+    }
+    if(allcompany != 0){
+      companyper = (company / allcompany).toFixed(4) * 100;
+      companyper = Math.floor(companyper * 100) / 100; 
+    }
+    if(alltanks != 0){
+      tanksper = (tanks / alltanks).toFixed(4) * 100;
+      console.log(tanksper);
+      tanksper = Math.floor(tanksper * 100) / 100; 
+    }
+    
     // 渲染页面
     document.querySelector('.plot').innerHTML = `
       <div class="box">
@@ -45,7 +74,7 @@ layui.use(['layer', 'form',], () => {
         </div>
         <div class="item">
           <span style="color: #F49448;">
-            小区${plot}个
+            工业企业
           </span>
       </div>
         `;
@@ -56,7 +85,7 @@ layui.use(['layer', 'form',], () => {
       </div>
       <div class="item">
         <span style="color: #0FB5A7;">
-          单位${units}个
+          学校
         </span>
       </div>`;
     document.querySelector('.company').innerHTML = `
@@ -66,7 +95,7 @@ layui.use(['layer', 'form',], () => {
       </div>
       <div class="item">
         <span style="color: #F465A5;">
-          企业${company}个
+          单位
         </span>
       </div>`;
     document.querySelector('.tanks').innerHTML = `
@@ -76,7 +105,7 @@ layui.use(['layer', 'form',], () => {
       </div>
       <div class="item">
         <span style="color: #5474FF;">
-          灌区${tanks}个
+         小区
         </span>
       </div>`;
     getTanks(tanks, alltanks)
@@ -84,28 +113,69 @@ layui.use(['layer', 'form',], () => {
     getPlot(plot, allplot)
     getUnits(units, allunits)
   });
+  
+  
   // 其余三个省市级切换
   form.on('select(allunits)', function (obj) { type = obj.value; getUnit(type) });
   form.on('select(allcompany)', function (obj) { type = obj.value; getCompanyList(type) });
   form.on('select(alltanks)', function (obj) { type = obj.value; getTank(type) });
+  
   // 所有省级的统计数量
-  let data = getList('industrialEnterprise/industrialEnterprise/staticNum', { type: type });
-  data.forEach(item => {
-    if (item.name === "企业") {
-      company = item.num ? item.num : 0
-    } else if (item.name === "灌区") {
-      tanks = item.num ? item.num : 0
-    } else if (item.name === "小区") {
-      plot = item.num ? item.num : 0
-    } else {
-      units = item.num ? item.num : 0
-    }
-  });
+  // let data = getList('industrialEnterprise/industrialEnterprise/staticNum', { type: type });
+  // data.forEach(item => {
+  //   if (item.name === "企业") {
+  //     company = item.num ? item.num : 0
+  //   } else if (item.name === "灌区") {
+  //     tanks = item.num ? item.num : 0
+  //   } else if (item.name === "小区") {
+  //     plot = item.num ? item.num : 0
+  //   } else {
+  //     units = item.num ? item.num : 0
+  //   }
+  // });
+  
+  
+  // let nd = getList('data/statisticsData/getNf', {});
+  // nd.forEach(item => {
+  //   var options="<option value='"+item.nd+"'>"+item.nd+"</option>";
+  //    $("#nd").append(options);
+  // });
+  var nd_last = 0;
+  // if(nd.length > 0){
+  //   nd_last = nd[0].nd;
+  // }
+  console.log(nd_last);
+  let data = getList('data/statisticsData/queryByDq', {qx:"市区",nd:nd_last});
+  if(data != null){
+    plot = Number(data.jsqyysl);
+    allplot = Number(data.qyysl);
+    units = Number(data.jsxx);
+    allunits = Number(data.xx);
+    company = Number(data.jsdw);
+    allcompany = Number(data.dw);
+    tanks = Number(data.jsxq);
+    alltanks = Number(data.xq);
+  }
+  
   // 计算百分比
-  plotper = (plot / allplot).toFixed(4) * 100;
-  unitsper = (units / allunits).toFixed(4) * 100;
-  companyper = (company / allcompany).toFixed(4) * 100;
-  tanksper = (tanks / alltanks).toFixed(4) * 100;
+  if(allplot != 0){
+    plotper = (plot / allplot).toFixed(4) * 100;
+    plotper = Math.floor(plotper * 100) / 100; 
+  }
+  if(allunits != 0){
+    unitsper = (units / allunits).toFixed(4) * 100;
+    console.log(unitsper);
+    unitsper = Math.floor(unitsper * 100) / 100; 
+  }
+  if(allcompany != 0){
+    companyper = (company / allcompany).toFixed(4) * 100;
+    companyper = Math.floor(companyper * 100) / 100; 
+  }
+  if(alltanks != 0){
+    tanksper = (tanks / alltanks).toFixed(4) * 100;
+    console.log(tanksper);
+    tanksper = Math.floor(tanksper * 100) / 100; 
+  }
   // 渲染页面
   document.querySelector('.plot').innerHTML = `
       <div class="box">
@@ -114,7 +184,7 @@ layui.use(['layer', 'form',], () => {
         </div>
         <div class="item">
           <span style="color: #F49448;">
-            小区${plot}个
+            工业企业
           </span>
       </div>
         `;
@@ -125,7 +195,7 @@ layui.use(['layer', 'form',], () => {
       </div>
       <div class="item">
         <span style="color: #0FB5A7;">
-          单位${units}个
+          学校
         </span>
       </div>`;
   document.querySelector('.company').innerHTML = `
@@ -135,7 +205,7 @@ layui.use(['layer', 'form',], () => {
       </div>
       <div class="item">
         <span style="color: #F465A5;">
-          企业${company}个
+          单位
         </span>
       </div>`;
   document.querySelector('.tanks').innerHTML = `
@@ -145,7 +215,7 @@ layui.use(['layer', 'form',], () => {
       </div>
       <div class="item">
         <span style="color: #5474FF;">
-          灌区${tanks}个
+          小区
         </span>
       </div>`;
   // 获取小区统计数据
@@ -305,6 +375,8 @@ layui.use(['layer', 'form',], () => {
     });
   }
   getTanks(tanks, alltanks);
+  
+  
   // 获取单位分类
   const getUnit = (type) => {
     let data = getList('serviceUnit/serviceUnit/staticData', { type: type });
@@ -375,14 +447,18 @@ layui.use(['layer', 'form',], () => {
                 }
               },
               color: (params) => {
-                if (params.data < 20) {
+                console.log("--------------------------------------------------------->");
+                console.log(params);
+                if (params.name  ==  "其他") {
                   return "#AEBAFF"
-                } else if (params.data >= 20 && params.data < 40) {
+                } else if (params.name  ==  "医院") {
                   return "#46B0AE"
-                } else if (params.data >= 40 && params.data < 60) {
+                } else if (params.name  ==  "宾馆") {
                   return "#F5B8A5"
-                } else if (params.data >= 60) {
+                } else if (params.name  ==  "事业单位") {
                   return "#D785AB"
+                } else if (params.name  ==  "机关") {
+                  return "#d86c1f"
                 }
               }
             }
@@ -598,23 +674,33 @@ layui.use(['layer', 'form',], () => {
   getCompanyList(type);
   // 获取灌区分类
   const getTank = (type) => {
-    let data = getList('irrigationArea/irrigationArea/staticData', { type: type });
-    let small = 0;
-    let center = 0;
-    let strong = 0;
+    let data = getList('serviceUnit/serviceUnit/staticZtData', { type: type });
+    
+    let gy = 0;
+    let xx = 0;
+    let dw = 0;
+    let xq = 0;
+    let gq = 0;
+    let jd = 0;
     data.forEach(item => {
-      if (item.gqgmlx == "小型") {
-        small = item.num ? item.num : 0;
-      } else if (item.gqgmlx == "中型") {
-        center = item.num ? item.num : 0;
-      } else if (item.gqgmlx == "大型") {
-        strong = item.num ? item.num : 0;
+      if (item.dwlx == "工业企业") {
+        gy = item.num ? item.num : 0;
+      } else if (item.dwlx == "学校") {
+        xx = item.num ? item.num : 0;
+      } else if (item.dwlx == "单位") {
+        dw = item.num ? item.num : 0;
+      } else if (item.dwlx == "小区") {
+        xq = item.num ? item.num : 0;
+      } else if (item.dwlx == "灌区") {
+        gq = item.num ? item.num : 0;
+      } else if (item.dwlx == "节水教育基地") {
+        jd = item.num ? item.num : 0;
       }
     });
     let myTank = echarts.init(document.getElementById('tank'));
     let option = {
       legend: {
-        data: ["小型", "中型", "大型"],
+        data: ["工业企业", "学校", "单位", "小区", "灌区", "节水教育基地"],
         selectedMode: false,
         borderRadius: 5,
         itemHeight: 3,
@@ -629,7 +715,7 @@ layui.use(['layer', 'form',], () => {
       xAxis: [
         {
           type: "category",
-          data: ["小型", "中型", "大型"],
+          data: ["工业企业", "学校", "单位", "小区", "灌区", "节水教育基地"],
           axisTick: {
             show: false
           },
@@ -637,7 +723,8 @@ layui.use(['layer', 'form',], () => {
             show: false
           },
           axisLabel: {
-            show: true
+            show: true,
+            rotate: 45
           },
           axisLine: {
             show: false
@@ -663,9 +750,9 @@ layui.use(['layer', 'form',], () => {
       ],
       series: [
         {
-          name: "小型",
+          name: "工业企业",
           type: "bar",
-          data: [small, '-', '-'],
+          data: [gy, '-','-','-','-','-'],
           barWidth: 10,
           itemStyle: {
             normal: {
@@ -683,9 +770,9 @@ layui.use(['layer', 'form',], () => {
           }
         },
         {
-          name: "中型",
+          name: "学校",
           type: "bar",
-          data: ['-', center, '-'],
+          data: ['-', xx,'-','-','-','-'],
           barWidth: 10,
           itemStyle: {
             normal: {
@@ -704,8 +791,68 @@ layui.use(['layer', 'form',], () => {
         },
         {
           type: "bar",
-          name: "大型",
-          data: ['-', '-', strong],
+          name: "单位",
+          data: ['-','-' ,dw,'-','-','-'],
+          itemStyle: {
+            normal: {
+              borderRadius: 5,
+              label: {
+                show: true,
+                position: 'top',
+                textStyle: {
+                  color: '#fff',
+                  fontSize: 12
+                }
+              },
+              color: "#DA5045"
+            },
+          },
+          barWidth: 10
+        },
+        {
+          type: "bar",
+          name: "小区",
+          data: ['-', '-','-',xq,'-','-'],
+          itemStyle: {
+            normal: {
+              borderRadius: 5,
+              label: {
+                show: true,
+                position: 'top',
+                textStyle: {
+                  color: '#fff',
+                  fontSize: 12
+                }
+              },
+              color: "#DA5045"
+            },
+          },
+          barWidth: 10
+        },
+        {
+          type: "bar",
+          name: "灌区",
+          data: ['-', '-','-','-',gq,'-'],
+          itemStyle: {
+            normal: {
+              borderRadius: 5,
+              label: {
+                show: true,
+                position: 'top',
+                textStyle: {
+                  color: '#fff',
+                  fontSize: 12
+                }
+              },
+              color: "#DA5045"
+            },
+          },
+          barWidth: 10
+        },
+        {
+          type: "bar",
+          name: "节水教育基地",
+          data: ['-', '-','-','-','-',jd],
           itemStyle: {
             normal: {
               borderRadius: 5,
@@ -724,10 +871,10 @@ layui.use(['layer', 'form',], () => {
         }
       ],
       grid: {
-        x: 18,
-        y: 30,
+        x: 35,
+        y: 35,
         x2: 5,
-        y2: 20,
+        y2: 60,
         borderWidth: 0
       }
     }

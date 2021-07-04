@@ -170,7 +170,7 @@
 
       // update-begin-author:sunjianlei date:20200120 for: 动态更改页面标题
       changeTitle(title) {
-        let projectTitle = "扬州市智慧节水平台"
+        let projectTitle = " 扬州市节水型社会建设信息化平台"
         // 首页特殊处理
         if (this.$route.path === indexKey) {
           document.title = projectTitle

@@ -17,8 +17,8 @@
         :type="collapsed ? 'menu-unfold' : 'menu-fold'"
         @click="toggle"/>
 
-      <span v-if="device === 'desktop'">欢迎进入 扬州市智慧节水平台</span>
-      <span v-else>智慧节水</span>
+      <span v-if="device === 'desktop'">欢迎进入 扬州市节水型社会建设信息化平台</span>
+      <span v-else> </span>
 
       <user-menu :theme="theme"/>
     </div>

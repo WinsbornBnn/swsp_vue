@@ -1,7 +1,7 @@
 <template>
   <j-modal
     :title="title"
-    :width="800"
+    :width="1000"
     :visible="visible"
     :confirmLoading="confirmLoading"
     switchFullscreen
@@ -34,14 +34,32 @@
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="单位类型">
           <a-input placeholder="请输入单位类型" v-decorator="['dwlx', {}]" />
         </a-form-item>
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="用水人数（人）">
-          <a-input placeholder="请输入用水人数（人）" v-decorator="['ysrs', {}]" />
+
+        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="用水人数">
+          
+          <a-row>
+            <a-col :span="6" :push="18">
+              <a-input placeholder="用水人数/面积数单位"  v-decorator="['ysrsdw', {}]" />
+            </a-col>
+            <a-col :span="18" :pull="6">
+              <a-input placeholder="用水人数/面积数值" v-decorator="['ysrsz', {}]" />
+            </a-col>
+          </a-row>
+        
         </a-form-item>
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="年实际用水量（万m³）">
+        
+        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="年实际用水量（万m³/a）">
           <a-input-number v-decorator="['sjysl', {}]" />
         </a-form-item>
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="人均用水量（m³）">
-          <a-input placeholder="请输入人均用水量（m³）" v-decorator="['rjysl', {}]" />
+        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="均用水量">
+          <a-row>
+            <a-col :span="6" :push="18">
+              <a-input placeholder="人均或单位面积用水量单位" v-decorator="['ysldw', {}]" />
+            </a-col>
+            <a-col :span="18" :pull="6">
+              <a-input placeholder="人均或单位面积用水量值"  v-decorator="['yslz', {}]" />
+            </a-col>
+          </a-row>
         </a-form-item>
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="公布节水型生活服务业单位文件">
           <a-input placeholder="请输入公布节水型生活服务业单位文件" v-decorator="['dwwj', {}]" />
@@ -70,6 +88,11 @@
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="节水措施">
           <a-input placeholder="请输入节水措施" v-decorator="['jscs', {}]" />
         </a-form-item>
+        
+        <a-form-item label="大门" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <j-image-upload class="avatar-uploader" text="上传" v-model="avatarList" ></j-image-upload>
+        </a-form-item>
+        
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="上传图片">
           <j-more-image-upload
             class="avatar-uploader"
@@ -89,10 +112,12 @@ import pick from 'lodash.pick'
 import moment from "moment"
 import JMapInputDesc from '../../../components/jeecg/JMapInputDesc.vue'
 import JMoreImageUpload from '../../../components/jeecg/JMoreImageUpload'
+import JImageUpload from '../../../components/jeecg/JImageUpload'
 
 export default {
   name: "ServiceUnitModal",
   components: {
+    JImageUpload,
     JMapInputDesc,
     JMoreImageUpload
   },
@@ -105,13 +130,13 @@ export default {
       model: {},
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 5 },
+        sm: { span: 8 },
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 16 },
+        sm: { span: 15 },
       },
-
+      avatarList:[],
       confirmLoading: false,
       form: this.$form.createForm(this),
       validatorRules: {
@@ -145,11 +170,14 @@ export default {
       setTimeout(() => {
         this.fileList = record.images;
       }, 5)
+      setTimeout(() => {
+        this.avatarList = record.dm;
+      }, 5)
       this.form.resetFields();
       this.model = Object.assign({}, record);
       this.visible = true;
       this.$nextTick(() => {
-        this.form.setFieldsValue(pick(this.model, 'dwmc', 'zzjg', 'dwszd', 'dwdz', 'dwlx', 'ysrs', 'sjysl', 'rjysl', 'dwwj', 'gbdw', 'lhgbdw', 'gbdwjb', 'gbsj', 'fhsj', 'bz', 'nd', 'jscs'))
+        this.form.setFieldsValue(pick(this.model, 'dwmc', 'zzjg', 'dwszd', 'dwdz', 'dwlx','ysrsz','ysrsdw','yslz','dez','ysldw','dez', 'ysrs', 'sjysl', 'rjysl', 'dwwj', 'gbdw', 'lhgbdw', 'gbdwjb', 'gbsj', 'fhsj', 'bz', 'nd', 'jscs'))
         //时间格式化
       });
 
@@ -175,7 +203,11 @@ export default {
           }
           let formData = Object.assign(this.model, values);
           //时间格式化
-
+          if(that.avatarList != ''){
+              formData.dm = that.avatarList;
+          }else{
+              formData.dm = null;
+          }
           console.log(formData)
           httpAction(httpurl, formData, method).then((res) => {
             if (res.success) {
