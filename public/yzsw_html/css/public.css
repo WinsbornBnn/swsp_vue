@@ -56,6 +56,7 @@ body {
   }
 }
 .column {
+  position: relative;
   flex: 26%;
 }
 .column:nth-child(2) {
@@ -75,17 +76,18 @@ body {
   font-size: 0.225rem;
 }
 .title {
-  width: 100%;
   height: 100%;
-  padding: 0 0.1rem 0 0.1rem;
-  width: 20%;
 }
 .name {
   color: #C7D1FA;
-  position: absolute;
   font-size: 0.35rem;
-  top: 0.125rem;
-  left: 37%;
+  letter-spacing: 0.125rem;
+  text-align: center;
+  line-height: 1.05rem;
+}
+.background-img {
+  background-image: url(../icons/title.png);
+  background-size: 100% 100%;
 }
 .data {
   position: absolute;
@@ -144,7 +146,7 @@ body {
 .pannel .top .water span,
 .inner .top .water span {
   color: #fff;
-  text-decoration: underline;
+  font-size: 0.25rem;
 }
 .pannel .top .layui-form,
 .inner .top .layui-form {
@@ -253,7 +255,7 @@ body {
   right: 0.4375rem;
   border: #5462AB solid 0.0125rem;
   background-color: rgba(255, 255, 255);
-  height: 4.2rem;
+  height: 4.5rem;
   border-radius: 0.0625rem;
 }
 .map .hint ul {
@@ -263,36 +265,49 @@ body {
 .map .hint ul li {
   width: 100%;
   height: 0.35rem;
-  background: url(../icons/08.png) no-repeat;
-  background-size: 0.15rem 0.15rem;
+  background: url(../icons/qiye.png) no-repeat;
+  background-size: 0.2125rem 0.2125rem;
   font-size: 0.15rem;
 }
 .map .hint ul li:nth-child(2) {
-  background: url(../icons/05.png) no-repeat;
+  background: url(../icons/xiaoqu.png) no-repeat;
+  background-size: 0.2125rem 0.2125rem;
 }
 .map .hint ul li:nth-child(3) {
-  background: url(../icons/04.png) no-repeat;
+  background: url(../icons/xuexiao.png) no-repeat;
+  background-size: 0.2125rem 0.2125rem;
 }
 .map .hint ul li:nth-child(4) {
-  background: url(../icons/03.png) no-repeat;
+  background: url(../icons/danwei.png) no-repeat;
+  background-size: 0.2125rem 0.2125rem;
 }
 .map .hint ul li:nth-child(5) {
-  background: url(../icons/06.png) no-repeat;
+  background: url(../icons/binguan.png) no-repeat;
+  background-size: 0.2125rem 0.2125rem;
 }
 .map .hint ul li:nth-child(6) {
-  background: url(../icons/0132.png) no-repeat;
+  background: url(../icons/guanqu.png) no-repeat;
+  background-size: 0.2125rem 0.2125rem;
 }
 .map .hint ul li:nth-child(7) {
-  background: url(../icons/01.png) no-repeat;
+  background: url(../icons/yiyuan.png) no-repeat;
+  background-size: 0.2125rem 0.2125rem;
 }
 .map .hint ul li:nth-child(8) {
-  background: url(../icons/09.png) no-repeat;
+  background: url(../icons/jidi.png) no-repeat;
+  background-size: 0.2125rem 0.2125rem;
 }
 .map .hint ul li:nth-child(9) {
-  background: url(../icons/07.png) no-repeat;
+  background: url(../icons/qita.png) no-repeat;
+  background-size: 0.2125rem 0.2125rem;
 }
 .map .hint ul li:nth-child(10) {
+  background: url(../icons/sjxx.png) no-repeat;
+  background-size: 0.2125rem 0.2125rem;
+}
+.map .hint ul li:nth-child(11) {
   background: url(../icons/sj_xx.png) no-repeat;
+  background-size: 0.2125rem 0.2125rem;
 }
 .map .hint ul li span {
   padding-left: 0.3rem;
@@ -300,7 +315,6 @@ body {
 }
 .ol-popup {
   width: 4.25rem;
-  height: 4.5rem; 
   position: absolute;
   background-color: rgba(255, 255, 255);
   box-shadow: 0 0.0125rem 0.05rem rgba(0, 0, 0, 0.5);
@@ -309,8 +323,8 @@ body {
   border-radius: 0.125rem;
   border: 0.0125rem solid #7A8DD2;
   font-size: 0.15rem;
-  bottom: 0.15rem;
-  left: -0.625rem;
+  bottom: 0.1875rem;
+  left: -1.925rem;
   min-width: 60%;
 }
 .information div:nth-child(n+2) {
@@ -334,15 +348,22 @@ body {
 .ol-popup:after {
   border-top-color: rgba(255, 255, 255);
   border-width: 0.125rem;
-  left: 0.6rem;
+  left: 50%;
   margin-left: -0.125rem;
 }
 .ol-popup:before {
   border-top-color: #cccccc;
   border-width: 0.1375rem;
-  left: 0.6rem;
+  left: 50%;
   margin-left: -0.1375rem;
 }
 .ol-zoom {
   display: none;
+}
+.button-group {
+  display: flex;
+  justify-content: space-around;
+}
+.button-group button {
+  width: 1.235rem;
 }

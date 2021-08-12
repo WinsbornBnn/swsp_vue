@@ -86,7 +86,8 @@
         <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择
         <a style="font-weight: 600">{{ selectedRowKeys.length }}</a
         >项
-        <a style="margin-left: 24px" @click="onClearSelected">清空</a>
+        <a style="margin-left: 24px;margin-right: 24px" @click="onClearSelected">清空</a>
+        查询结果：查询到<a>{{ countNum }}</a>个
       </div>
 
       <a-table

@@ -5,8 +5,8 @@
       <a-form layout="inline" @keyup.enter.native="searchQuery">
         <a-row :gutter="24">
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="项目名称">
-              <j-input placeholder="请输入项目名称" v-model="queryParam.xmmc"></j-input>
+            <a-form-item label="企业名称">
+              <j-input placeholder="请输入企业名称" v-model="queryParam.qymc"></j-input>
             </a-form-item>
           </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
@@ -101,7 +101,8 @@
         <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择
         <a style="font-weight: 600">{{ selectedRowKeys.length }}</a
         >项
-        <a style="margin-left: 24px" @click="onClearSelected">清空</a>
+        <a style="margin-left: 24px;margin-right: 24px" @click="onClearSelected">清空</a>
+        查询结果：查询到<a>{{ countNum }}</a>个
       </div>
 
       <a-table

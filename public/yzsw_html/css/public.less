@@ -70,6 +70,7 @@ body {
 }
 
 .column {
+  position: relative;
   flex: 26%;
 
   &:nth-child(2) {
@@ -95,18 +96,23 @@ body {
 }
 
 .title {
-  width: 100%;
+  // width: 100%;
   height: 100%;
-  padding: 0 .1rem 0 .1rem;
+  // padding: 0 .1rem 0 .1rem;
 
 }
 
 .name {
   color: #C7D1FA;
-  position: absolute;
   font-size: .35rem;
-  top: .125rem;
-  left: 37%;
+  letter-spacing: .125rem;
+  text-align: center;
+  line-height: 1.05rem;
+}
+
+.background-img {
+  background-image: url(../icons/title.png);
+  background-size: 100% 100%;
 }
 
 .data {
@@ -174,7 +180,8 @@ body {
 
       span {
         color: #fff;
-        text-decoration: underline;
+        font-size: .25rem;
+        // text-decoration: underline;
       }
     }
 
@@ -297,7 +304,7 @@ body {
     right: .4375rem;
     border: #5462AB solid .0125rem;
     background-color: rgba(255, 255, 255);
-    height: 3.5rem;
+    height: 4.5rem;
     border-radius: .0625rem;
 
     ul {
@@ -308,39 +315,56 @@ body {
     ul li {
       width: 100%;
       height: .35rem;
-      background: url(../icons/08.png) no-repeat;
-      background-size: .15rem .15rem;
+      background: url(../icons/qiye.png) no-repeat;
+      background-size: .2125rem .2125rem;
       font-size: .15rem;
 
       &:nth-child(2) {
-        background: url(../icons/05.png) no-repeat;
+        background: url(../icons/xiaoqu.png) no-repeat;
+        background-size: .2125rem .2125rem;
       }
 
       &:nth-child(3) {
-        background: url(../icons/04.png) no-repeat;
+        background: url(../icons/xuexiao.png) no-repeat;
+        background-size: .2125rem .2125rem;
       }
 
       &:nth-child(4) {
-        background: url(../icons/03.png) no-repeat;
+        background: url(../icons/danwei.png) no-repeat;
+        background-size: .2125rem .2125rem;
       }
 
       &:nth-child(5) {
-        background: url(../icons/06.png) no-repeat;
+        background: url(../icons/binguan.png) no-repeat;
+        background-size: .2125rem .2125rem;
       }
 
       &:nth-child(6) {
-        background: url(../icons/0132.png) no-repeat;
+        background: url(../icons/guanqu.png) no-repeat;
+        background-size: .2125rem .2125rem;
       }
 
       &:nth-child(7) {
-        background: url(../icons/01.png) no-repeat;
+        background: url(../icons/yiyuan.png) no-repeat;
+        background-size: .2125rem .2125rem;
       }
 
       &:nth-child(8) {
-        background: url(../icons/09.png) no-repeat;
+        background: url(../icons/jidi.png) no-repeat;
+        background-size: .2125rem .2125rem;
       }
+
       &:nth-child(9) {
-        background: url(../icons/07.png) no-repeat;
+        background: url(../icons/qita.png) no-repeat;
+        background-size: .2125rem .2125rem;
+      }
+      &:nth-child(10) {
+        background: url(../icons/sjxx.png) no-repeat;
+        background-size: .2125rem .2125rem;
+      }
+      &:nth-child(11) {
+        background: url(../icons/sj_xx.png) no-repeat;
+        background-size: .2125rem .2125rem;
       }
 
       span {
@@ -354,7 +378,7 @@ body {
 
 .ol-popup {
   width: 4.25rem;
-  height: 2.5rem;
+  // height: 2.5rem;
   position: absolute;
   background-color: rgba(255, 255, 255);
   box-shadow: 0 .0125rem .05rem rgba(0, 0, 0, 0.5);
@@ -363,13 +387,14 @@ body {
   border-radius: .125rem;
   border: .0125rem solid #7A8DD2;
   font-size: .15rem;
-  bottom: .15rem;
-  left: -0.625rem;
+  bottom: .1875rem;
+  left: -1.925rem;
   min-width: 60%;
 }
-.information{
-  div{
-    &:nth-child(n+2){
+
+.information {
+  div {
+    &:nth-child(n+2) {
       margin: .0625rem 0;
     }
   }
@@ -395,17 +420,25 @@ body {
 .ol-popup:after {
   border-top-color: rgba(255, 255, 255);
   border-width: .125rem;
-  left: .6rem;
+  left: 50%;
   margin-left: -0.125rem;
 }
 
 .ol-popup:before {
   border-top-color: #cccccc;
   border-width: .1375rem;
-  left: .6rem;
+  left: 50%;
   margin-left: -0.1375rem;
 }
 
 .ol-zoom {
   display: none;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-around;
+  button {
+    width: 1.235rem;
+  }
 }

@@ -51,6 +51,9 @@
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="年实际用水量（万m³/a）">
           <a-input-number v-decorator="['sjysl', {}]" />
         </a-form-item>
+        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="定额值">
+          <a-input-number v-decorator="['dez', {}]" />
+        </a-form-item>
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="均用水量">
           <a-row>
             <a-col :span="6" :push="18">

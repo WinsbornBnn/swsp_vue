@@ -20,12 +20,13 @@
   <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <!-- 引入Echarts -->
   <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.1.0/echarts.min.js"></script>
-  
+
   <style>
-    .banner_img{
+    .banner_img {
       width: 100%;
       height: 100%;
     }
+
     .box01 {
       background-color: transparent;
       border-bottom: 1px solid #cccccc;
@@ -39,22 +40,31 @@
       border-bottom: none;
       padding: 0.3rem 0.45rem;
       margin: 0;
-      resize:none;
+      resize: none;
       color: #9FAEE5;
       font-size: 0.22rem;
     }
-    .search{
-        position: absolute;
-        top: 0.125rem;
-        right: 0.4375rem;
-        background-color: rgba(255, 255, 255);
-        width: 1.825rem;
-        height: 0.35rem;
-        background-color: #fff;
-        border: 0.025rem solid #6D7CBF;
-        color: #7E85BD;
+
+    /* .search {
+      position: absolute;
+      top: 0.125rem;
+      right: 0.4375rem;
+      background-color: rgba(255, 255, 255);
+      width: 1.825rem;
+      height: 0.35rem;
+      background-color: #fff;
+      border: 0.025rem solid #6D7CBF;
+      color: #7E85BD;
+    } */
+
+    .search {
+      position: absolute;
+      top: 0.125rem;
+      right: -0.0625rem;
+      height: 0.35rem;
     }
-    .name_div{
+
+    .name_div {
       width: 2.25rem;
       height: 1rem;
       position: absolute;
@@ -65,22 +75,53 @@
       border-radius: 0.125rem;
       border: 0.0125rem solid #7A8DD2;
       font-size: 0.15rem;
-      bottom: 0.15rem;
-      left: -0.625rem;
+      bottom: 0.0125rem;
+      left: -1.125rem;
       min-width: 60%;
       margin-bottom: 30px;
     }
-    .pannel .top .layui-form-select dl, .inner .top .layui-form-select dl {
-        left: 0.2625rem;
-        top: 0.4375rem;
-        min-width: 1.125rem;
-        background-color: #161E45;
-        color: #7E85BD;
-        border-color: #304189;
-        height: 300px;
+
+    .name_div:after,
+    .name_div:before {
+      top: 100%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .name_div:before {
+      border-top-color: #cccccc;
+      border-width: .1375rem;
+      left: 50%;
+      margin-left: -0.1375rem;
+    }
+
+    .name_div:after {
+      border-top-color: rgba(255, 255, 255);
+      border-width: .125rem;
+      left: 50%;
+      margin-left: -0.125rem;
+    }
+
+    .pannel .top .layui-form-select dl,
+    .inner .top .layui-form-select dl {
+      left: 0.2625rem;
+      top: 0.4375rem;
+      min-width: 1.125rem;
+      background-color: #161E45;
+      color: #7E85BD;
+      border-color: #304189;
+      height: 300px;
+    }
+
+    .layui-form-select dl {
+      width: 2.75rem;
     }
   </style>
-  
+
 </head>
 
 <body>
@@ -147,7 +188,7 @@
           </div>
         </div>
       </div>
-      
+
       <!-- 灌区模块 -->
       <div class="tank inner">
         <!-- 上边部分 -->
@@ -180,7 +221,7 @@
           </div>
         </div>
       </div>
-      
+
     </div>
     <!-- 中间地图区域 -->
     <div class="column u-f-fdc">
@@ -193,7 +234,7 @@
             </div>
           </div>
           <div id="name_div" class="name_div">
-              <div id="name_div_content"></div>
+            <div id="name_div_content"></div>
           </div>
         </div>
         <!-- 下拉菜单 -->
@@ -215,19 +256,32 @@
             <li><span>医院</span></li>
             <li><span>教育基地</span></li>
             <li><span>其他</span></li>
-            <li><span>节水减排示范项目</span></li>
+            <li><span>省级节水减排示范项目</span></li>
+            <li><span>市级节水减排示范项目</span></li>
           </ul>
         </div>
-        
-        <div class="search">
-          <input  placeholder="请输入需要查询的名称" style="color: #7E85BD;width: 100%;height: 100%;border: 0;border:none;border-radius:0; border-bottom:#8D8D8D 1px solid;box-shadow: 0px 0px 0px 0px;" type="text" id="search" />
-        </div>
-        
+
+        <!-- <div class="search">
+          <input placeholder="请输入需要查询的名称"
+            style="color: #7E85BD;width: 100%;height: 100%;border: 0;border:none;border-radius:0; border-bottom:#8D8D8D 1px solid;box-shadow: 0px 0px 0px 0px;"
+            type="text" id="search" />
+        </div> -->
+        <form class="layui-form" action="" lay-filter="formDemo">
+          <div class="layui-form-item search">
+            <div class="layui-inline">
+              <div class="layui-input-inline" style="width: 2.75rem;">
+                <select name="modules" lay-filter="selectSearch" placeholder="直接选择或搜索选择" lay-search id="layui-inline">
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+
       </div>
     </div>
     <!-- 右边区域-->
     <div class="column u-f-fdc">
-      
+
       <!-- 单位模块 -->
       <div class="unit pannel">
         <!-- 上边部分 -->
@@ -260,7 +314,7 @@
           </div>
         </div>
       </div>
-      
+
       <!-- 企业模块 -->
       <div class="company inner">
         <!-- 上边部分 -->
@@ -293,7 +347,7 @@
           </div>
         </div>
       </div>
-      
+
     </div>
   </div>
   <script src="js/flexible.js"></script>

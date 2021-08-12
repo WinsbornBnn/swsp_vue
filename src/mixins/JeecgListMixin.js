@@ -4,21 +4,21 @@
  * data中url定义 list为查询列表  delete为删除单条记录  deleteBatch为批量删除
  */
 import { filterObj } from '@/utils/util';
-import { deleteAction, getAction,downFile,getFileAccessHttpUrl } from '@/api/manage'
+import { deleteAction, getAction, downFile, getFileAccessHttpUrl } from '@/api/manage'
 import Vue from 'vue'
 import { ACCESS_TOKEN } from "@/store/mutation-types"
 
 export const JeecgListMixin = {
-  data(){
+  data () {
     return {
       //token header
-      tokenHeader: {'X-Access-Token': Vue.ls.get(ACCESS_TOKEN)},
+      tokenHeader: { 'X-Access-Token': Vue.ls.get(ACCESS_TOKEN) },
       /* 查询条件-请不要在queryParam中声明非字符串值的属性 */
       queryParam: {},
       /* 数据源 */
-      dataSource:[],
+      dataSource: [],
       /* 分页参数 */
-      ipagination:{
+      ipagination: {
         current: 1,
         pageSize: 10,
         pageSizeOptions: ['10', '20', '30'],
@@ -30,39 +30,41 @@ export const JeecgListMixin = {
         total: 0
       },
       /* 排序参数 */
-      isorter:{
+      isorter: {
         column: 'createTime',
         order: 'desc',
       },
       /* 筛选参数 */
       filters: {},
       /* table加载状态 */
-      loading:false,
+      loading: false,
       /* table选中keys*/
       selectedRowKeys: [],
       /* table选中records*/
       selectionRows: [],
       /* 查询折叠 */
-      toggleSearchStatus:false,
+      toggleSearchStatus: false,
       /* 高级查询条件生效状态 */
-      superQueryFlag:false,
+      superQueryFlag: false,
       /* 高级查询条件 */
       superQueryParams: '',
       /** 高级查询拼接方式 */
       superQueryMatchType: 'and',
+      // *查询数量
+      countNum: 0,
     }
   },
-  created() {
-      if(!this.disableMixinCreated){
-        console.log(' -- mixin created -- ')
-        this.loadData();
-        //初始化字典配置 在自己页面定义
-        this.initDictConfig();
-      }
+  created () {
+    if (!this.disableMixinCreated) {
+      console.log(' -- mixin created -- ')
+      this.loadData();
+      //初始化字典配置 在自己页面定义
+      this.initDictConfig();
+    }
   },
-  methods:{
-    loadData(arg) {
-      if(!this.url.list){
+  methods: {
+    loadData (arg) {
+      if (!this.url.list) {
         this.$message.error("请设置url.list属性!")
         return
       }
@@ -76,42 +78,43 @@ export const JeecgListMixin = {
         if (res.success) {
           this.dataSource = res.result.records;
           this.ipagination.total = res.result.total;
+          this.countNum = res.count_num ? res.count_num : 0
         }
-        if(res.code===510){
+        if (res.code === 510) {
           this.$message.warning(res.message)
         }
         this.loading = false;
       })
     },
-    initDictConfig(){
+    initDictConfig () {
       console.log("--这是一个假的方法!")
     },
-    handleSuperQuery(params, matchType) {
+    handleSuperQuery (params, matchType) {
       //高级查询方法
-      if(!params){
-        this.superQueryParams=''
+      if (!params) {
+        this.superQueryParams = ''
         this.superQueryFlag = false
-      }else{
+      } else {
         this.superQueryFlag = true
-        this.superQueryParams=JSON.stringify(params)
+        this.superQueryParams = JSON.stringify(params)
         this.superQueryMatchType = matchType
       }
       this.loadData(1)
     },
-    getQueryParams() {
+    getQueryParams () {
       //获取查询条件
       let sqp = {}
-      if(this.superQueryParams){
-        sqp['superQueryParams']=encodeURI(this.superQueryParams)
+      if (this.superQueryParams) {
+        sqp['superQueryParams'] = encodeURI(this.superQueryParams)
         sqp['superQueryMatchType'] = this.superQueryMatchType
       }
-      var param = Object.assign(sqp, this.queryParam, this.isorter ,this.filters);
+      var param = Object.assign(sqp, this.queryParam, this.isorter, this.filters);
       //param.field = this.getQueryField();
       param.pageNo = this.ipagination.current;
       param.pageSize = this.ipagination.pageSize;
       return filterObj(param);
     },
-    getQueryField() {
+    getQueryField () {
       //TODO 字段权限控制
       var str = "id,";
       this.columns.forEach(function (value) {
@@ -120,26 +123,26 @@ export const JeecgListMixin = {
       return str;
     },
 
-    onSelectChange(selectedRowKeys, selectionRows) {
+    onSelectChange (selectedRowKeys, selectionRows) {
       this.selectedRowKeys = selectedRowKeys;
       this.selectionRows = selectionRows;
     },
-    onClearSelected() {
+    onClearSelected () {
       this.selectedRowKeys = [];
       this.selectionRows = [];
     },
-    searchQuery() {
+    searchQuery () {
       this.loadData(1);
     },
-    superQuery() {
+    superQuery () {
       this.$refs.superQueryModal.show();
     },
-    searchReset() {
+    searchReset () {
       this.queryParam = {}
       this.loadData(1);
     },
     batchDel: function () {
-      if(!this.url.deleteBatch){
+      if (!this.url.deleteBatch) {
         this.$message.error("请设置url.deleteBatch属性!")
         return
       }
@@ -152,33 +155,42 @@ export const JeecgListMixin = {
           ids += this.selectedRowKeys[a] + ",";
         }
         var that = this;
-        this.$confirm({
-          title: "确认删除",
-          content: "是否删除选中数据?",
-          onOk: function () {
-            that.loading = true;
-            deleteAction(that.url.deleteBatch, {ids: ids}).then((res) => {
-              if (res.success) {
-                that.$message.success(res.message);
-                that.loadData();
-                that.onClearSelected();
-              } else {
-                that.$message.warning(res.message);
-              }
-            }).finally(() => {
-              that.loading = false;
-            });
-          }
+        this.$confirm('是否删除选中数据?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+          that.loading = true;
+          deleteAction(that.url.deleteBatch, { ids: ids }).then((res) => {
+            if (res.success) {
+              that.$message.success(res.message);
+              that.loadData();
+              that.onClearSelected();
+            } else {
+              that.$message.warning(res.message);
+            }
+          }).finally(() => {
+            that.loading = false;
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
         });
       }
     },
     handleDelete: function (id) {
-      if(!this.url.delete){
+      if (!this.url.delete) {
         this.$message.error("请设置url.delete属性!")
         return
       }
       var that = this;
-      deleteAction(that.url.delete, {id: id}).then((res) => {
+      deleteAction(that.url.delete, { id: id }).then((res) => {
         if (res.success) {
           that.$message.success(res.message);
           that.loadData();
@@ -197,7 +209,7 @@ export const JeecgListMixin = {
       this.$refs.modalForm.title = "新增";
       this.$refs.modalForm.disableSubmit = false;
     },
-    handleTableChange(pagination, filters, sorter) {
+    handleTableChange (pagination, filters, sorter) {
       //分页、排序、筛选变化时触发
       //TODO 筛选
       if (Object.keys(sorter).length > 0) {
@@ -207,50 +219,50 @@ export const JeecgListMixin = {
       this.ipagination = pagination;
       this.loadData();
     },
-    handleToggleSearch(){
+    handleToggleSearch () {
       this.toggleSearchStatus = !this.toggleSearchStatus;
     },
     // 给popup查询使用(查询区域不支持回填多个字段，限制只返回一个字段)
-    getPopupField(fields){
+    getPopupField (fields) {
       return fields.split(',')[0]
     },
-    modalFormOk() {
+    modalFormOk () {
       // 新增/修改 成功时，重载列表
       this.loadData();
     },
-    handleDetail:function(record){
+    handleDetail: function (record) {
       this.$refs.modalForm.edit(record);
-      this.$refs.modalForm.title="详情";
+      this.$refs.modalForm.title = "详情";
       this.$refs.modalForm.disableSubmit = true;
     },
     /* 导出 */
-    handleExportXls2(){
+    handleExportXls2 () {
       let paramsStr = encodeURI(JSON.stringify(this.getQueryParams()));
       let url = `${window._CONFIG['domianURL']}/${this.url.exportXlsUrl}?paramsStr=${paramsStr}`;
       window.location.href = url;
     },
-    handleExportXls(fileName){
-      if(!fileName || typeof fileName != "string"){
+    handleExportXls (fileName) {
+      if (!fileName || typeof fileName != "string") {
         fileName = "导出文件"
       }
-      let param = {...this.queryParam};
-      if(this.selectedRowKeys && this.selectedRowKeys.length>0){
+      let param = { ...this.queryParam };
+      if (this.selectedRowKeys && this.selectedRowKeys.length > 0) {
         param['selections'] = this.selectedRowKeys.join(",")
       }
-      console.log("导出参数",param)
-      downFile(this.url.exportXlsUrl,param).then((data)=>{
+      console.log("导出参数", param)
+      downFile(this.url.exportXlsUrl, param).then((data) => {
         if (!data) {
           this.$message.warning("文件下载失败")
           return
         }
         if (typeof window.navigator.msSaveBlob !== 'undefined') {
-          window.navigator.msSaveBlob(new Blob([data],{type: 'application/vnd.ms-excel'}), fileName+'.xls')
-        }else{
-          let url = window.URL.createObjectURL(new Blob([data],{type: 'application/vnd.ms-excel'}))
+          window.navigator.msSaveBlob(new Blob([data], { type: 'application/vnd.ms-excel' }), fileName + '.xls')
+        } else {
+          let url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.ms-excel' }))
           let link = document.createElement('a')
           link.style.display = 'none'
           link.href = url
-          link.setAttribute('download', fileName+'.xls')
+          link.setAttribute('download', fileName + '.xls')
           document.body.appendChild(link)
           link.click()
           document.body.removeChild(link); //下载完成移除元素
@@ -259,7 +271,7 @@ export const JeecgListMixin = {
       })
     },
     /* 导入 */
-    handleImportExcel(info){
+    handleImportExcel (info) {
       if (info.file.status !== 'uploading') {
         console.log(info.file, info.fileList);
       }
@@ -273,7 +285,7 @@ export const JeecgListMixin = {
               title: message,
               content: (
                 <div>
-                  <span>{msg}</span><br/>
+                  <span>{msg}</span><br />
                   <span>具体详情请 <a href={href} target="_blank" download={fileName}>点击下载</a> </span>
                 </div>
               )
@@ -290,21 +302,21 @@ export const JeecgListMixin = {
       }
     },
     /* 图片预览 */
-    getImgView(text){
-      if(text && text.indexOf(",")>0){
-        text = text.substring(0,text.indexOf(","))
+    getImgView (text) {
+      if (text && text.indexOf(",") > 0) {
+        text = text.substring(0, text.indexOf(","))
       }
       return getFileAccessHttpUrl(text)
     },
     /* 文件下载 */
     // update--autor:lvdandan-----date:20200630------for：修改下载文件方法名uploadFile改为downloadFile------
-    downloadFile(text){
-      if(!text){
+    downloadFile (text) {
+      if (!text) {
         this.$message.warning("未知的文件")
         return;
       }
-      if(text.indexOf(",")>0){
-        text = text.substring(0,text.indexOf(","))
+      if (text.indexOf(",") > 0) {
+        text = text.substring(0, text.indexOf(","))
       }
       let url = getFileAccessHttpUrl(text)
       window.open(url);

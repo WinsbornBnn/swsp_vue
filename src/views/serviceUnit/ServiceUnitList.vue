@@ -25,11 +25,7 @@
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <a-form-item label="单位类型">
               <!-- <j-input placeholder="请输入单位类型" v-model="queryParam.dwlx"></j-input> -->
-              <a-select
-                style="width: 200px"
-                placeholder="请选择单位类型"
-                v-model="queryParam.unit"
-              >
+              <a-select style="width: 200px" placeholder="请选择单位类型" v-model="queryParam.unit">
                 <a-select-option value="机关"> 机关 </a-select-option>
                 <a-select-option value="单位"> 事业单位 </a-select-option>
                 <a-select-option value="宾馆"> 宾馆 </a-select-option>
@@ -80,7 +76,7 @@
             </a-col>-->
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="公布时间">
-                <j-input  v-model="queryParam.gbsj" placeholder="请输入年份 例如 2021" ></j-input>
+                <j-input v-model="queryParam.gbsj" placeholder="请输入年份 例如 2021"></j-input>
               </a-form-item>
             </a-col>
           </template>
@@ -100,7 +96,7 @@
 
     <!-- 操作按钮区域 -->
     <div class="table-operator">
-      <a-button @click="handleAdd" type="primary" icon="plus" v-has="'unit:add'"  >新增</a-button>
+      <a-button @click="handleAdd" type="primary" icon="plus" v-has="'unit:add'">新增</a-button>
       <a-button type="primary" icon="download" @click="handleExportXls('单位')" v-has="'unit:out'">导出</a-button>
       <a-upload
         name="file"
@@ -113,7 +109,7 @@
       >
         <a-button type="primary" icon="import">导入</a-button>
       </a-upload>
-      <a-dropdown v-if="selectedRowKeys.length > 0"  v-has="'unit:delete'">
+      <a-dropdown v-if="selectedRowKeys.length > 0" v-has="'unit:delete'">
         <a-menu slot="overlay">
           <a-menu-item key="1" @click="batchDel"><a-icon type="delete" />删除</a-menu-item>
         </a-menu>
@@ -127,7 +123,8 @@
         <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择
         <a style="font-weight: 600">{{ selectedRowKeys.length }}</a
         >项
-        <a style="margin-left: 24px" @click="onClearSelected">清空</a>
+        <a style="margin-left: 24px;margin-right: 24px" @click="onClearSelected">清空</a>
+        查询结果：查询到<a>{{ countNum }}</a>个
       </div>
 
       <a-table
@@ -153,7 +150,7 @@
           <a @click="handleEdit(record)" v-has="'unit:edit'">编辑</a>
 
           <a-divider type="vertical" />
-          <a-dropdown  v-has="'unit:delete'">
+          <a-dropdown v-has="'unit:delete'">
             <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>
             <a-menu slot="overlay">
               <a-menu-item>
@@ -260,7 +257,7 @@ export default {
           align: "center",
           dataIndex: 'ysldw'
         },
-        
+
         {
           title: '公布节水型生活服务业单位文件',
           align: "center",

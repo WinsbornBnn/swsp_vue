@@ -299,6 +299,7 @@
               // update-end-author:lvdandan date:20200603 for:【TESTA-514】【开源issue】多个文件同时上传时，控制台报错
             }
             this.$emit('change', this.newFileList);
+            // this.$emit('uploadFile', this.fileList);
           }
         }
       },

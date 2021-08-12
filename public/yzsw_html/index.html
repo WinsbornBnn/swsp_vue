@@ -19,10 +19,11 @@
   <!-- 引入JQuery -->
   <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <style>
-    .banner_img{
+    .banner_img {
       width: 100%;
       height: 100%;
     }
+
     .box01 {
       background-color: transparent;
       border-bottom: 1px solid #cccccc;
@@ -36,22 +37,31 @@
       border-bottom: none;
       padding: 0.3rem 0.45rem;
       margin: 0;
-      resize:none;
+      resize: none;
       color: #9FAEE5;
       font-size: 0.22rem;
     }
-    .search{
-        position: absolute;
-        top: 0.125rem;
-        right: 26%;
-        background-color: rgba(255, 255, 255);
-        width: 1.825rem;
-        height: 0.35rem;
-        background-color: #fff;
-        border: 0.025rem solid #6D7CBF;
-        color: #7E85BD;
+
+    /* .search {
+      position: absolute;
+      top: 0.125rem;
+      right: 26%;
+      background-color: rgba(255, 255, 255);
+      width: 1.825rem;
+      height: 0.35rem;
+      background-color: #fff;
+      border: 0.025rem solid #6D7CBF;
+      color: #7E85BD;
+    } */
+
+    .search {
+      position: absolute;
+      top: 0.125rem;
+      right: 24%;
+      height: 0.35rem;
     }
-    .name_div{
+
+    .name_div {
       width: 2.25rem;
       height: 1rem;
       position: absolute;
@@ -62,18 +72,48 @@
       border-radius: 0.125rem;
       border: 0.0125rem solid #7A8DD2;
       font-size: 0.15rem;
-      bottom: 0.15rem;
-      left: -0.625rem;
+      bottom: 0.015rem;
+      left: -1.125rem;
       min-width: 60%;
       margin-bottom: 30px;
     }
-    .item_div_text{
+
+    .name_div:after,
+    .name_div:before {
+      top: 100%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .name_div:before {
+      border-top-color: #cccccc;
+      border-width: .1375rem;
+      left: 50%;
+      margin-left: -0.1375rem;
+    }
+
+    .name_div:after {
+      border-top-color: rgba(255, 255, 255);
+      border-width: .125rem;
+      left: 50%;
+      margin-left: -0.125rem;
+    }
+
+    .item_div_text {
       height: 0.30rem;
       font-size: 0.18rem;
       line-height: 0.20rem;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+    }
+
+    .layui-form-select dl {
+      width: 2.75rem;
     }
   </style>
 </head>
@@ -85,10 +125,10 @@
       <div class="time">
       </div>
     </div>
-    <div class="column">
-      <img src="icons/title.png" alt class="title" style="width: 100%;">
+    <div class="column background-img">
+      <!-- <img src="icons/title.png" alt class="title" style="width: 100%;"> -->
       <div class="name">
-        扬 州 市 节 水 型 载 体 可 视 化 系 统
+        扬州市节水型载体可视化系统
       </div>
     </div>
     <div class="column">
@@ -99,19 +139,21 @@
         <button id="goAll" style="width: .75rem;">全屏</button>
       </div>
     </div>
-  </header> 
-  
+  </header>
+
   <div class="container u-f">
-    <div id="div_left" style="width: 25%;height: 100%;background: url(./icons/bg_1.png) no-repeat 0 0;background-size: 100% 100%;z-index: 999;position: absolute;left: 0px;top: 0px;">
+    <div id="div_left"
+      style="width: 25%;height: 100%;background: url(./icons/bg_1.png) no-repeat 0 0;background-size: 100% 100%;z-index: 999;position: absolute;left: 0px;top: 0px;">
       <div style="height: 66%;width: 100%;">
-        
+
         <div class="box01" style="width: 100%;height: 100%;" rows="" cols="">
-          <marquee id="describe_info" direction="up" onMouseOver="this.stop()" onMouseOut="this.start()"  scrolldelay="100" style="width: 100%;height: 100%;" >
+          <marquee id="describe_info" direction="up" onMouseOver="this.stop()" onMouseOut="this.start()"
+            scrolldelay="100" style="width: 100%;height: 100%;text-indent: 2em;">
 
           </marquee>
 
         </div>
-        
+
       </div>
       <div style="height: 34%;width: 100%;padding-top: 10px;">
         <div class="layui-carousel" style="margin:10px 3% 10px 3% ;" id="banner01">
@@ -121,21 +163,22 @@
         </div>
       </div>
     </div>
-    
-    <div id="div_left_item" style="display: none;width: 25%;height: 100%;z-index: 999;position: absolute;left: 0px;top: 0px;">
-      
+
+    <div id="div_left_item"
+      style="display: none;width: 25%;height: 100%;z-index: 999;position: absolute;left: 0px;top: 0px;">
+
       <div style="height: 36%;width: 100%;background: url(./icons/bg_1.png) no-repeat 0 0;background-size: 100% 100%;">
         <div id="left"></div>
       </div>
-      
+
       <div id="ba_img01" style="height: 32%;width: 100%;padding-top: 10px;display: none;">
-          
+
       </div>
-      
+
       <div id="ba_img02" style="height: 32%;width: 100%;padding-top: 10px;display: none;">
 
       </div>
-      
+
     </div>
     <!-- 中间地图区域 -->
     <div id="div_center" class="column u-f-fdc">
@@ -148,7 +191,7 @@
               </div>
             </div>
             <div id="name_div" class="name_div">
-                <div id="name_div_content"></div>
+              <div id="name_div_content"></div>
             </div>
           </div>
 
@@ -172,67 +215,79 @@
             <li><span>医院</span></li>
             <li><span>教育基地</span></li>
             <li><span>其他</span></li>
-            <li><span>节水减排示范项目</span></li>
+            <li><span>省级节水减排示范项目</span></li>
+            <li><span>市级节水减排示范项目</span></li>
           </ul>
         </div>
-       <!-- oninput="myInput()" onkeydown="keyup_submit(event);" -->
-        <div class="search">
-          <input placeholder="请输入需要查询的名称" style="color: #7E85BD;width: 100%;height: 100%;border: 0;border:none;border-radius:0; border-bottom:#8D8D8D 1px solid;box-shadow: 0px 0px 0px 0px;" type="text" id="search" />
-        </div>
-        
+        <!-- oninput="myInput()" onkeydown="keyup_submit(event);" -->
+        <!-- <div class="search">
+          <input placeholder="请输入需要查询的名称"
+            style="color: #7E85BD;width: 100%;height: 100%;border: 0;border:none;border-radius:0; border-bottom:#8D8D8D 1px solid;box-shadow: 0px 0px 0px 0px;"
+            type="text" id="search" />
+        </div> -->
       </div>
+      <form class="layui-form" action="" lay-filter="formDemo">
+        <div class="layui-form-item search">
+          <div class="layui-inline">
+            <div class="layui-input-inline" style="width: 2.75rem;">
+              <select name="modules" lay-filter="selectSearch" placeholder="直接选择或搜索选择" lay-search id="layui-inline">
+              </select>
+            </div>
+          </div>
+        </div>
+      </form>
+
     </div>
-    
-    <div id="div_right" style=" width: 25%;height: 100%;background: url(./icons/bg_1.png) no-repeat 0 0;background-size: 100% 100%;z-index: 999;position: absolute;right: 0px;top: 0px;">
-      
+
+    <div id="div_right"
+      style=" width: 25%;height: 100%;background: url(./icons/bg_1.png) no-repeat 0 0;background-size: 100% 100%;z-index: 999;position: absolute;right: 0px;top: 0px;">
+
       <div style="height: 33%;width: 100%;">
-        <div class="layui-carousel" style="margin:10px 3% 10px 3% ;" id="banner02">
+        <div class="layui-carousel" style="margin:0px 3% 10px 3% ;" id="banner02">
           <div carousel-item="" id="banner02_img">
           </div>
         </div>
       </div>
-      
-      <div style="height: 33%;width: 100%;padding-top: 10px;">
+
+      <div style="height: 33%;width: 100%;">
         <div class="layui-carousel" style="margin:10px 3% 10px 3% ;" id="banner03">
           <div carousel-item="" id="banner03_img">
           </div>
         </div>
       </div>
-      
-      <div style="height: 34%;width: 100%;padding-top: 10px;">
+
+      <div style="height: 33%;width: 100%;">
         <div class="layui-carousel" style="margin:10px 3% 10px 3% ;" id="banner04">
           <div carousel-item="" id="banner04_img">
           </div>
         </div>
       </div>
     </div>
-    
-    <div id="div_right_item" style="display: none;width: 25%;height: 100%;z-index: 999;position: absolute;right: 0px;top: 0px;">
-        
-        <div id="ba_img03" style="height: 36%;width: 100%;">
-            
-        </div>
-        
-        <div id="ba_img04" style="height: 32%;width: 100%;padding-top: 10px;">
 
-        </div>
-        
-        <div id="ba_img05" style="height: 32%;width: 100%;padding-top: 10px;">
+    <div id="div_right_item"
+      style="display: none;width: 25%;height: 100%;z-index: 999;position: absolute;right: 0px;top: 0px;">
 
-        </div>
-        
+      <div id="ba_img03" style="height: 36%;width: 100%;">
+
+      </div>
+
+      <div id="ba_img04" style="height: 32%;width: 100%;padding-top: 10px;">
+
+      </div>
+
+      <div id="ba_img05" style="height: 32%;width: 100%;padding-top: 10px;">
+
+      </div>
+
     </div>
-    
   </div>
-  
-  
+
   <script src="js/flexible.js"></script>
   <script src="js/index.js"></script>
   <script src="js/Ajax.js"></script>
   <script src="js/MyTime.js"></script>
   <script src="js/MyMap.js"></script>
-
-  
+  <!-- <script src="js/selectSearch.js"></script> -->
 </body>
 
 </html>
